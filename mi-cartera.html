@@ -242,6 +242,22 @@ input[type=text],input[type=number],input[type=date],select,textarea{
 .graf-caja{margin-top:14px}
 .graf-tit{font-size:13px; font-weight:600; margin-bottom:4px}
 .graf-caja .chico{margin-top:5px}
+.papel-lista{display:flex; flex-direction:column; gap:5px; margin-top:8px}
+.papel-op{
+  display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-chico);
+  padding:10px 12px; text-align:left; width:100%;
+}
+.papel-op:hover{border-color:var(--accent-line); background:var(--accent-soft)}
+.papel-sim{font-weight:700; font-size:14px; letter-spacing:.01em}
+.papel-nom{font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.papel-px{font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.papel-elegido{
+  display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline;
+  background:var(--accent-soft); border:1px solid var(--accent-line);
+  border-radius:var(--r-chico); padding:11px 12px;
+}
+.papel-elegido .papel-nom{color:var(--ink)}
 .vacio{text-align:center; padding:36px 18px; color:var(--muted)}
 .vacio h3{font-family:'Fraunces',Georgia,serif; font-size:21px; color:var(--ink); margin-bottom:8px}
 .vacio p{font-size:14px; line-height:1.6; max-width:38ch; margin:0 auto}
@@ -356,6 +372,68 @@ function diasEntre(a, b){
   var d1 = new Date(a + 'T00:00:00'), d2 = new Date(b + 'T00:00:00');
   if (isNaN(d1) || isNaN(d2)) return 0;
   return Math.max(0, Math.round((d2 - d1) / 86400000));
+}
+
+/* Nombres de los papeles, para poder buscarlos por como se llaman y no
+   por su simbolo. 177 salen del dashboard de Matias; el resto los
+   agregue yo: son nombres de empresas, publicos y estables, pero no
+   estan verificados uno por uno. Si falta alguno no pasa nada: se
+   muestra el simbolo solo. */
+var NOMBRES = {"AA":"Alcoa Corporation", "AAPL":"Apple Inc.", "ABBV":"AbbVie Inc.", "ABNB":"Airbnb", "ACN":"Accenture", "ADBE":"Adobe Inc.", "ADDYY":"Adidas AG", "AGRO":"Adecoagro", "AIG":"American International Group", "ALB":"Albemarle Corporation", "ALUA":"Aluar", "AMAT":"Applied Materials, Inc.", "AMD":"Advanced Micro Devices, Inc.", "AMGN":"Amgen Inc.", "AMT":"American Tower Corporation", "AMX":"América Móvil", "AMZN":"Amazon.com, Inc.", "APD":"Air Products and Chemicals, Inc.", "ARKK":"Fondo ARK Innovation", "ARM":"Arm", "ASML":"ASML Holding", "AVGO":"Broadcom Inc.", "AXP":"American Express Company", "BA":"The Boeing Company", "BABA":"Alibaba", "BAC":"Bank of America Corp.", "BBAR":"BBVA Argentina", "BBVA":"Banco Bilbao Vizcaya Argentaria", "BCE":"BCE Inc.", "BDX":"Becton, Dickinson and Co.", "BEN":"Franklin Resources, Inc.", "BHIP":"Banco Hipotecario", "BHP":"BHP Group Limited", "BIDU":"Baidu", "BIOX":"Bioceres", "BKNG":"Booking Holdings Inc.", "BLK":"BlackRock, Inc.", "BMA":"Banco Macro", "BMY":"Bristol-Myers Squibb Company", "BRKB":"Berkshire Hathaway", "BYMA":"BYMA", "C":"Citigroup Inc.", "CAT":"Caterpillar Inc.", "CEPU":"Central Puerto", "CF":"CF Industries Holdings, Inc.", "CHD":"Church & Dwight Co., Inc.", "CHTR":"Charter Communications, Inc.", "CL":"Colgate-Palmolive Company", "CLX":"The Clorox Company", "CMCSA":"Comcast Corporation", "CMG":"Chipotle Mexican Grill", "COIN":"Coinbase", "COME":"Sociedad Comercial del Plata", "COST":"Costco Wholesale Corp.", "CRES":"Cresud", "CRM":"Salesforce, Inc.", "CSCO":"Cisco Systems, Inc.", "CTIO":"Consultatio", "CTVA":"Corteva, Inc.", "CVS":"CVS Health Corporation", "CVX":"Chevron", "DAL":"Delta Air Lines, Inc.", "DE":"Deere & Company", "DIA":"Índice Dow Jones", "DIS":"The Walt Disney Company", "DISN":"Disney", "DOCU":"DocuSign", "EBAY":"eBay", "ECL":"Ecolab Inc.", "EDN":"Edenor", "EL":"Estée Lauder Companies Inc.", "EMR":"Emerson Electric Co.", "ETN":"Eaton Corporation plc", "ETSY":"Etsy", "EWZ":"Índice de Brasil", "F":"Ford Motor Company", "FCX":"Freeport-McMoRan Inc.", "FDX":"FedEx Corporation", "FMC":"FMC Corporation", "GD":"General Dynamics Corporation", "GE":"GE Aerospace", "GGAL":"Grupo Fin. Galicia", "GILD":"Gilead Sciences, Inc.", "GIS":"General Mills, Inc.", "GLD":"Oro", "GLOB":"Globant", "GM":"General Motors Company", "GOLD":"Barrick Gold Corporation", "GOOGL":"Alphabet Inc.", "GS":"Goldman Sachs Group, Inc.", "HARG":"Holcim Argentina", "HAVA":"Havanna", "HCA":"HCA Healthcare, Inc.", "HD":"Home Depot, Inc.", "HMC":"Honda Motor Co., Ltd.", "HON":"Honeywell International Inc.", "HSBC":"HSBC Holdings plc", "IBM":"International Business Machines", "INTC":"Intel Corporation", "IRSA":"IRSA", "ISRG":"Intuitive Surgical, Inc.", "ITW":"Illinois Tool Works Inc.", "IWM":"Índice de empresas chicas", "JD":"JD.com", "JNJ":"Johnson Johnson", "JPM":"JPMorgan Chase & Co.", "KHC":"The Kraft Heinz Company", "KMB":"Kimberly-Clark", "KO":"Coca-Cola", "KR":"The Kroger Co.", "LEDE":"Ledesma", "LILA":"Liberty Latin America Ltd.", "LLY":"Eli Lilly and Company", "LMT":"Lockheed Martin Corporation", "LOMA":"Loma Negra", "LOW":"Lowe's Companies, Inc.", "LVMUY":"LVMH Moët Hennessy Louis Vuitton", "MA":"Mastercard Incorporated", "MAR":"Marriott International, Inc.", "MCD":"McDonald's Corporation", "MDLZ":"Mondelez International, Inc.", "MDT":"Medtronic plc", "MELI":"Mercado Libre", "META":"Meta Platforms, Inc.", "METR":"MetroGAS", "MIRG":"Mirgor", "MMM":"3M Company", "MO":"Altria Group, Inc.", "MOLI":"Molinos Río de la Plata", "MORI":"Morixe", "MOS":"The Mosaic Company", "MRK":"Merck & Co., Inc.", "MS":"Morgan Stanley", "MSFT":"Microsoft Corporation", "MSTR":"Strategy (MicroStrategy)", "MU":"Micron", "NEM":"Newmont Corporation", "NFLX":"Netflix, Inc.", "NIO":"NIO", "NKE":"Nike, Inc.", "NOC":"Northrop Grumman Corporation", "NOW":"ServiceNow, Inc.", "NU":"Nubank", "NUE":"Nucor Corporation", "NVDA":"NVIDIA Corporation", "NVO":"Novo Nordisk A/S", "NVS":"Novartis AG", "ORCL":"Oracle Corporation", "ORNYY":"L'Oréal S.A.", "PAMP":"Pampa Energia", "PANW":"Palo Alto Networks, Inc.", "PBR":"Petrobras", "PDD":"PDD Holdings", "PEP":"PepsiCo, Inc.", "PFE":"Pfizer Inc.", "PG":"Procter & Gamble Co.", "PH":"Parker-Hannifin Corporation", "PINS":"Pinterest", "PLTR":"Palantir", "PM":"Philip Morris International", "PYPL":"PayPal Holdings, Inc.", "QCOM":"Qualcomm Incorporated", "QQQ":"Índice Nasdaq 100", "RACE":"Ferrari N.V.", "RBLX":"Roblox", "RCI":"Rogers Communications Inc.", "REGN":"Regeneron Pharmaceuticals", "RIO":"Rio Tinto Group", "RTX":"RTX Corporation", "RY":"Royal Bank of Canada", "SAMI":"San Miguel", "SAN":"Banco Santander, S.A.", "SBUX":"Starbucks Corporation", "SCCO":"Southern Copper Corporation", "SCHW":"Charles Schwab Corp.", "SHEL":"Shell", "SHOP":"Shopify", "SHW":"Sherwin-Williams Company", "SLV":"Plata", "SNAP":"Snap", "SPOT":"Spotify", "SPY":"Índice S&P 500", "SQ":"Block", "SQM":"Sociedad Química y Minera de Chile", "STLD":"Steel Dynamics, Inc.", "STZ":"Constellation Brands, Inc.", "SUPV":"Banco Supervielle", "SYY":"Sysco Corporation", "T":"AT&T Inc.", "TECO2":"Telecom Argentina", "TEN":"Tenaris", "TGNO4":"Trans. del gas del norte.", "TGSU2":"Trans. del gas del sur", "TGT":"Target Corporation", "TIMB":"TIM S.A.", "TJX":"TJX Companies, Inc.", "TM":"Toyota Motor Corporation", "TMO":"Thermo Fisher Scientific Inc.", "TMUS":"T-Mobile US, Inc.", "TPR":"Tapestry, Inc.", "TRAN":"Transener", "TSLA":"Tesla, Inc.", "TSM":"Taiwan Semiconductor Manufacturing", "TXAR":"Ternium Argentina", "TXN":"Texas Instruments Inc.", "UBER":"Uber", "UBS":"UBS Group AG", "UL":"Unilever PLC", "UNH":"UnitedHealth Group Inc.", "UNP":"Union Pacific Corporation", "UPS":"United Parcel Service, Inc.", "V":"Visa Inc.", "VALE":"Vale S.A.", "VALO":"Banco de Valores", "VIST":"Vista Energy", "VOD":"Vodafone Group plc", "VRTX":"Vertex Pharmaceuticals", "VZ":"Verizon Communications Inc.", "WBD":"Warner Bros. Discovery, Inc.", "WFC":"Wells Fargo & Company", "WM":"Waste Management, Inc.", "WMT":"Walmart", "XLE":"Sector energía", "XLF":"Sector bancos", "XLK":"Sector tecnología", "XLV":"Sector salud", "XOM":"Exxon Mobil", "XYZ":"Block", "YPFD":"YPF", "ZM":"Zoom"};
+
+/* ══════════════ Buscador de papeles ══════════════
+
+   Antes habia que escribir el simbolo de memoria. Si alguien ponia
+   "Coca Cola" en vez de "KO", o se equivocaba en una letra, el precio
+   no aparecia nunca y no habia forma de darse cuenta por que.
+
+   Ahora se busca por nombre o por simbolo, y la lista sale de los
+   papeles que la pagina TIENE PRECIO HOY: si esta en la lista, el
+   precio va a llegar seguro. */
+
+/* Saca acentos y pasa a minuscula, para que "accion" encuentre "Acción". */
+function normalizar(t){
+  return String(t == null ? '' : t).toLowerCase()
+    .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
+    .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n').trim();
+}
+
+/* Los papeles disponibles para una clase, con nombre cuando lo sabemos. */
+function papelesDe(clase){
+  var out = [], vistos = {};
+  var prefijo = clase + '|';
+  for (var k in AUTO.precios){
+    if (!Object.prototype.hasOwnProperty.call(AUTO.precios, k)) continue;
+    if (k.indexOf(prefijo) !== 0) continue;
+    var sim = k.slice(prefijo.length);
+    /* Los que terminan en C o D son la misma cosa liquidada en dolares:
+       para alguien que recien empieza son ruido. */
+    if (/^[A-Z]{2,5}[CD]$/.test(sim) && AUTO.precios[prefijo + sim.slice(0, -1)] != null) continue;
+    if (vistos[sim]) continue;
+    vistos[sim] = 1;
+    out.push({simbolo: sim, nombre: NOMBRES[sim] || '', precio: AUTO.precios[k]});
+  }
+  /* Los que tienen nombre primero: son los conocidos. */
+  out.sort(function(a, b){
+    if (!!a.nombre !== !!b.nombre) return a.nombre ? -1 : 1;
+    return a.simbolo < b.simbolo ? -1 : 1;
+  });
+  return out;
+}
+
+/* Busca por simbolo o por nombre. Primero los que empiezan con lo
+   escrito, que es lo que uno espera al tipear. */
+function buscarPapeles(lista, texto, tope){
+  var q = normalizar(texto);
+  if (!q) return lista.slice(0, tope || 8);
+  var empieza = [], contiene = [];
+  for (var i = 0; i < lista.length; i++){
+    var p = lista[i];
+    var s = normalizar(p.simbolo), n = normalizar(p.nombre);
+    if (s.indexOf(q) === 0 || n.indexOf(q) === 0) empieza.push(p);
+    else if (s.indexOf(q) >= 0 || n.indexOf(q) >= 0) contiene.push(p);
+  }
+  return empieza.concat(contiene).slice(0, tope || 8);
 }
 
 /* ══════════════ Catalogo de clases ══════════════ */
@@ -2536,13 +2614,30 @@ function pasoDatos(){
     h += campo('cantidad', '¿Cuántos dólares ' + (b.tipo === 'compra' ? 'compraste' : 'vendiste') + '?', 'decimal', b.cantidad || '', '');
     h += campo('precio', '¿A cuánto estaba el dólar?', 'decimal', b.precio || '', 'El precio en pesos de cada dólar, ese día.');
   } else {
-    h += campo('nombre', '¿Cómo se llama?', 'text', b.nombre || '',
-        b.clase === 'cedear' ? 'El símbolo que ves en tu broker: KO, NU, AAPL, MELI.' :
-        b.clase === 'cripto' ? 'Por ejemplo: BTC, ETH, USDT.' :
-        b.clase === 'fondo'  ? 'El nombre del fondo, como lo ves en tu app.' : 'Como quieras llamarlo.');
+    /* Con lista de papeles disponibles se busca; si no, se escribe. */
+    var conBuscador = (b.clase === 'cedear' || b.clase === 'accion') && !b.aMano && papelesDe(b.clase).length > 20;
+    if (conBuscador){
+      h += buscadorPapel(b);
+    } else {
+      h += campo('nombre', '¿Cómo se llama?', 'text', b.nombre || '',
+          b.clase === 'cedear' ? 'El símbolo que ves en tu broker: KO, NU, AAPL, MELI.' :
+          b.clase === 'cripto' ? 'Por ejemplo: BTC, ETH, USDT.' :
+          b.clase === 'fondo'  ? 'El nombre del fondo, como lo ves en tu app.' : 'Como quieras llamarlo.');
+    }
+
+    /* La cantidad y el precio van siempre, se haya buscado o escrito. */
     h += '<div class="fila2">'
        + campo('cantidad', '¿Cuántos ' + C.unidad + '?', 'decimal', b.cantidad || '', '')
        + campo('precio', '¿A qué precio cada uno?', 'decimal', b.precio || '', '') + '</div>';
+
+    /* Si el papel ya se eligio y sabemos su precio de hoy, se ofrece:
+       la mayoria compra al precio del dia y asi se ahorra buscarlo. */
+    if (conBuscador && b.nombre && !b.precio){
+      var px = precioDe(b.clase + '|' + b.nombre, E, AUTO);
+      if (px) h += '<p class="chico" style="margin:-6px 0 12px">Hoy ' + esc(b.nombre)
+        + ' está a <b>' + pesos2(px) + '</b>. Si compraste hoy, es ese número.</p>';
+    }
+
     if (C.monedaLibre){
       h += '<div class="campo"><label for="f-moneda">¿En qué moneda lo pagaste?</label>'
          + '<select id="f-moneda"><option value="ARS"' + (b.moneda === 'ARS' ? ' selected' : '') + '>Pesos</option>'
@@ -2570,6 +2665,42 @@ function pasoDatos(){
   h += campo('nota', 'Una nota para acordarte (opcional)', 'text', b.nota || '', '');
   h += '<button class="btn ancho-total" data-w="siguiente" style="margin-top:6px">Continuar</button>';
   return h;
+}
+
+/* El buscador dentro del asistente. La lista sale de los papeles con
+   precio de hoy: si esta ahi, el precio va a llegar seguro. */
+function buscadorPapel(b){
+  var elegido = b.nombre ? (NOMBRES[b.nombre] || '') : '';
+  var h = '<div class="campo"><label for="f-buscar">¿Cuál compraste?</label>';
+
+  if (b.nombre){
+    h += '<div class="papel-elegido">'
+      + '<span class="papel-sim">' + esc(b.nombre) + '</span>'
+      + '<span class="papel-nom">' + esc(elegido || 'lo vas a poder seguir igual') + '</span>'
+      + '<button class="btn-texto" data-w="cambiar-papel">Cambiar</button></div>';
+  } else {
+    h += '<input id="f-buscar" type="text" autocomplete="off" placeholder="Escribí Coca-Cola, o KO"'
+      + ' value="' + esc(b.buscando || '') + '" aria-label="Buscar el papel">'
+      + '<div id="resultados-papel">' + listaPapeles(b) + '</div>'
+      + '<button class="btn-texto" data-w="papel-a-mano" style="margin-top:8px">No lo encuentro, lo escribo yo</button>';
+  }
+  return h + '</div>';
+}
+
+function listaPapeles(b){
+  var res = buscarPapeles(papelesDe(b.clase), b.buscando || '', 6);
+  if (!res.length){
+    return '<p class="chico" style="margin-top:8px">No encontré nada con eso. Probá con menos letras, o escribilo vos.</p>';
+  }
+  var h = '<div class="papel-lista">';
+  for (var i = 0; i < res.length; i++){
+    var p = res[i];
+    h += '<button class="papel-op" data-w="elegir-papel" data-sim="' + esc(p.simbolo) + '">'
+      + '<span class="papel-sim">' + esc(p.simbolo) + '</span>'
+      + '<span class="papel-nom">' + esc(p.nombre || '') + '</span>'
+      + '<span class="papel-px">' + pesos(p.precio) + '</span></button>';
+  }
+  return h + '</div>';
 }
 
 function pasoEfectivo(){
@@ -2790,6 +2921,22 @@ document.addEventListener('click', function(ev){
       borrador.paso = 3;
       pintarModal(); return;
     }
+    if (w === 'elegir-papel'){
+      leerDatosSuave();
+      borrador.nombre = t.dataset.sim;
+      borrador.buscando = '';
+      pintarModal(); return;
+    }
+    if (w === 'cambiar-papel'){
+      leerDatosSuave();
+      borrador.nombre = ''; borrador.aMano = false;
+      pintarModal(); return;
+    }
+    if (w === 'papel-a-mano'){
+      leerDatosSuave();
+      borrador.aMano = true;
+      pintarModal(); return;
+    }
     if (w === 'com'){
       var err0 = leerDatosSuave();
       borrador.modoCom = t.dataset.val;
@@ -2874,7 +3021,7 @@ document.addEventListener('click', function(ev){
 function leerDatosSuave(){
   var b = borrador;
   var v = function(id){ var el = document.getElementById('f-' + id); return el ? el.value : undefined; };
-  ['nombre','cantidad','precio','monto','tna','vence','fecha','nota','dolarDia','comExacta'].forEach(function(k){
+  ['nombre','cantidad','precio','monto','tna','vence','fecha','nota','dolarDia','comExacta','buscar'].forEach(function(k){
     var val = v(k);
     if (val !== undefined) b[k] = val;
   });
@@ -2905,6 +3052,16 @@ document.addEventListener('change', function(ev){
   if (el.id === 'f-moneda' && borrador){
     leerDatosSuave();
     pintarModal();
+  }
+});
+
+/* Al escribir se repinta SOLO la lista: repintar el modal entero
+   sacaria el foco del campo y el teclado del telefono se cerraria. */
+document.addEventListener('input', function(ev){
+  if (ev.target && ev.target.id === 'f-buscar' && borrador){
+    borrador.buscando = ev.target.value;
+    var caja = document.getElementById('resultados-papel');
+    if (caja) caja.innerHTML = listaPapeles(borrador);
   }
 });
 
