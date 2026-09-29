@@ -12,9 +12,9 @@
   --accent:#0f6e78; --accent-ink:#ffffff; --accent-soft:#ddeef0; --accent-line:#a9d2d6;
   --pos:#006300; --neg:#d03b3b;
   --aviso-bg:#fdf4e3; --aviso-line:#e3c690; --aviso-ink:#6a4a12;
-  --c1:#0f6e78; --c2:#c26a1c; --c3:#5566bb; --c4:#8a5299;
-  --c5:#3c8b5c; --c6:#b04658; --c7:#6f7a80;
-  --chip-ink:#ffffff;
+  --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100;
+  --c5:#e87ba4; --c6:#008300; --c7:#898781;
+  --chip-ink:#0b0b0b;
   --peligro-ink:#ffffff;
   --sombra:0 1px 2px rgba(16,40,45,.07), 0 6px 18px rgba(16,40,45,.05);
   --r:14px; --r-chico:9px;
@@ -28,9 +28,9 @@
     --accent:#4fc3cf; --accent-ink:#06232a; --accent-soft:#15323a; --accent-line:#2d5a64;
     --pos:#0ca30c; --neg:#e66767;
     --aviso-bg:#2b2312; --aviso-line:#5c4a1f; --aviso-ink:#ebd2a0;
-    --c1:#4fc3cf; --c2:#e8a25c; --c3:#8e9ae0; --c4:#bb8ccd;
-    --c5:#6fbf8e; --c6:#e08a99; --c7:#98a4aa;
-    --chip-ink:#0b1417;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500;
+    --c5:#d55181; --c6:#008300; --c7:#898781;
+    --chip-ink:#0b0b0b;
     --peligro-ink:#2a0d0d;
     --sombra:0 1px 2px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.35);
   }
@@ -42,9 +42,9 @@
   --accent:#4fc3cf; --accent-ink:#06232a; --accent-soft:#15323a; --accent-line:#2d5a64;
   --pos:#0ca30c; --neg:#e66767;
   --aviso-bg:#2b2312; --aviso-line:#5c4a1f; --aviso-ink:#ebd2a0;
-  --c1:#4fc3cf; --c2:#e8a25c; --c3:#8e9ae0; --c4:#bb8ccd;
-  --c5:#6fbf8e; --c6:#e08a99; --c7:#98a4aa;
-  --chip-ink:#0b1417;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500;
+  --c5:#d55181; --c6:#008300; --c7:#898781;
+  --chip-ink:#0b0b0b;
   --peligro-ink:#2a0d0d;
   --sombra:0 1px 2px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.35);
 }
@@ -218,6 +218,30 @@ input[type=text],input[type=number],input[type=date],select,textarea{
   font-size:13.5px; line-height:1.6; color:var(--muted);
 }
 .res-frase b{color:var(--ink)}
+.comparar-cerrado{border-top:1px solid var(--line); margin-top:12px; padding-top:11px}
+.btn-comparar{
+  background:none; border:1px solid var(--accent-line); color:var(--accent);
+  border-radius:var(--r-chico); padding:9px 14px; font-weight:600; font-size:13.5px;
+  width:100%; text-align:center;
+}
+.btn-comparar:hover{background:var(--accent-soft)}
+.comparar-abierto{border-top:1px solid var(--line); margin-top:12px; padding-top:13px}
+
+.comp-tabla{display:flex; flex-direction:column; gap:9px; margin-bottom:12px}
+.comp-fila{display:flex; flex-direction:column; gap:4px}
+.comp-nom{font-size:13.5px; font-weight:500; display:flex; align-items:baseline; gap:7px; flex-wrap:wrap}
+.comp-det{font-size:12px; color:var(--muted); font-weight:400}
+.comp-medida{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center}
+.comp-barra{height:10px; border-radius:99px; background:var(--card-2); overflow:hidden}
+.comp-barra i{display:block; height:100%; background:var(--c7); border-radius:99px}
+.comp-val{font-size:13.5px; font-variant-numeric:tabular-nums; white-space:nowrap; min-width:84px; text-align:right}
+.comp-tuyo .comp-nom{font-weight:700}
+.comp-tuyo .comp-barra i{background:var(--accent)}
+.comp-tuyo .comp-val{font-weight:700}
+
+.graf-caja{margin-top:14px}
+.graf-tit{font-size:13px; font-weight:600; margin-bottom:4px}
+.graf-caja .chico{margin-top:5px}
 .vacio{text-align:center; padding:36px 18px; color:var(--muted)}
 .vacio h3{font-family:'Fraunces',Georgia,serif; font-size:21px; color:var(--ink); margin-bottom:8px}
 .vacio p{font-size:14px; line-height:1.6; max-width:38ch; margin:0 auto}
@@ -495,7 +519,6 @@ function guardarCache(){
     }));
   } catch(e){}
 }
-var esEjemplo = false;
 var vista = 'resumen';
 var borrador = null;
 var puedeGuardar = true;
@@ -513,56 +536,10 @@ function leerLS(){
 }
 
 function guardar(){
-  if (esEjemplo) return;
   try {
     localStorage.setItem(CLAVE_LS, JSON.stringify(E));
     puedeGuardar = true;
   } catch(e){ puedeGuardar = false; }
-}
-
-/* ══════════════ Datos de ejemplo ══════════════ */
-function datosEjemplo(){
-  var e = estadoVacio();
-  e.movimientos = [
-    {id:'e1', fecha:'2026-05-10', tipo:'ingreso', total:500000, nota:'Ahorro del mes'},
-    {id:'e2', fecha:'2026-06-02', tipo:'compra', clase:'cedear', nombre:'KO', cantidad:5, precio:28720, moneda:'ARS', costos:1101.32, total:144701.32, nota:'Coca-Cola'},
-    {id:'e3', fecha:'2026-06-20', tipo:'compra', clase:'dolar', nombre:'Dólares', cantidad:200, precio:1420, moneda:'ARS', costos:0, total:284000, nota:''},
-    {id:'e4', fecha:'2026-07-12', tipo:'ingreso', total:300000, nota:'Aguinaldo'},
-    {id:'e5', fecha:'2026-07-15', tipo:'compra', clase:'plazofijo', nombre:'Plazo fijo Banco Nación', cantidad:150000, precio:1, moneda:'ARS', costos:0, total:150000, tna:42, vence:'2026-08-14', nota:''},
-    {id:'e6', fecha:'2026-07-28', tipo:'compra', clase:'cedear', nombre:'NU', cantidad:10, precio:11780, moneda:'ARS', costos:604.99, total:118404.99, nota:'Nubank'}
-  ];
-  e.precios = {'cedear|KO':30980, 'cedear|NU':12640};
-  e.dolar = 1583;
-  /* El ejemplo trae su propio contexto para que la tarjeta de las cuatro
-     lecturas se vea entera aunque no haya internet, o aunque el visor de
-     claude.ai bloquee los pedidos. Son valores plausibles de 2026, del
-     mismo orden que los reales, pero inventados como todo el ejemplo. */
-  e.mundoEjemplo = {
-    cclSerie: [
-      {f:'2026-05-10', v:1483},
-      {f:'2026-06-02', v:1496},
-      {f:'2026-06-20', v:1509},
-      {f:'2026-07-12', v:1566},
-      {f:'2026-07-15', v:1566},
-      {f:'2026-07-28', v:1578}
-    ],
-    inflacion: [
-      {f:'2026-05-31', v:2.1},
-      {f:'2026-06-30', v:1.9},
-      {f:'2026-07-31', v:2.1},
-      {f:'2026-08-31', v:1.7}
-    ],
-    tna: 0.195,
-    dolar: 1598.3
-  };
-  e.hist = [
-    {f:'2026-08-20', v:703400, i:697106},
-    {f:'2026-08-28', v:718900, i:697106},
-    {f:'2026-09-04', v:712200, i:697106},
-    {f:'2026-09-11', v:739800, i:697106},
-    {f:'2026-09-17', v:751300, i:697106}
-  ];
-  return e;
 }
 
 /* ══════════════ Derivar la cartera ══════════════ */
@@ -1148,11 +1125,250 @@ function resultadoReal(est, d, ctx){
   return r;
 }
 
+/* ══════════════ ¿Y si hubieras comprado otra cosa? ══════════════
+
+   La pregunta que ningun broker contesta, porque no le conviene.
+
+   El metodo: cada compra se replica en el activo alternativo al precio
+   que ESE activo tenia ESE dia. No hay una fecha de arranque comun: los
+   pesos que pusiste en junio compiten cuatro meses, los de agosto dos.
+   Esa es la unica forma honesta de compararlo. */
+
+/* data912 devuelve velas diarias: {date, o, h, l, c, v}. Nos alcanza el
+   cierre. */
+function leerHistorico(crudo){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return []; }
+  if (!lista || !lista.length) return [];
+  var out = [];
+  for (var i = 0; i < lista.length; i++){
+    var x = lista[i];
+    if (!x || typeof x.date !== 'string') continue;
+    var c = Number(x.c);
+    if (!isFinite(c) || c <= 0) continue;
+    out.push({f: x.date.slice(0, 10), v: c});
+  }
+  out.sort(function(a, b){ return a.f < b.f ? -1 : (a.f > b.f ? 1 : 0); });
+  return limpiarSerie(out);
+}
+
+/* ══════════════ Limpiar una serie de precios ══════════════
+
+   Las series de la bolsa vienen crudas y traen dos problemas que, sin
+   arreglar, hacen mentir cualquier comparacion:
+
+   1. SPLITS. Cuando a un CEDEAR le cambian el ratio, el precio cae a la
+      mitad, a un tercio o a un decimo de un dia para el otro sin que el
+      papel haya perdido un peso. El SPY paso de $56.000 a $18.760 el
+      29/05/2026: un split 3 a 1. Leido crudo, parece una caida del 67%.
+
+   2. PRECIOS MAL CARGADOS. Un dia suelto con un valor absurdo que al dia
+      siguiente vuelve a la normalidad. El 03/08/2023 el SPY figura a
+      $7.560 entre dos dias de $12.800.
+
+   Se arreglan distinto: el dato malo se descarta, el split se ajusta
+   hacia atras para que toda la serie quede en la misma unidad. */
+
+/* Factores de split que se usan en la practica. Se aceptan tambien sus
+   inversos, para los splits al reves (contrasplits). */
+var FACTORES_SPLIT = [2, 2.5, 3, 4, 5, 6, 8, 10, 12, 15, 16, 20, 24, 25, 30, 40, 50, 60, 75, 100, 120, 144];
+
+/* ¿Este cambio de precio se explica por un split? Devuelve el factor o
+   null. Se exige que sea muy cercano a un factor redondo: un derrumbe
+   de verdad casi nunca cae exactamente a un tercio. */
+function factorDeSplit(antes, despues){
+  if (!(antes > 0) || !(despues > 0)) return null;
+  var r = antes / despues;
+  for (var i = 0; i < FACTORES_SPLIT.length; i++){
+    var f = FACTORES_SPLIT[i];
+    if (Math.abs(r / f - 1) < 0.04) return f;          /* precio cae: 3 a 1 */
+    if (Math.abs(r * f - 1) < 0.04) return 1 / f;      /* precio sube: 1 a 3 */
+  }
+  return null;
+}
+
+function limpiarSerie(serie){
+  if (!serie || serie.length < 3) return serie || [];
+
+  /* ── 1. Sacar los dias sueltos con precio absurdo ── */
+  var sano = [serie[0]];
+  for (var i = 1; i < serie.length - 1; i++){
+    var ant = serie[i-1].v, act = serie[i].v, sig = serie[i+1].v;
+    var saltaIda = Math.abs(act / ant - 1) > 0.25;
+    var saltaVuelta = Math.abs(act / sig - 1) > 0.25;
+    var vecinosParecidos = Math.abs(ant / sig - 1) < 0.15;
+    /* Salta y vuelve, con los vecinos de acuerdo: es un dato malo. */
+    if (saltaIda && saltaVuelta && vecinosParecidos) continue;
+    sano.push(serie[i]);
+  }
+  sano.push(serie[serie.length - 1]);
+
+  /* ── 2. Encontrar los splits, SOBRE LA SERIE CRUDA ──
+     En dos pasadas y no en una: si se ajusta mientras se recorre, cada
+     split ya corregido genera splits fantasma al comparar un precio
+     crudo contra uno ajustado. */
+  var cortes = [];
+  for (var j = 1; j < sano.length; j++){
+    if (Math.abs(sano[j].v / sano[j-1].v - 1) <= 0.30) continue;
+    var f = factorDeSplit(sano[j-1].v, sano[j].v);
+    if (f) cortes.push({i: j, fecha: sano[j].f, factor: f});
+  }
+
+  /* ── 3. Aplicar el ajuste hacia atras ──
+     Todo lo anterior a un split se lleva a la unidad nueva, para que la
+     serie entera quede comparable de punta a punta. */
+  var salida = sano.map(function(p){ return {f: p.f, v: p.v}; });
+  for (var k = cortes.length - 1; k >= 0; k--){
+    var c = cortes[k];
+    for (var m = 0; m < c.i; m++) salida[m].v = salida[m].v / c.factor;
+  }
+
+  salida.ajustes = cortes.map(function(c){ return {fecha: c.fecha, factor: c.factor}; });
+  salida.descartados = serie.length - sano.length;
+  return salida;
+}
+
+/* ¿Que tan confiable es esta serie? Sirve para decidir si mostrar la
+   comparacion o callarse. */
+function saludDeSerie(serie){
+  if (!serie || serie.length < 30) return {sirve: false, motivo: 'muy corta'};
+  var saltos = 0;
+  for (var i = 1; i < serie.length; i++){
+    if (serie[i-1].v > 0 && Math.abs(serie[i].v / serie[i-1].v - 1) > 0.30) saltos++;
+  }
+  /* Despues de limpiar no deberia quedar ninguno. Si quedan varios, la
+     serie tiene algo raro que no entendemos y es mejor no usarla. */
+  if (saltos > 2) return {sirve: false, motivo: 'tiene ' + saltos + ' saltos sin explicar'};
+  return {sirve: true, dias: serie.length, saltos: saltos};
+}
+
+/* Las compras de una tenencia, en pesos y con fecha. */
+function comprasDe(est, clave){
+  var salida = [];
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo !== 'compra') continue;
+    if (clave && claveDe(m) !== clave) continue;
+    var bruto = (m.cantidad || 0) * (m.precio || 0) + (m.costos || 0);
+    var ars = (m.moneda === 'USD') ? bruto * (m.dolarDia || 0) : bruto;
+    if (ars > 0) salida.push({fecha: m.fecha, ars: ars, cantidad: m.cantidad || 0});
+  }
+  salida.sort(function(a, b){ return a.fecha < b.fecha ? -1 : 1; });
+  return salida;
+}
+
+/* Que hubiera pasado con esa misma plata en otra cosa.
+   alt: {tipo:'serie', serie:[{f,v}]} o {tipo:'tasa', tna:0.195} */
+function simularAlternativa(compras, alt, hoy){
+  if (!compras || !compras.length || !alt) return null;
+  hoy = hoy || hoyISO();
+  var invertido = 0, valor = 0;
+
+  if (alt.tipo === 'tasa'){
+    if (!(alt.tna > 0)) return null;
+    for (var i = 0; i < compras.length; i++){
+      var dias = diasEntre(compras[i].fecha, hoy);
+      invertido += compras[i].ars;
+      valor += compras[i].ars * (1 + alt.tna * (dias / 365));
+    }
+    return {invertido: invertido, valor: valor};
+  }
+
+  if (!alt.serie || !alt.serie.length) return null;
+  var precioHoy = valorEnFecha(alt.serie, hoy);
+  if (!precioHoy) return null;
+
+  for (var j = 0; j < compras.length; j++){
+    var px = valorEnFecha(alt.serie, compras[j].fecha);
+    /* Si la serie no llega tan atras no se inventa: se descarta entera,
+       porque una comparacion a medias es peor que ninguna. */
+    if (!px) return null;
+    invertido += compras[j].ars;
+    valor += (compras[j].ars / px) * precioHoy;
+  }
+  return {invertido: invertido, valor: valor};
+}
+
+/* La tabla completa: lo que hiciste contra cada alternativa. */
+function compararAlternativas(compras, valorReal, alternativas, hoy){
+  if (!compras || !compras.length || !(valorReal > 0)) return null;
+  var filas = [];
+  for (var i = 0; i < alternativas.length; i++){
+    var a = alternativas[i];
+    var r = simularAlternativa(compras, a, hoy);
+    if (!r) continue;
+    filas.push({
+      nombre: a.nombre,
+      detalle: a.detalle || '',
+      valor: r.valor,
+      diferencia: valorReal - r.valor,
+      pct: (valorReal - r.valor) / r.valor * 100
+    });
+  }
+  if (!filas.length) return null;
+
+  var invertido = 0;
+  for (var k = 0; k < compras.length; k++) invertido += compras[k].ars;
+
+  filas.push({nombre: 'Lo que hiciste', valor: valorReal, diferencia: 0, pct: 0, esTuyo: true});
+  filas.sort(function(a, b){ return b.valor - a.valor; });
+
+  var mejor = filas[0];
+  return {
+    filas: filas,
+    invertido: invertido,
+    valorReal: valorReal,
+    /* ¿Le ganaste a todas? */
+    ganasteATodas: !!mejor.esTuyo,
+    mejorAlternativa: mejor.esTuyo ? null : mejor,
+    desde: compras[0].fecha
+  };
+}
+
+/* ══════════════ ¿Cuánto puede bajar esto? ══════════════
+
+   La peor caida real desde un maximo, en el periodo que se mire. Es el
+   numero que evita vender en panico: ver que ya estuvo 30% abajo y se
+   recupero cambia la reaccion cuando vuelve a pasar. */
+function peorCaida(serie, desde){
+  if (!serie || serie.length < 2) return null;
+  var max = null, maxF = null, peor = 0, peorF = null, peorDesde = null;
+  for (var i = 0; i < serie.length; i++){
+    var p = serie[i];
+    if (desde && p.f < desde) continue;
+    if (max == null || p.v > max){ max = p.v; maxF = p.f; }
+    if (max > 0){
+      var caida = (max - p.v) / max * 100;
+      if (caida > peor){ peor = caida; peorF = p.f; peorDesde = maxF; }
+    }
+  }
+  if (peor <= 0) return null;
+  var ultimo = serie[serie.length - 1];
+  return {
+    pct: peor,
+    fecha: peorF,
+    desdeMax: peorDesde,
+    /* ¿Se recupero? Comparar el ultimo precio con el maximo previo. */
+    recuperado: ultimo.v >= max * 0.995,
+    hoy: ultimo.v,
+    maximo: max
+  };
+}
+
+/* Cuanto se movio un papel entre dos fechas, en por ciento. */
+function variacionEntre(serie, desde, hasta){
+  if (!serie || !serie.length) return null;
+  var a = valorEnFecha(serie, desde), b = valorEnFecha(serie, hasta || hoyISO());
+  if (!a || !b) return null;
+  return (b - a) / a * 100;
+}
+
 /* ═══════════ LOGICA PURA — FIN ═══════════ */
 
 /* ══════════════ Historial diario ══════════════ */
 function anotarHist(d){
-  if (esEjemplo || d.posiciones.length === 0) return;
+  if (d.posiciones.length === 0) return;
   var hoy = hoyISO();
   var punto = {f:hoy, v:Math.round(d.valorHoy), i:Math.round(d.invertido)};
   var ult = E.hist[E.hist.length - 1];
@@ -1229,20 +1445,24 @@ function traerPrecios(){
   }
   render();
 
+  /* El dolar siempre: es chico y sirve aunque no haya nada cargado. */
   var pedidos = [
     traer(FUENTES.dolar, 12).then(function(t){
       var d = leerDolarApi(t);
       if (d && d.ccl){ AUTO.dolar = d.ccl; AUTO.dolarCasas = d; }
-    })['catch'](function(){}),
-
-    traer(FUENTES.cedears, 20).then(function(t){
-      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'cedear'));
-    })['catch'](function(){}),
-
-    traer(FUENTES.acciones, 20).then(function(t){
-      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'accion'));
     })['catch'](function(){})
   ];
+
+  /* Los precios de la bolsa son 136 KB: sin nada cargado no hay que
+     valuar nada, asi que se los ahorra. Llegan cuando cargue algo. */
+  if (hayTenencias(E)){
+    pedidos.push(traer(FUENTES.cedears, 20).then(function(t){
+      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'cedear'));
+    })['catch'](function(){}));
+    pedidos.push(traer(FUENTES.acciones, 20).then(function(t){
+      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'accion'));
+    })['catch'](function(){}));
+  }
 
   /* La planilla propia, si hay una configurada, se suma a lo anterior
      y le gana: son precios que el dueño de la página eligió a mano. */
@@ -1267,7 +1487,8 @@ function traerPrecios(){
       AUTO.estado = 'falla';
     }
     render();
-    traerMundo();
+    /* La inflacion y las tasas solo sirven si hay algo que comparar. */
+    if (hayCompras(E)) traerMundo();
   });
 }
 
@@ -1313,20 +1534,6 @@ function traerMundo(){
     } catch(e){}
     render();
   });
-}
-
-/* El ejemplo se autoabastece: asi la pantalla se ve entera aunque no
-   haya red, que es lo que pasa en el visor de claude.ai. */
-function cargarMundoEjemplo(){
-  var m = E && E.mundoEjemplo;
-  if (!m) return;
-  MUNDO.cclSerie = m.cclSerie;
-  MUNDO.inflacion = m.inflacion;
-  MUNDO.tna = m.tna;
-  MUNDO.estado = 'ok';
-  AUTO.dolar = m.dolar;
-  AUTO.estado = 'ok';
-  AUTO.cuando = new Date();
 }
 
 /* El dolar de las fechas que hacen falta.
@@ -1375,6 +1582,18 @@ function traerCCLDeUnDia(fecha, intento){
        que le corresponde a esa compra. */
     return {f: fecha, v: v};
   })['catch'](function(){ return traerCCLDeUnDia(fecha, intento + 1); });
+}
+
+/* ¿Hay algo cargado que valuar? */
+function hayTenencias(est){
+  return !!(est && est.movimientos && est.movimientos.some(function(m){
+    return m.tipo === 'compra' || m.tipo === 'venta';
+  }));
+}
+function hayCompras(est){
+  return !!(est && est.movimientos && est.movimientos.some(function(m){
+    return m.tipo === 'compra';
+  }));
 }
 
 /* Las fechas distintas en las que hubo una compra. */
@@ -1453,21 +1672,15 @@ function render(){
   }
 }
 
-function avisoEjemplo(){
-  if (!esEjemplo) return '';
-  return '<div class="aviso"><span><b>Estás viendo una cartera de ejemplo.</b> Los números son inventados, para que veas cómo funciona.</span>'
-       + '<button data-acc="empezar">Empezar la mía</button></div>';
-}
-
 function avisoGuardado(){
-  if (puedeGuardar || esEjemplo) return '';
+  if (puedeGuardar) return '';
   return '<div class="aviso"><span><b>No se puede guardar en este navegador.</b> Si cerrás la página vas a perder lo cargado. Suele pasar en ventanas de incógnito.</span></div>';
 }
 
 function vistaResumen(d){
   if (d.posiciones.length === 0 && E.movimientos.length === 0) return vistaPrimeraVez();
 
-  var h = avisoEjemplo() + avisoGuardado();
+  var h = avisoGuardado();
   var gan = d.ganancia, pos = gan >= 0;
   var clase = pos ? 'pos' : 'neg';
   var flecha = pos ? '▲' : '▼';
@@ -1532,7 +1745,6 @@ function vistaPrimeraVez(){
     + '<h1 style="font-family:Fraunces,Georgia,serif; font-size:26px; letter-spacing:-.02em; margin-bottom:10px">Todo lo que tenés, en un solo lugar</h1>'
     + '<p class="chico" style="max-width:40ch; margin:0 auto 18px; line-height:1.65">Cargá lo que compraste —dólares, un plazo fijo, un CEDEAR, lo que sea— y esta página te dice cuánto tenés hoy y cuánto ganaste. Sin cuentas, sin registrarte.</p>'
     + '<button class="btn" data-acc="abrir-alta">Cargar mi primera inversión</button>'
-    + '<div style="margin-top:14px"><button class="btn-texto" data-acc="ver-ejemplo">O mirá primero un ejemplo</button></div>'
     + '</div>'
     + '<div class="pila"><div class="tarjeta">'
     + '<div class="rotulo">Antes de arrancar</div>'
@@ -1540,7 +1752,9 @@ function vistaPrimeraVez(){
     + '<p>En tu navegador, en esta computadora o teléfono. No se mandan a ningún servidor, nadie más los ve, y quien te pasó este link tampoco. La contra es que si borrás los datos del navegador se pierden: en la solapa «Qué es cada cosa» tenés un botón para guardar una copia.</p></details>'
     + '<details class="explic"><summary>¿Necesito saber de finanzas?</summary>'
     + '<p>No. Te va a ir preguntando de a una cosa por vez, en castellano, y cada número que te muestra tiene al lado una explicación de qué significa. Si algo no lo entendés, tocá el signo de pregunta.</p></details>'
-    + '</div></div>';
+    + '</div>'
+    + tarjetaDolar()
+    + '</div>';
 }
 
 function composicion(d){
@@ -1615,11 +1829,13 @@ function grafico(){
 
 function vistaInversiones(d){
   if (d.posiciones.length === 0){
-    return avisoEjemplo() + '<div class="tarjeta" style="margin-top:16px"><div class="vacio"><h3>Todavía no cargaste nada</h3>'
-      + '<p>Tocá «Agregar» abajo y cargá tu primera compra. Puede ser cualquier cosa: dólares que tenés guardados, un plazo fijo, un CEDEAR.</p></div></div>';
+    return franjaPrecios()
+      + '<div class="pila"><div class="tarjeta"><div class="vacio"><h3>Todavía no cargaste nada</h3>'
+      + '<p>Tocá «Agregar» arriba y cargá tu primera compra. Puede ser cualquier cosa: dólares que tenés guardados, un plazo fijo, un CEDEAR.</p></div></div>'
+      + tarjetaDolar() + '</div>';
   }
 
-  var h = avisoEjemplo() + franjaPrecios();
+  var h = franjaPrecios();
   var hayUSD = d.posiciones.some(function(q){ return q.clase === 'dolar' || q.moneda === 'USD'; });
 
   if (hayUSD){
@@ -1729,6 +1945,214 @@ function tarjetaDolar(){
     + 'son legales y no tienen cupo. <b>Tarjeta</b> es el que te cobran cuando pagás en el exterior.<br><br>'
     + 'Para valuar uso el contado con liqui, porque es al que efectivamente podés comprar y vender por el broker.</p>'
     + '</details></div>';
+}
+
+/* ══════════════ Historicos: se piden cuando hacen falta ══════════════
+
+   Cada serie pesa entre 90 y 300 KB. No se bajan al abrir la pagina:
+   se bajan cuando alguien toca "¿y si hubieras comprado otra cosa?",
+   que es una accion deliberada. Despues quedan en memoria. */
+var HISTORICOS = {};      /* ticker -> {estado, serie} */
+var REFERENCIAS = [
+  {clave: 'SPY', nombre: 'El índice de EE.UU.', detalle: 'las 500 empresas más grandes, todas juntas'},
+  {clave: 'QQQ', nombre: 'Las tecnológicas',    detalle: 'Apple, Microsoft, Nvidia y compañía, juntas'}
+];
+/* El oro y la plata no tienen historial en la fuente: la API contesta
+   que no conoce el ticker. Si algun dia lo agrega, van aca. */
+
+function traerHistorico(ticker){
+  if (HISTORICOS[ticker]) return Promise.resolve(HISTORICOS[ticker]);
+  HISTORICOS[ticker] = {estado: 'cargando', serie: []};
+  return traer('https://data912.com/historical/cedears/' + ticker, 30)
+    .then(function(t){
+      var serie = leerHistorico(t);
+      var salud = saludDeSerie(serie);
+      HISTORICOS[ticker] = salud.sirve
+        ? {estado: 'ok', serie: serie, salud: salud}
+        : {estado: 'dudosa', serie: [], salud: salud};
+      return HISTORICOS[ticker];
+    })
+    ['catch'](function(){
+      HISTORICOS[ticker] = {estado: 'falla', serie: []};
+      return HISTORICOS[ticker];
+    });
+}
+
+/* Todo lo que hace falta para comparar una tenencia. */
+function traerParaComparar(q){
+  var pedidos = [traerHistorico(q.nombre)];
+  for (var i = 0; i < REFERENCIAS.length; i++) pedidos.push(traerHistorico(REFERENCIAS[i].clave));
+  return Promise.all(pedidos).then(function(){ render(); });
+}
+
+/* Las alternativas disponibles hoy, segun lo que se pudo traer. */
+function alternativasPara(){
+  var alts = [];
+  for (var i = 0; i < REFERENCIAS.length; i++){
+    var r = REFERENCIAS[i], h = HISTORICOS[r.clave];
+    if (h && h.estado === 'ok') alts.push({nombre: r.nombre, detalle: r.detalle, tipo: 'serie', serie: h.serie});
+  }
+  if (MUNDO.cclSerie && MUNDO.cclSerie.length){
+    alts.push({nombre: 'Comprar dólares', detalle: 'y guardarlos abajo del colchón', tipo: 'serie', serie: MUNDO.cclSerie});
+  }
+  if (MUNDO.tna){
+    alts.push({nombre: 'Un plazo fijo', detalle: 'a la tasa de hoy, ' + pct(MUNDO.tna * 100) + ' anual', tipo: 'tasa', tna: MUNDO.tna});
+  }
+  return alts;
+}
+
+/* ══════════════ El bloque de comparacion de una tenencia ══════════════ */
+var ABIERTAS = {};   /* clave -> true, para recordar cual esta desplegada */
+
+function bloqueComparar(q){
+  if (!q.tienePrecio) return '';
+  var compras = comprasDe(E, q.clave);
+  if (!compras.length) return '';
+
+  if (!ABIERTAS[q.clave]){
+    return '<div class="comparar-cerrado">'
+      + '<button class="btn-comparar" data-acc="comparar" data-clave="' + esc(q.clave) + '">'
+      + '¿Y si hubieras comprado otra cosa?</button></div>';
+  }
+
+  var propio = HISTORICOS[q.nombre];
+  var cargando = (propio && propio.estado === 'cargando')
+    || REFERENCIAS.some(function(r){ var h = HISTORICOS[r.clave]; return !h || h.estado === 'cargando'; });
+
+  if (cargando){
+    return '<div class="comparar-abierto"><p class="chico">Buscando cuánto valían las otras cosas esos días…</p></div>';
+  }
+
+  var h = '<div class="comparar-abierto">';
+  var alts = alternativasPara();
+  var comp = compararAlternativas(compras, q.valor, alts);
+
+  if (!comp){
+    h += '<p class="chico">No se pudo traer el historial para comparar. Probá más tarde.</p>';
+  } else {
+    h += tablaComparacion(comp, q);
+  }
+
+  if (propio && propio.estado === 'ok' && propio.serie.length > 30){
+    h += graficoCompraste(propio.serie, compras, q);
+    h += bloqueCaida(propio.serie, compras[0].fecha, q);
+  } else if (propio && propio.estado === 'dudosa'){
+    h += '<p class="chico" style="margin-top:10px">El historial de este papel tiene datos raros, así que no lo dibujo: prefiero no mostrarte un gráfico que miente.</p>';
+  }
+
+  h += '<button class="btn-texto" data-acc="comparar" data-clave="' + esc(q.clave) + '" style="margin-top:12px">Cerrar</button>';
+  return h + '</div>';
+}
+
+/* La tabla: barras horizontales con etiqueta directa, ordenadas.
+   Cinco filas con nombre al lado, asi que no hace falta leyenda. */
+function tablaComparacion(comp, q){
+  var maxv = comp.filas[0].valor;
+  var h = '<p class="chico" style="margin-bottom:10px">Pusiste <b>' + pesos(comp.invertido)
+    + '</b> en ' + esc(q.nombre) + ' desde el ' + fechaCorta(comp.desde)
+    + '. Si esa misma plata, esos mismos días, hubiera ido a:</p>'
+    + '<div class="comp-tabla">';
+
+  for (var i = 0; i < comp.filas.length; i++){
+    var f = comp.filas[i];
+    var ancho = maxv > 0 ? (f.valor / maxv * 100) : 0;
+    h += '<div class="comp-fila' + (f.esTuyo ? ' comp-tuyo' : '') + '">'
+      + '<div class="comp-nom">' + esc(f.nombre) + (f.esTuyo ? '' : '<span class="comp-det">' + esc(f.detalle || '') + '</span>') + '</div>'
+      + '<div class="comp-medida">'
+      + '<div class="comp-barra"><i style="width:' + ancho.toFixed(1) + '%"></i></div>'
+      + '<div class="comp-val">' + pesos(f.valor) + '</div></div>'
+      + '</div>';
+  }
+  h += '</div>';
+
+  if (comp.ganasteATodas){
+    h += '<p class="res-frase">Le ganaste a todas las alternativas. Puede ser buen ojo o puede ser suerte: lo mismo mirado dentro de un año puede dar distinto.</p>';
+  } else {
+    var m = comp.mejorAlternativa;
+    var dif = m.valor - comp.valorReal;
+    h += '<p class="res-frase"><b>' + esc(m.nombre) + '</b> te hubiera dado <b>' + pesos(dif) + ' más</b>. '
+      + 'No quiere decir que hayas elegido mal: quiere decir que en este período esa opción rindió más. '
+      + 'Mirado en otro momento puede dar vuelta.</p>';
+  }
+
+  h += '<p class="chico" style="margin-top:9px">Es mirando para atrás, y sin contar impuestos ni las comisiones que también te cobrarían por comprar esas alternativas.</p>';
+  return h;
+}
+
+/* ══════════════ El gráfico: "compraste acá" ══════════════
+
+   Una sola serie, asi que el titulo la nombra y no hace falta leyenda.
+   Los puntos de compra son la informacion: van marcados con un anillo
+   del color de la superficie para que se despeguen de la linea. */
+function graficoCompraste(serie, compras, q){
+  var desde = compras[0].fecha;
+  var pts = serie.filter(function(p){ return p.f >= desde; });
+  /* Un poco de contexto antes de la primera compra ayuda a ver si
+     compro caro o barato. */
+  var iDesde = serie.findIndex ? serie.findIndex(function(p){ return p.f >= desde; }) : 0;
+  if (iDesde > 30) pts = serie.slice(iDesde - 30);
+  if (pts.length < 5) return '';
+
+  var W = 600, H = 190, mI = 10, mD = 10, mT = 26, mB = 26;
+  var vals = pts.map(function(p){ return p.v; });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  if (max === min){ max = max * 1.02 + 1; min = min * 0.98 - 1; }
+  var x = function(i){ return mI + (i / (pts.length - 1)) * (W - mI - mD); };
+  var y = function(v){ return mT + (1 - (v - min) / (max - min)) * (H - mT - mB); };
+  var iDe = {};
+  pts.forEach(function(p, i){ iDe[p.f] = i; });
+
+  var linea = pts.map(function(p, i){ return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p.v).toFixed(1); }).join(' ');
+  var area = linea + ' L' + x(pts.length-1).toFixed(1) + ' ' + (H - mB) + ' L' + x(0).toFixed(1) + ' ' + (H - mB) + ' Z';
+  var sube = pts[pts.length-1].v >= pts[0].v;
+  var col = sube ? 'var(--pos)' : 'var(--neg)';
+
+  /* Los puntos de compra, sobre el dia real o el mas cercano */
+  var marcas = '';
+  for (var k = 0; k < compras.length; k++){
+    var f = compras[k].fecha, i = iDe[f];
+    if (i == null){
+      for (var d = 0; d < 6 && i == null; d++){
+        var prev = new Date(f + 'T00:00:00'); prev.setDate(prev.getDate() - d);
+        i = iDe[fechaISO(prev)];
+      }
+    }
+    if (i == null) continue;
+    marcas += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(pts[i].v).toFixed(1) + '" r="5.5" '
+      + 'fill="var(--accent)" stroke="var(--card)" stroke-width="2"><title>Compraste el '
+      + fechaCorta(f) + '</title></circle>';
+  }
+
+  return '<div class="graf-caja">'
+    + '<div class="graf-tit">' + esc(q.nombre) + ' desde que lo comprás</div>'
+    + '<svg class="graf" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Precio de ' + esc(q.nombre) + ' con tus compras marcadas">'
+    + '<defs><linearGradient id="g-' + esc(q.nombre) + '" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0%" stop-color="' + col + '" stop-opacity="0.16"/>'
+    + '<stop offset="100%" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>'
+    + '<path d="' + area + '" fill="url(#g-' + esc(q.nombre) + ')"/>'
+    + '<path d="' + linea + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    + marcas
+    + '<text x="' + mI + '" y="14" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">Máximo ' + pesos(max) + '</text>'
+    + '<text x="' + (W - mD) + '" y="14" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif" text-anchor="end">Hoy ' + pesos(pts[pts.length-1].v) + '</text>'
+    + '<text x="' + mI + '" y="' + (H - 8) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">' + fechaCorta(pts[0].f) + '</text>'
+    + '<text x="' + (W - mD) + '" y="' + (H - 8) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif" text-anchor="end">Mínimo ' + pesos(min) + '</text>'
+    + '</svg>'
+    + '<p class="chico">Los puntos son tus compras. Si están cerca de la parte de arriba, compraste caro.</p>'
+    + '</div>';
+}
+
+/* ══════════════ ¿Cuánto puede bajar esto? ══════════════ */
+function bloqueCaida(serie, desde, q){
+  var c = peorCaida(serie, desde);
+  if (!c || c.pct < 3) return '';
+  return '<details class="explic" style="margin-top:12px"><summary>¿Cuánto puede bajar esto?</summary>'
+    + '<p>Desde que lo comprás, <b>' + esc(q.nombre) + '</b> llegó a estar <b>' + pct(c.pct) + ' abajo</b> '
+    + 'de su mejor momento, el ' + fechaCorta(c.fecha) + '. '
+    + (c.recuperado
+        ? 'Después se recuperó, pero mientras pasaba no había forma de saberlo.'
+        : 'Todavía no volvió a ese máximo.')
+    + '<br><br>No es una predicción de lo que va a pasar: es lo que ya pasó. '
+    + 'Sirve para saber con qué te podés encontrar y no vender apurado el día que ocurra.</p></details>';
 }
 
 function tarjetaResultado(d){
@@ -1863,18 +2287,19 @@ function tarjetaTenencia(q){
       + '</div>';
   }
 
+  h += bloqueComparar(q);
   h += '</div></div>';
   return h;
 }
 
 function vistaMovimientos(d){
   if (E.movimientos.length === 0){
-    return avisoEjemplo() + '<div class="tarjeta" style="margin-top:16px"><div class="vacio"><h3>Sin movimientos</h3>'
+    return '<div class="tarjeta" style="margin-top:16px"><div class="vacio"><h3>Sin movimientos</h3>'
       + '<p>Acá va quedando la lista de todo lo que hiciste: cada compra, cada venta y cada vez que pusiste o sacaste plata.</p></div></div>';
   }
 
   var movs = E.movimientos.slice().sort(function(a,b){ return String(b.fecha).localeCompare(String(a.fecha)); });
-  var h = avisoEjemplo() + '<div class="pila"><div class="tarjeta">';
+  var h = '<div class="pila"><div class="tarjeta">';
 
   for (var i = 0; i < movs.length; i++){
     var m = movs[i];
@@ -2024,20 +2449,6 @@ function pintarDialogo(){
 
 /* ══════════════ Alta guiada ══════════════ */
 function abrirAlta(){
-  if (esEjemplo){
-    preguntar({
-      titulo:'Esto es un ejemplo',
-      texto:'Lo que estás viendo son números inventados, para mostrarte cómo funciona. Para cargar lo tuyo hay que vaciarlo y arrancar con la hoja en blanco.',
-      ok:'Vaciar y empezar',
-      alAceptar:function(){
-        empezarPropia();
-        render();
-        abrirAlta();
-        return false;   /* abrirAlta ya dejó pintado el alta: no lo borres */
-      }
-    });
-    return;
-  }
   dialogo = null;
   borrador = {paso:1, tipo:null, clase:null, moneda:'ARS', modoCom:'calcular', fecha:hoyISO(), error:null};
   pintarModal();
@@ -2337,7 +2748,6 @@ function importar(){
         return false;
       }
       E = r.estado;
-      esEjemplo = false;
       guardar();
       dialogo = null;
       document.getElementById('modal').innerHTML = '';
@@ -2350,12 +2760,6 @@ function importar(){
       return false;
     }
   });
-}
-
-function empezarPropia(){
-  E = estadoVacio();
-  esEjemplo = false;
-  guardar();
 }
 
 /* ══════════════ Eventos ══════════════ */
@@ -2409,13 +2813,20 @@ document.addEventListener('click', function(ev){
   var a = t.dataset.acc;
   if (a === 'velo'){ if (ev.target === t) cerrarAlta(); return; }
   if (a === 'abrir-alta'){ abrirAlta(); return; }
-  if (a === 'ver-ejemplo'){ E = datosEjemplo(); esEjemplo = true; cargarMundoEjemplo(); vista = 'resumen'; render(); return; }
-  if (a === 'empezar'){ empezarPropia(); vista = 'resumen'; render(); return; }
   if (a === 'tema'){
     var actual = document.documentElement.getAttribute('data-theme');
     var oscuroAhora = actual ? actual === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-theme', oscuroAhora ? 'light' : 'dark');
     try { localStorage.setItem('micartera_tema', oscuroAhora ? 'light' : 'dark'); } catch(e){}
+    return;
+  }
+  if (a === 'comparar'){
+    var cl = t.dataset.clave;
+    if (ABIERTAS[cl]){ delete ABIERTAS[cl]; render(); return; }
+    ABIERTAS[cl] = true;
+    render();
+    var pos = derivar(E, null, AUTO).posiciones.filter(function(x){ return x.clave === cl; })[0];
+    if (pos) traerParaComparar(pos);
     return;
   }
   if (a === 'reintentar-precios'){ traerPrecios(); return; }
@@ -2452,7 +2863,7 @@ document.addEventListener('click', function(ev){
       ok:'Borrar todo', peligro:true,
       alAceptar:function(){
         try { localStorage.removeItem(CLAVE_LS); } catch(e){}
-        E = estadoVacio(); esEjemplo = false; vista = 'resumen'; render();
+        E = estadoVacio(); vista = 'resumen'; render();
       }
     });
     return;
@@ -2508,26 +2919,13 @@ document.addEventListener('keydown', function(ev){
     if (tema) document.documentElement.setAttribute('data-theme', tema);
   } catch(e){}
 
-  var guardado = leerLS();
-  if (guardado && guardado.movimientos.length > 0){
-    E = guardado;
-    esEjemplo = false;
-  } else if (guardado){
-    E = guardado;
-    esEjemplo = false;
-  } else {
-    E = datosEjemplo();
-    esEjemplo = true;
-    cargarMundoEjemplo();
-  }
+  E = leerLS() || estadoVacio();
 
   try { localStorage.setItem('micartera_test','1'); localStorage.removeItem('micartera_test'); }
   catch(e){ puedeGuardar = false; }
 
   render();
-  if (!esEjemplo){
-    anotarHist(derivar(E, null, AUTO));
-    traerPrecios();
-  }
+  anotarHist(derivar(E, null, AUTO));
+  traerPrecios();
 })();
 </script>
