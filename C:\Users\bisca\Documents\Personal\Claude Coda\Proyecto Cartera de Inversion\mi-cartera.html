@@ -1,0 +1,3088 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi Primera Cartera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#eef2f3; --card:#ffffff; --card-2:#f6fafa; --line:#d8e2e4;
+  --ink:#152227; --muted:#5b7078;
+  --accent:#0f6e78; --accent-ink:#ffffff; --accent-soft:#ddeef0; --accent-line:#a9d2d6;
+  --pos:#006300; --neg:#d03b3b;
+  --aviso-bg:#fdf4e3; --aviso-line:#e3c690; --aviso-ink:#6a4a12;
+  --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100;
+  --c5:#e87ba4; --c6:#008300; --c7:#898781;
+  --chip-ink:#0b0b0b;
+  --peligro-ink:#ffffff;
+  --sombra:0 1px 2px rgba(16,40,45,.07), 0 6px 18px rgba(16,40,45,.05);
+  --r:14px; --r-chico:9px;
+  --ancho:660px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0e1518; --card:#182126; --card-2:#131b1f; --line:#2b383e;
+    --ink:#e7eef0; --muted:#9aabb2;
+    --accent:#4fc3cf; --accent-ink:#06232a; --accent-soft:#15323a; --accent-line:#2d5a64;
+    --pos:#0ca30c; --neg:#e66767;
+    --aviso-bg:#2b2312; --aviso-line:#5c4a1f; --aviso-ink:#ebd2a0;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500;
+    --c5:#d55181; --c6:#008300; --c7:#898781;
+    --chip-ink:#0b0b0b;
+    --peligro-ink:#2a0d0d;
+    --sombra:0 1px 2px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0e1518; --card:#182126; --card-2:#131b1f; --line:#2b383e;
+  --ink:#e7eef0; --muted:#9aabb2;
+  --accent:#4fc3cf; --accent-ink:#06232a; --accent-soft:#15323a; --accent-line:#2d5a64;
+  --pos:#0ca30c; --neg:#e66767;
+  --aviso-bg:#2b2312; --aviso-line:#5c4a1f; --aviso-ink:#ebd2a0;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500;
+  --c5:#d55181; --c6:#008300; --c7:#898781;
+  --chip-ink:#0b0b0b;
+  --peligro-ink:#2a0d0d;
+  --sombra:0 1px 2px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; text-wrap:balance; font-weight:600}
+p{margin:0}
+button{font:inherit; color:inherit; cursor:pointer}
+input,select,textarea{font:inherit; color:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+.envoltorio{max-width:var(--ancho); margin:0 auto; padding:0 16px 48px}
+
+.barra{
+  position:sticky; top:env(safe-area-inset-top, 0px); z-index:30;
+  background:var(--bg); border-bottom:1px solid var(--line);
+  margin:0 -16px; padding:0 16px;
+}
+.barra-fila{display:flex; align-items:center; gap:10px; padding:14px 0 10px}
+.marca{font-family:'Fraunces', Georgia, serif; font-weight:600; font-size:19px; letter-spacing:-.01em; margin-right:auto}
+.marca span{color:var(--accent)}
+.tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto; background:none; border:0; padding:9px 12px 12px;
+  color:var(--muted); font-weight:500; font-size:14px;
+  border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--accent); font-weight:600}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;
+}
+
+.tarjeta{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px; box-shadow:var(--sombra)}
+.pila{display:flex; flex-direction:column; gap:14px; margin-top:16px}
+.rotulo{font-size:11.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.chico{font-size:13px; color:var(--muted)}
+
+.aviso{
+  background:var(--aviso-bg); border:1px solid var(--aviso-line); color:var(--aviso-ink);
+  border-radius:var(--r-chico); padding:11px 13px; font-size:13.5px;
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:16px;
+}
+.aviso b{font-weight:600}
+.aviso button{background:none; border:1px solid currentColor; border-radius:99px; padding:3px 11px; font-size:12.5px; font-weight:600; white-space:nowrap; margin-left:auto}
+
+.hero{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px 20px; box-shadow:var(--sombra); margin-top:16px}
+.hero-cifra{
+  font-family:'Fraunces', Georgia, serif; font-weight:600;
+  font-size:clamp(36px, 10.5vw, 54px); line-height:1.02; letter-spacing:-.025em;
+  margin:6px 0 2px; font-variant-numeric:tabular-nums;
+}
+.hero-usd{
+  font-size:16.5px; font-weight:600; color:var(--muted);
+  font-variant-numeric:tabular-nums; margin-top:2px;
+}
+.hero-usd span{font-weight:400; font-size:13px}
+.hero-delta{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-top:8px; font-size:16px; font-weight:600; font-variant-numeric:tabular-nums}
+.hero-frase{margin-top:15px; padding-top:15px; border-top:1px solid var(--line); font-size:14.5px; color:var(--muted); line-height:1.65}
+.hero-frase b{color:var(--ink); font-weight:600}
+.pos{color:var(--pos)} .neg{color:var(--neg)}
+
+.compo{display:flex; height:13px; border-radius:99px; overflow:hidden; gap:2px; margin:6px 0 14px; background:var(--card-2)}
+.compo i{display:block; height:100%}
+.leyenda-fila{display:grid; grid-template-columns:11px 1fr auto auto; gap:10px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px}
+.leyenda-fila:last-child{border-bottom:0}
+.punto{width:11px; height:11px; border-radius:3px}
+.leyenda-nom{font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.leyenda-pct{color:var(--muted); font-size:13px; min-width:44px; text-align:right; font-variant-numeric:tabular-nums}
+.leyenda-val{min-width:90px; text-align:right; font-weight:500; font-variant-numeric:tabular-nums}
+
+.ten{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--sombra); overflow:hidden}
+.ten-cab{display:flex; align-items:center; gap:11px; padding:15px 16px 13px}
+.chip-clase{width:34px; height:34px; border-radius:9px; flex:0 0 auto; display:grid; place-items:center; font-size:11.5px; font-weight:700}
+.ten-tit{font-weight:600; font-size:15.5px; line-height:1.25}
+.ten-sub{font-size:12.5px; color:var(--muted)}
+.ten-der{margin-left:auto; text-align:right; flex:0 0 auto}
+.ten-val{font-weight:600; font-size:15.5px; font-variant-numeric:tabular-nums; white-space:nowrap}
+.ten-gan{font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}
+.ten-cuerpo{border-top:1px solid var(--line); background:var(--card-2); padding:13px 16px}
+.dato{display:flex; justify-content:space-between; gap:12px; padding:5px 0; font-size:13.5px}
+.dato span:first-child{color:var(--muted)}
+.dato span:last-child{font-variant-numeric:tabular-nums; font-weight:500}
+.precio-caja{display:flex; align-items:center; gap:9px; margin-top:12px; padding-top:11px; border-top:1px solid var(--line); flex-wrap:wrap}
+.precio-caja label{font-size:13px; color:var(--muted); flex:1 1 160px}
+
+input[type=text],input[type=number],input[type=date],select,textarea{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-chico);
+  padding:10px 11px; width:100%; font-size:16px; font-variant-numeric:tabular-nums;
+}
+.campo{display:flex; flex-direction:column; gap:5px; margin-bottom:14px}
+.campo label{font-size:13.5px; font-weight:500}
+.campo .pista{font-size:12.5px; color:var(--muted); line-height:1.45}
+.fila2{display:grid; grid-template-columns:1fr 1fr; gap:11px}
+@media (max-width:430px){ .fila2{grid-template-columns:1fr} }
+.precio-inp{width:132px; padding:7px 9px; font-size:14px}
+
+.btn{background:var(--accent); color:var(--accent-ink); border:0; border-radius:var(--r-chico); padding:12px 17px; font-weight:600; font-size:15px}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn-fino{background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:var(--r-chico); padding:10px 15px; font-weight:500; font-size:14px}
+.btn-fino:hover{border-color:var(--accent-line)}
+.btn-texto{background:none; border:0; color:var(--accent); font-weight:600; font-size:13.5px; padding:4px 0}
+.btn-peligro{color:var(--neg)}
+.acciones{display:flex; gap:9px; flex-wrap:wrap; margin-top:6px}
+.ancho-total{width:100%; justify-content:center}
+
+.btn-agregar{
+  background:var(--accent); color:var(--accent-ink); border:0;
+  border-radius:99px; padding:8px 15px; font-weight:600; font-size:14px;
+  white-space:nowrap;
+}
+
+.explic{border:1px solid var(--line); border-radius:var(--r-chico); background:var(--card-2); overflow:hidden; margin-top:14px}
+.explic summary{cursor:pointer; padding:10px 13px; font-size:13.5px; font-weight:500; color:var(--accent); list-style:none; display:flex; align-items:center; gap:8px}
+.explic summary::-webkit-details-marker{display:none}
+.explic summary::before{content:'?'; width:17px; height:17px; border-radius:99px; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center; font-size:11px; font-weight:700; flex:0 0 auto}
+.explic[open] summary{border-bottom:1px solid var(--line)}
+.explic p{padding:11px 13px; font-size:13.5px; color:var(--muted); line-height:1.6}
+
+.mov{display:grid; grid-template-columns:auto 1fr auto auto; gap:11px; align-items:center; padding:13px 0; border-bottom:1px solid var(--line)}
+.mov:last-child{border-bottom:0}
+.mov-ico{width:31px; height:31px; border-radius:8px; display:grid; place-items:center; font-size:15px; font-weight:700}
+.mov-tit{font-weight:500; font-size:14.5px}
+.mov-sub{font-size:12.5px; color:var(--muted)}
+.mov-val{text-align:right; font-weight:600; font-variant-numeric:tabular-nums; font-size:14.5px}
+.mov-x{background:none; border:0; color:var(--muted); font-size:17px; line-height:1; padding:4px 2px}
+.mov-x:hover{color:var(--neg)}
+
+.graf{width:100%; height:auto; display:block; margin-top:4px}
+
+.velo{position:fixed; inset:0; z-index:60; background:rgba(10,22,26,.5); display:flex; align-items:flex-end; justify-content:center}
+.hoja{background:var(--bg); width:100%; max-width:var(--ancho); max-height:92vh; max-height:92dvh; overflow-y:auto; border-radius:20px 20px 0 0; border:1px solid var(--line); border-bottom:0; padding:0 16px calc(24px + env(safe-area-inset-bottom, 0px))}
+@media (min-width:560px){ .velo{align-items:center} .hoja{border-radius:20px; border-bottom:1px solid var(--line); max-height:88vh; max-height:88dvh} }
+.hoja-cab{position:sticky; top:0; background:var(--bg); z-index:2; display:flex; align-items:center; gap:10px; padding:16px 0 12px; border-bottom:1px solid var(--line); margin-bottom:16px}
+.hoja-tit{font-weight:600; font-size:16.5px; margin-right:auto}
+.cerrar{background:var(--card); border:1px solid var(--line); border-radius:99px; width:31px; height:31px; font-size:16px; line-height:1; display:grid; place-items:center}
+.pasos{display:flex; gap:5px; margin-bottom:16px}
+.pasos i{flex:1; height:3px; border-radius:99px; background:var(--line)}
+.pasos i.on{background:var(--accent)}
+.opciones{display:flex; flex-direction:column; gap:9px}
+.opcion{display:flex; align-items:flex-start; gap:12px; text-align:left; width:100%; background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:14px 15px}
+.opcion:hover{border-color:var(--accent-line)}
+.opcion[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft)}
+.opcion-ico{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; font-size:12px; font-weight:700; flex:0 0 auto}
+.opcion-tit{display:block; font-weight:600; font-size:14.5px}
+.opcion-desc{display:block; font-size:12.5px; color:var(--muted); line-height:1.45; margin-top:2px}
+.resumen-op{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:15px; margin-bottom:14px}
+.resumen-op .dato{padding:6px 0; font-size:14px}
+.resumen-op .total{border-top:1px solid var(--line); margin-top:7px; padding-top:11px; font-weight:700; font-size:15.5px}
+.error{color:var(--neg); font-size:13px; font-weight:500; margin-bottom:12px}
+
+.res-tabla{display:flex; flex-direction:column}
+.res-fila{
+  display:grid; grid-template-columns:1fr auto auto; gap:12px; align-items:baseline;
+  padding:11px 0; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums;
+}
+.res-fila:last-child{border-bottom:0}
+.res-etq{font-size:14px; font-weight:500}
+.res-val{font-size:15px; font-weight:600; white-space:nowrap}
+.res-pct{font-size:13.5px; font-weight:600; min-width:58px; text-align:right; white-space:nowrap}
+.res-falta .res-etq{color:var(--muted)}
+.res-nota{font-size:13px; color:var(--muted); grid-column:2 / span 2; text-align:right}
+.res-frase{
+  margin-top:13px; padding:11px 13px; border-radius:var(--r-chico);
+  background:var(--card-2); border:1px solid var(--line);
+  font-size:13.5px; line-height:1.6; color:var(--muted);
+}
+.res-frase b{color:var(--ink)}
+.comparar-cerrado{border-top:1px solid var(--line); margin-top:12px; padding-top:11px}
+.btn-comparar{
+  background:none; border:1px solid var(--accent-line); color:var(--accent);
+  border-radius:var(--r-chico); padding:9px 14px; font-weight:600; font-size:13.5px;
+  width:100%; text-align:center;
+}
+.btn-comparar:hover{background:var(--accent-soft)}
+.comparar-abierto{border-top:1px solid var(--line); margin-top:12px; padding-top:13px}
+
+.comp-tabla{display:flex; flex-direction:column; gap:9px; margin-bottom:12px}
+.comp-fila{display:flex; flex-direction:column; gap:4px}
+.comp-nom{font-size:13.5px; font-weight:500; display:flex; align-items:baseline; gap:7px; flex-wrap:wrap}
+.comp-det{font-size:12px; color:var(--muted); font-weight:400}
+.comp-medida{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center}
+.comp-barra{height:10px; border-radius:99px; background:var(--card-2); overflow:hidden}
+.comp-barra i{display:block; height:100%; background:var(--c7); border-radius:99px}
+.comp-val{font-size:13.5px; font-variant-numeric:tabular-nums; white-space:nowrap; min-width:84px; text-align:right}
+.comp-tuyo .comp-nom{font-weight:700}
+.comp-tuyo .comp-barra i{background:var(--accent)}
+.comp-tuyo .comp-val{font-weight:700}
+
+.graf-caja{margin-top:14px}
+.graf-tit{font-size:13px; font-weight:600; margin-bottom:4px}
+.graf-caja .chico{margin-top:5px}
+.papel-lista{display:flex; flex-direction:column; gap:5px; margin-top:8px}
+.papel-op{
+  display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r-chico);
+  padding:10px 12px; text-align:left; width:100%;
+}
+.papel-op:hover{border-color:var(--accent-line); background:var(--accent-soft)}
+.papel-sim{font-weight:700; font-size:14px; letter-spacing:.01em}
+.papel-nom{font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.papel-px{font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap}
+.papel-elegido{
+  display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:baseline;
+  background:var(--accent-soft); border:1px solid var(--accent-line);
+  border-radius:var(--r-chico); padding:11px 12px;
+}
+.papel-elegido .papel-nom{color:var(--ink)}
+.vacio{text-align:center; padding:36px 18px; color:var(--muted)}
+.vacio h3{font-family:'Fraunces',Georgia,serif; font-size:21px; color:var(--ink); margin-bottom:8px}
+.vacio p{font-size:14px; line-height:1.6; max-width:38ch; margin:0 auto}
+
+.glosario dt{font-weight:600; font-size:14.5px; margin-top:16px}
+.glosario dd{margin:3px 0 0; font-size:13.5px; color:var(--muted); line-height:1.6}
+.glosario dt:first-child{margin-top:0}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div class="envoltorio">
+  <div class="barra">
+    <div class="barra-fila">
+      <div class="marca">Mi <span>Cartera</span></div>
+      <button class="btn-fino" data-acc="tema" aria-label="Cambiar entre modo claro y oscuro">Tema</button>
+      <button class="btn-agregar" data-acc="abrir-alta">+ Agregar</button>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+      <button class="tab" role="tab" data-tab="inversiones" aria-selected="false">Mis inversiones</button>
+      <button class="tab" role="tab" data-tab="movimientos" aria-selected="false">Movimientos</button>
+      <button class="tab" role="tab" data-tab="ayuda" aria-selected="false">Qué es cada cosa</button>
+    </div>
+  </div>
+  <main id="vista"></main>
+</div>
+
+<div id="modal"></div>
+
+<script>
+"use strict";
+
+/* ═══════════════════════════════════════════════════════════════
+   LA PLANILLA DE PRECIOS
+
+   Poné acá la dirección del CSV publicado de la pestaña `api` de tu
+   planilla (Archivo → Compartir → Publicar en la web → CSV).
+   Cómo armarla: ver PRECIOS.md.
+
+   Vacío = la página funciona igual, pero cada persona carga los
+   precios a mano. Nada se rompe.
+
+   OJO: el link publicado en claude.ai bloquea los pedidos a Google,
+   así que esto sólo funciona si la página está hospedada en otro lado.
+   ═══════════════════════════════════════════════════════════════ */
+var FUENTE_PRECIOS = '';
+
+/* ═══════════ LOGICA PURA — INICIO ═══════════
+   Nada de acá toca el DOM, localStorage ni variables globales de estado:
+   todo entra por parámetro y sale por return. El archivo de tests extrae
+   este bloque del HTML real y lo corre en node, así se prueba el código
+   que se publica y no una copia que se desactualiza. */
+
+/* ══════════════ Formato y numeros ══════════════ */
+var nf0 = new Intl.NumberFormat('es-AR', {maximumFractionDigits:0});
+var nf2 = new Intl.NumberFormat('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+var nf1 = new Intl.NumberFormat('es-AR', {minimumFractionDigits:1, maximumFractionDigits:1});
+var nfU = new Intl.NumberFormat('es-AR', {maximumFractionDigits:6});
+var nf3 = new Intl.NumberFormat('es-AR', {maximumFractionDigits:3});
+
+function pesos(n){ return '$' + nf0.format(Math.round(n || 0)); }
+function pesos2(n){ return '$' + nf2.format(n || 0); }
+function pct(n){ return nf1.format(n || 0) + '%'; }
+/* Pocos dolares se muestran con centavos; muchos, redondeados. */
+function dolares(n){
+  var x = n || 0;
+  return 'US$ ' + (Math.abs(x) < 100 ? nf2.format(x) : nf0.format(Math.round(x)));
+}
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* Acepta "1.234,56", "1234.56", "1234", "$1.234" */
+function parseNum(s){
+  if (typeof s === 'number') return s;
+  if (s == null) return NaN;
+  var t = String(s).trim().replace(/\s/g,'').replace(/^\$/,'');
+  if (!t) return NaN;
+  if (t.indexOf(',') >= 0) t = t.replace(/\./g,'').replace(',','.');
+  else if (/^\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g,'');
+  var n = parseFloat(t);
+  return isFinite(n) ? n : NaN;
+}
+
+/* Redondeo bancario (al digito par): el que usa el broker.
+   374,945 -> 374,94   pero   135,315 -> 135,32 */
+function redondear(n, dec){
+  var f = Math.pow(10, dec == null ? 2 : dec);
+  var x = n * f;
+  var piso = Math.floor(x);
+  var dif = x - piso;
+  var r;
+  if (Math.abs(dif - 0.5) < 1e-9) r = (piso % 2 === 0) ? piso : piso + 1;
+  else r = Math.round(x);
+  return r / f;
+}
+
+function hoyISO(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function fechaCorta(iso){
+  if (!iso) return '';
+  var p = String(iso).split('-');
+  if (p.length !== 3) return iso;
+  return p[2] + '/' + p[1] + '/' + p[0].slice(2);
+}
+function diasEntre(a, b){
+  var d1 = new Date(a + 'T00:00:00'), d2 = new Date(b + 'T00:00:00');
+  if (isNaN(d1) || isNaN(d2)) return 0;
+  return Math.max(0, Math.round((d2 - d1) / 86400000));
+}
+
+/* Nombres de los papeles, para poder buscarlos por como se llaman y no
+   por su simbolo. 177 salen del dashboard de Matias; el resto los
+   agregue yo: son nombres de empresas, publicos y estables, pero no
+   estan verificados uno por uno. Si falta alguno no pasa nada: se
+   muestra el simbolo solo. */
+var NOMBRES = {"AA":"Alcoa Corporation", "AAPL":"Apple Inc.", "ABBV":"AbbVie Inc.", "ABNB":"Airbnb", "ACN":"Accenture", "ADBE":"Adobe Inc.", "ADDYY":"Adidas AG", "AGRO":"Adecoagro", "AIG":"American International Group", "ALB":"Albemarle Corporation", "ALUA":"Aluar", "AMAT":"Applied Materials, Inc.", "AMD":"Advanced Micro Devices, Inc.", "AMGN":"Amgen Inc.", "AMT":"American Tower Corporation", "AMX":"América Móvil", "AMZN":"Amazon.com, Inc.", "APD":"Air Products and Chemicals, Inc.", "ARKK":"Fondo ARK Innovation", "ARM":"Arm", "ASML":"ASML Holding", "AVGO":"Broadcom Inc.", "AXP":"American Express Company", "BA":"The Boeing Company", "BABA":"Alibaba", "BAC":"Bank of America Corp.", "BBAR":"BBVA Argentina", "BBVA":"Banco Bilbao Vizcaya Argentaria", "BCE":"BCE Inc.", "BDX":"Becton, Dickinson and Co.", "BEN":"Franklin Resources, Inc.", "BHIP":"Banco Hipotecario", "BHP":"BHP Group Limited", "BIDU":"Baidu", "BIOX":"Bioceres", "BKNG":"Booking Holdings Inc.", "BLK":"BlackRock, Inc.", "BMA":"Banco Macro", "BMY":"Bristol-Myers Squibb Company", "BRKB":"Berkshire Hathaway", "BYMA":"BYMA", "C":"Citigroup Inc.", "CAT":"Caterpillar Inc.", "CEPU":"Central Puerto", "CF":"CF Industries Holdings, Inc.", "CHD":"Church & Dwight Co., Inc.", "CHTR":"Charter Communications, Inc.", "CL":"Colgate-Palmolive Company", "CLX":"The Clorox Company", "CMCSA":"Comcast Corporation", "CMG":"Chipotle Mexican Grill", "COIN":"Coinbase", "COME":"Sociedad Comercial del Plata", "COST":"Costco Wholesale Corp.", "CRES":"Cresud", "CRM":"Salesforce, Inc.", "CSCO":"Cisco Systems, Inc.", "CTIO":"Consultatio", "CTVA":"Corteva, Inc.", "CVS":"CVS Health Corporation", "CVX":"Chevron", "DAL":"Delta Air Lines, Inc.", "DE":"Deere & Company", "DIA":"Índice Dow Jones", "DIS":"The Walt Disney Company", "DISN":"Disney", "DOCU":"DocuSign", "EBAY":"eBay", "ECL":"Ecolab Inc.", "EDN":"Edenor", "EL":"Estée Lauder Companies Inc.", "EMR":"Emerson Electric Co.", "ETN":"Eaton Corporation plc", "ETSY":"Etsy", "EWZ":"Índice de Brasil", "F":"Ford Motor Company", "FCX":"Freeport-McMoRan Inc.", "FDX":"FedEx Corporation", "FMC":"FMC Corporation", "GD":"General Dynamics Corporation", "GE":"GE Aerospace", "GGAL":"Grupo Fin. Galicia", "GILD":"Gilead Sciences, Inc.", "GIS":"General Mills, Inc.", "GLD":"Oro", "GLOB":"Globant", "GM":"General Motors Company", "GOLD":"Barrick Gold Corporation", "GOOGL":"Alphabet Inc.", "GS":"Goldman Sachs Group, Inc.", "HARG":"Holcim Argentina", "HAVA":"Havanna", "HCA":"HCA Healthcare, Inc.", "HD":"Home Depot, Inc.", "HMC":"Honda Motor Co., Ltd.", "HON":"Honeywell International Inc.", "HSBC":"HSBC Holdings plc", "IBM":"International Business Machines", "INTC":"Intel Corporation", "IRSA":"IRSA", "ISRG":"Intuitive Surgical, Inc.", "ITW":"Illinois Tool Works Inc.", "IWM":"Índice de empresas chicas", "JD":"JD.com", "JNJ":"Johnson Johnson", "JPM":"JPMorgan Chase & Co.", "KHC":"The Kraft Heinz Company", "KMB":"Kimberly-Clark", "KO":"Coca-Cola", "KR":"The Kroger Co.", "LEDE":"Ledesma", "LILA":"Liberty Latin America Ltd.", "LLY":"Eli Lilly and Company", "LMT":"Lockheed Martin Corporation", "LOMA":"Loma Negra", "LOW":"Lowe's Companies, Inc.", "LVMUY":"LVMH Moët Hennessy Louis Vuitton", "MA":"Mastercard Incorporated", "MAR":"Marriott International, Inc.", "MCD":"McDonald's Corporation", "MDLZ":"Mondelez International, Inc.", "MDT":"Medtronic plc", "MELI":"Mercado Libre", "META":"Meta Platforms, Inc.", "METR":"MetroGAS", "MIRG":"Mirgor", "MMM":"3M Company", "MO":"Altria Group, Inc.", "MOLI":"Molinos Río de la Plata", "MORI":"Morixe", "MOS":"The Mosaic Company", "MRK":"Merck & Co., Inc.", "MS":"Morgan Stanley", "MSFT":"Microsoft Corporation", "MSTR":"Strategy (MicroStrategy)", "MU":"Micron", "NEM":"Newmont Corporation", "NFLX":"Netflix, Inc.", "NIO":"NIO", "NKE":"Nike, Inc.", "NOC":"Northrop Grumman Corporation", "NOW":"ServiceNow, Inc.", "NU":"Nubank", "NUE":"Nucor Corporation", "NVDA":"NVIDIA Corporation", "NVO":"Novo Nordisk A/S", "NVS":"Novartis AG", "ORCL":"Oracle Corporation", "ORNYY":"L'Oréal S.A.", "PAMP":"Pampa Energia", "PANW":"Palo Alto Networks, Inc.", "PBR":"Petrobras", "PDD":"PDD Holdings", "PEP":"PepsiCo, Inc.", "PFE":"Pfizer Inc.", "PG":"Procter & Gamble Co.", "PH":"Parker-Hannifin Corporation", "PINS":"Pinterest", "PLTR":"Palantir", "PM":"Philip Morris International", "PYPL":"PayPal Holdings, Inc.", "QCOM":"Qualcomm Incorporated", "QQQ":"Índice Nasdaq 100", "RACE":"Ferrari N.V.", "RBLX":"Roblox", "RCI":"Rogers Communications Inc.", "REGN":"Regeneron Pharmaceuticals", "RIO":"Rio Tinto Group", "RTX":"RTX Corporation", "RY":"Royal Bank of Canada", "SAMI":"San Miguel", "SAN":"Banco Santander, S.A.", "SBUX":"Starbucks Corporation", "SCCO":"Southern Copper Corporation", "SCHW":"Charles Schwab Corp.", "SHEL":"Shell", "SHOP":"Shopify", "SHW":"Sherwin-Williams Company", "SLV":"Plata", "SNAP":"Snap", "SPOT":"Spotify", "SPY":"Índice S&P 500", "SQ":"Block", "SQM":"Sociedad Química y Minera de Chile", "STLD":"Steel Dynamics, Inc.", "STZ":"Constellation Brands, Inc.", "SUPV":"Banco Supervielle", "SYY":"Sysco Corporation", "T":"AT&T Inc.", "TECO2":"Telecom Argentina", "TEN":"Tenaris", "TGNO4":"Trans. del gas del norte.", "TGSU2":"Trans. del gas del sur", "TGT":"Target Corporation", "TIMB":"TIM S.A.", "TJX":"TJX Companies, Inc.", "TM":"Toyota Motor Corporation", "TMO":"Thermo Fisher Scientific Inc.", "TMUS":"T-Mobile US, Inc.", "TPR":"Tapestry, Inc.", "TRAN":"Transener", "TSLA":"Tesla, Inc.", "TSM":"Taiwan Semiconductor Manufacturing", "TXAR":"Ternium Argentina", "TXN":"Texas Instruments Inc.", "UBER":"Uber", "UBS":"UBS Group AG", "UL":"Unilever PLC", "UNH":"UnitedHealth Group Inc.", "UNP":"Union Pacific Corporation", "UPS":"United Parcel Service, Inc.", "V":"Visa Inc.", "VALE":"Vale S.A.", "VALO":"Banco de Valores", "VIST":"Vista Energy", "VOD":"Vodafone Group plc", "VRTX":"Vertex Pharmaceuticals", "VZ":"Verizon Communications Inc.", "WBD":"Warner Bros. Discovery, Inc.", "WFC":"Wells Fargo & Company", "WM":"Waste Management, Inc.", "WMT":"Walmart", "XLE":"Sector energía", "XLF":"Sector bancos", "XLK":"Sector tecnología", "XLV":"Sector salud", "XOM":"Exxon Mobil", "XYZ":"Block", "YPFD":"YPF", "ZM":"Zoom"};
+
+/* ══════════════ Buscador de papeles ══════════════
+
+   Antes habia que escribir el simbolo de memoria. Si alguien ponia
+   "Coca Cola" en vez de "KO", o se equivocaba en una letra, el precio
+   no aparecia nunca y no habia forma de darse cuenta por que.
+
+   Ahora se busca por nombre o por simbolo, y la lista sale de los
+   papeles que la pagina TIENE PRECIO HOY: si esta en la lista, el
+   precio va a llegar seguro. */
+
+/* Saca acentos y pasa a minuscula, para que "accion" encuentre "Acción". */
+function normalizar(t){
+  return String(t == null ? '' : t).toLowerCase()
+    .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
+    .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n').trim();
+}
+
+/* Los papeles disponibles para una clase, con nombre cuando lo sabemos. */
+function papelesDe(clase){
+  var out = [], vistos = {};
+  var prefijo = clase + '|';
+  for (var k in AUTO.precios){
+    if (!Object.prototype.hasOwnProperty.call(AUTO.precios, k)) continue;
+    if (k.indexOf(prefijo) !== 0) continue;
+    var sim = k.slice(prefijo.length);
+    /* Los que terminan en C o D son la misma cosa liquidada en dolares:
+       para alguien que recien empieza son ruido. */
+    if (/^[A-Z]{2,5}[CD]$/.test(sim) && AUTO.precios[prefijo + sim.slice(0, -1)] != null) continue;
+    if (vistos[sim]) continue;
+    vistos[sim] = 1;
+    out.push({simbolo: sim, nombre: NOMBRES[sim] || '', precio: AUTO.precios[k]});
+  }
+  /* Los que tienen nombre primero: son los conocidos. */
+  out.sort(function(a, b){
+    if (!!a.nombre !== !!b.nombre) return a.nombre ? -1 : 1;
+    return a.simbolo < b.simbolo ? -1 : 1;
+  });
+  return out;
+}
+
+/* Busca por simbolo o por nombre. Primero los que empiezan con lo
+   escrito, que es lo que uno espera al tipear. */
+function buscarPapeles(lista, texto, tope){
+  var q = normalizar(texto);
+  if (!q) return lista.slice(0, tope || 8);
+  var empieza = [], contiene = [];
+  for (var i = 0; i < lista.length; i++){
+    var p = lista[i];
+    var s = normalizar(p.simbolo), n = normalizar(p.nombre);
+    if (s.indexOf(q) === 0 || n.indexOf(q) === 0) empieza.push(p);
+    else if (s.indexOf(q) >= 0 || n.indexOf(q) >= 0) contiene.push(p);
+  }
+  return empieza.concat(contiene).slice(0, tope || 8);
+}
+
+/* ══════════════ Catalogo de clases ══════════════ */
+var CLASES = {
+  cedear:    {nom:'CEDEAR',          ico:'CED', col:'--c1', unidad:'papeles',     sing:'papel',      comision:true,  explica:'Un pedacito de una empresa de afuera (Apple, Coca-Cola, Nu) que se compra y se vende en pesos, acá en Argentina.'},
+  accion:    {nom:'Acción argentina',ico:'ACC', col:'--c3', unidad:'papeles',     sing:'papel',      comision:true,  explica:'Una parte de una empresa argentina que cotiza en la bolsa de acá.'},
+  dolar:     {nom:'Dólares',         ico:'USD', col:'--c5', unidad:'dólares',     sing:'dólar',      comision:false, explica:'Dólares comprados en el banco, en el homebanking o en una billetera.'},
+  plazofijo: {nom:'Plazo fijo',      ico:'PF',  col:'--c2', unidad:'pesos',       sing:'peso',       comision:false, explica:'Plata que le prestás al banco por un tiempo fijo a cambio de un interés pactado de antemano.'},
+  fondo:     {nom:'Fondo común',     ico:'FCI', col:'--c4', unidad:'cuotapartes', sing:'cuotaparte', comision:false, explica:'Un fondo que junta la plata de mucha gente y la invierte por vos. El "money market" es el más común: rinde poco pero podés sacar la plata cuando querés.'},
+  cripto:    {nom:'Cripto',          ico:'CRI', col:'--c6', unidad:'unidades',    sing:'unidad',     comision:false, monedaLibre:true, explica:'Bitcoin, Ethereum, o stablecoins como USDT que siguen al dólar.'},
+  otro:      {nom:'Otra cosa',       ico:'···', col:'--c7', unidad:'unidades',    sing:'unidad',     comision:false, monedaLibre:true, explica:'Cualquier otra inversión que no entre en las anteriores.'}
+};
+var ORDEN_CLASES = ['cedear','dolar','plazofijo','fondo','accion','cripto','otro'];
+
+/* Tasas del broker. La comisión está confirmada contra la grilla;
+   la de gastos fue derivada de operaciones reales, no confirmada. */
+/* Las que trae de fábrica. Están expresadas en por ciento porque es como
+   las publica el broker y como las va a escribir la persona. */
+var TASAS_POR_DEFECTO = {comision:0.45, gastos:0.155};
+
+function estadoVacio(){
+  return {v:1, movimientos:[], precios:{}, dolar:null, hist:[], tasas:null};
+}
+
+/* Las tasas de esta persona, o las de fábrica si nunca las tocó. */
+function tasasDe(est){
+  var t = est && est.tasas;
+  /* Ojo: isFinite(null) da true porque null vale 0. Hay que exigir
+     que sea un numero de verdad o un campo vacio se cuela como tasa. */
+  var valida = function(x){ return typeof x === 'number' && isFinite(x) && x >= 0; };
+  var com = (t && valida(t.comision)) ? t.comision : TASAS_POR_DEFECTO.comision;
+  var gas = (t && valida(t.gastos)) ? t.gastos : TASAS_POR_DEFECTO.gastos;
+  return {comision:com, gastos:gas, propias:!!t};
+}
+
+var TIPOS_MOV = ['compra','venta','ingreso','retiro'];
+
+/* Revisa un movimiento venido de una copia y lo deja sano, o lo rechaza.
+   Devuelve null si no se puede salvar. Nunca inventa datos que no estén:
+   completa sólo lo que se puede deducir sin riesgo. */
+function sanearMovimiento(m, indice){
+  if (!m || typeof m !== 'object') return null;
+  if (TIPOS_MOV.indexOf(m.tipo) < 0) return null;
+  if (typeof m.fecha !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(m.fecha)) return null;
+
+  var sano = {
+    id: (typeof m.id === 'string' && m.id) ? m.id : ('m' + indice),
+    fecha: m.fecha,
+    tipo: m.tipo,
+    nota: typeof m.nota === 'string' ? m.nota : ''
+  };
+
+  if (m.tipo === 'ingreso' || m.tipo === 'retiro'){
+    var monto = Number(m.total);
+    if (!isFinite(monto) || monto <= 0) return null;
+    sano.total = monto;
+    return sano;
+  }
+
+  if (!CLASES[m.clase]) return null;
+  var cant = Number(m.cantidad), px = Number(m.precio);
+  if (!isFinite(cant) || cant <= 0) return null;
+  if (!isFinite(px) || px < 0) return null;
+
+  var costos = Number(m.costos);
+  costos = (isFinite(costos) && costos > 0) ? costos : 0;
+
+  sano.clase = m.clase;
+  sano.nombre = (typeof m.nombre === 'string' && m.nombre.trim()) ? m.nombre.trim() : CLASES[m.clase].nom;
+  sano.cantidad = cant;
+  sano.precio = px;
+  sano.moneda = (m.moneda === 'USD') ? 'USD' : 'ARS';
+  sano.costos = costos;
+
+  var total = Number(m.total);
+  sano.total = isFinite(total) ? total
+             : (m.tipo === 'compra' ? cant * px + costos : cant * px - costos);
+
+  if (isFinite(Number(m.dolarDia)) && Number(m.dolarDia) > 0) sano.dolarDia = Number(m.dolarDia);
+  if (isFinite(Number(m.tna)) && Number(m.tna) > 0) sano.tna = Number(m.tna);
+  if (typeof m.vence === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(m.vence)) sano.vence = m.vence;
+  return sano;
+}
+
+/* Lee el texto de una copia. Devuelve {ok:true, estado, descartados} o
+   {ok:false, motivo} con un motivo que se le pueda mostrar a la persona. */
+function leerCopia(texto){
+  var o;
+  try { o = JSON.parse(texto); }
+  catch(e){
+    return {ok:false, motivo:'Ese texto está cortado o incompleto. Pegá todo, desde la primera llave { hasta la última }.'};
+  }
+  if (!o || typeof o !== 'object' || Array.isArray(o)){
+    return {ok:false, motivo:'Eso no parece una copia de Mi Cartera.'};
+  }
+  if (!Array.isArray(o.movimientos)){
+    return {ok:false, motivo:'Eso no parece una copia de Mi Cartera: no encuentro la lista de movimientos.'};
+  }
+
+  var buenos = [], descartados = 0;
+  for (var i = 0; i < o.movimientos.length; i++){
+    var sano = sanearMovimiento(o.movimientos[i], i);
+    if (sano) buenos.push(sano); else descartados++;
+  }
+  if (o.movimientos.length > 0 && buenos.length === 0){
+    return {ok:false, motivo:'Encontré la lista de movimientos pero ninguno se puede leer. Puede ser una copia de otra cosa.'};
+  }
+
+  var est = estadoVacio();
+  est.movimientos = buenos;
+  est.precios = (o.precios && typeof o.precios === 'object' && !Array.isArray(o.precios)) ? o.precios : {};
+  est.dolar = (typeof o.dolar === 'number' && isFinite(o.dolar) && o.dolar > 0) ? o.dolar : null;
+  est.hist = Array.isArray(o.hist) ? o.hist : [];
+  est.tasas = (o.tasas && typeof o.tasas === 'object' && !Array.isArray(o.tasas)) ? o.tasas : null;
+
+  return {ok:true, estado:est, descartados:descartados};
+}
+
+/* Comisión y gastos de una operación.
+   modo: 'calcular' usa las tasas, 'exacto' toma el importe que pasaron,
+   'cero' no cobra nada. Devuelve siempre un número redondeado.
+   El redondeo se aplica a cada concepto por separado, que es como lo
+   liquida el broker: redondear recién sobre la suma da distinto. */
+function calcularCostos(bruto, clase, modo, importeExacto, tasas){
+  var C = CLASES[clase];
+  if (!C || !C.comision) return 0;
+  if (modo === 'cero') return 0;
+  if (modo === 'exacto'){
+    var e = Number(importeExacto);
+    return isFinite(e) && e >= 0 ? redondear(e, 2) : 0;
+  }
+  var t = tasas || TASAS_POR_DEFECTO;
+  return redondear(redondear(bruto * t.comision / 100, 2) + redondear(bruto * t.gastos / 100, 2), 2);
+}
+
+/* ══════════════ Estado ══════════════ */
+var CLAVE_LS = 'micartera_v1';
+var E = null;
+
+/* estado: 'sin-fuente' | 'cargando' | 'ok' | 'falla' */
+var AUTO = {precios:{}, dolar:null, cuando:null, cuantos:0, estado:'sin-fuente'};
+var CLAVE_CACHE = 'micartera_precios';
+
+/* La ultima tanda que llego bien. Sirve para dos cosas: mostrar precios
+   al instante mientras se busca la tanda nueva, y no quedarse sin nada
+   si Google falla. */
+function leerCache(){
+  try {
+    var crudo = localStorage.getItem(CLAVE_CACHE);
+    if (!crudo) return null;
+    var o = JSON.parse(crudo);
+    if (!o || typeof o.precios !== 'object') return null;
+    return o;
+  } catch(e){ return null; }
+}
+
+function guardarCache(){
+  try {
+    localStorage.setItem(CLAVE_CACHE, JSON.stringify({
+      precios: AUTO.precios, dolar: AUTO.dolar, cuando: AUTO.cuando ? AUTO.cuando.getTime() : null
+    }));
+  } catch(e){}
+}
+var vista = 'resumen';
+var borrador = null;
+var puedeGuardar = true;
+
+function leerLS(){
+  try {
+    var crudo = localStorage.getItem(CLAVE_LS);
+    if (!crudo) return null;
+    var o = JSON.parse(crudo);
+    if (!o || !Array.isArray(o.movimientos)) return null;
+    o.precios = o.precios || {};
+    o.hist = Array.isArray(o.hist) ? o.hist : [];
+    return o;
+  } catch(e){ return null; }
+}
+
+function guardar(){
+  try {
+    localStorage.setItem(CLAVE_LS, JSON.stringify(E));
+    puedeGuardar = true;
+  } catch(e){ puedeGuardar = false; }
+}
+
+/* ══════════════ Derivar la cartera ══════════════ */
+function claveDe(m){ return m.clase + '|' + String(m.nombre || '').trim(); }
+
+/* Pasa un importe a pesos. Si el movimiento fue en dólares usa el
+   dólar del día que cargó la persona; si no lo cargó, el de hoy. */
+function aPesos(monto, mov, est){
+  if (!mov || mov.moneda !== 'USD') return monto;
+  var d = mov.dolarDia || (est && est.dolar) || 0;
+  return monto * d;
+}
+
+/* Cuánto puso y cuánto sacó de la cuenta, neto. */
+function aportado(est){
+  var t = 0;
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo === 'ingreso') t += (m.total || 0);
+    if (m.tipo === 'retiro') t -= (m.total || 0);
+  }
+  return t;
+}
+
+/* est: el estado completo. hoy: fecha ISO contra la que se valúa
+   (parámetro para que los tests no dependan del día que se corren). */
+function derivar(est, hoy, auto){
+  hoy = hoy || hoyISO();
+  var pos = {};
+  var efectivo = 0;
+  var realizado = 0;
+
+  var movs = est.movimientos.slice().sort(function(a,b){
+    return String(a.fecha).localeCompare(String(b.fecha));
+  });
+
+  for (var i = 0; i < movs.length; i++){
+    var m = movs[i];
+
+    if (m.tipo === 'ingreso'){ efectivo += (m.total || 0); continue; }
+    if (m.tipo === 'retiro'){ efectivo -= (m.total || 0); continue; }
+
+    var k = claveDe(m);
+    if (!pos[k]) pos[k] = {clave:k, clase:m.clase, nombre:m.nombre, cant:0, costo:0, moneda:m.moneda || 'ARS', tna:null, vence:null, desde:m.fecha};
+
+    var p = pos[k];
+    var bruto = (m.cantidad || 0) * (m.precio || 0);
+
+    if (m.tipo === 'compra'){
+      var salida = aPesos(bruto + (m.costos || 0), m, est);
+      p.cant += (m.cantidad || 0);
+      p.costo += salida;
+      efectivo -= salida;
+      if (m.tna) p.tna = m.tna;
+      if (m.vence) p.vence = m.vence;
+      if (m.moneda) p.moneda = m.moneda;
+    } else if (m.tipo === 'venta'){
+      /* Nunca se vende más de lo que hay: si el movimiento pide de más,
+         se liquida lo que existe y se cobra sólo por eso. Los costos se
+         prorratean igual, o la caja cierra mal. */
+      var pedidas = m.cantidad || 0;
+      var vendidas = Math.min(pedidas, p.cant);
+      var proporcion = pedidas > 0 ? vendidas / pedidas : 0;
+      var entrada = aPesos(vendidas * (m.precio || 0) - (m.costos || 0) * proporcion, m, est);
+      var costoSalida = p.cant > 0 ? p.costo * (vendidas / p.cant) : 0;
+      p.cant -= vendidas;
+      p.costo -= costoSalida;
+      if (p.cant < 1e-9){ p.cant = 0; p.costo = 0; }
+      efectivo += entrada;
+      realizado += entrada - costoSalida;
+    }
+  }
+
+  var dol = dolarDe(est, auto);
+  var lista = [];
+  for (var key in pos){
+    if (!Object.prototype.hasOwnProperty.call(pos, key)) continue;
+    var q = pos[key];
+    if (q.cant <= 1e-9) continue;
+
+    q.ppc = q.costo / q.cant;
+    var val = valuar(q, est, hoy, auto);
+    q.valor = val.valor;
+    q.tienePrecio = val.tiene;
+    q.auto = val.auto;
+    q.valorUSD = (dol && q.tienePrecio) ? q.valor / dol : null;
+    q.ganancia = q.tienePrecio ? (q.valor - q.costo) : 0;
+    q.varPct = (q.tienePrecio && q.costo > 0) ? (q.ganancia / q.costo * 100) : 0;
+    lista.push(q);
+  }
+
+  lista.sort(function(a,b){ return (b.tienePrecio ? b.valor : b.costo) - (a.tienePrecio ? a.valor : a.costo); });
+
+  var invertido = 0, valorHoy = 0, faltan = 0;
+  for (var j = 0; j < lista.length; j++){
+    invertido += lista[j].costo;
+    valorHoy += lista[j].tienePrecio ? lista[j].valor : lista[j].costo;
+    if (!lista[j].tienePrecio) faltan++;
+  }
+
+  return {
+    posiciones: lista,
+    invertido: invertido,
+    valorHoy: valorHoy,
+    ganancia: valorHoy - invertido,
+    varPct: invertido > 0 ? ((valorHoy - invertido) / invertido * 100) : 0,
+    efectivo: efectivo,
+    realizado: realizado,
+    faltanPrecios: faltan,
+    aportado: aportado(est),
+    /* La misma cartera leida en dolares. En Argentina esta es la
+       diferencia entre creer que ganaste y haber ganado. */
+    dolarHoy: dol,
+    valorUSD: dol ? valorHoy / dol : null,
+    efectivoUSD: dol ? efectivo / dol : null
+  };
+}
+
+/* Cuánto vale hoy una posición.
+   Devuelve tiene:false cuando falta el dato para valuarla, y en ese caso
+   valor cae al costo — nunca inventa un precio. */
+function valuar(q, est, hoy, auto){
+  hoy = hoy || hoyISO();
+
+  if (q.clase === 'plazofijo'){
+    if (q.tna){
+      /* Deja de devengar el día que vence. */
+      var fin = (q.vence && q.vence < hoy) ? q.vence : hoy;
+      var dias = diasEntre(q.desde, fin);
+      return {valor: q.costo * (1 + (q.tna/100) * (dias/365)), tiene:true, auto:'Se calcula solo con la tasa y los días que pasaron'};
+    }
+    return {valor: q.costo, tiene:true, auto:'Sin tasa cargada: vale lo que pusiste'};
+  }
+
+  var dol = dolarDe(est, auto);
+
+  if (q.clase === 'dolar'){
+    if (dol) return {valor: q.cant * dol, tiene:true, auto:'Se calcula con el dólar de hoy'};
+    return {valor: q.costo, tiene:false, auto:null};
+  }
+
+  var px = precioDe(q.clave, est, auto);
+  if (px == null) return {valor: q.costo, tiene:false, auto:null};
+  var v = q.cant * px;
+  if (q.moneda === 'USD'){
+    if (!dol) return {valor:q.costo, tiene:false, auto:null};
+    v = v * dol;
+  }
+  return {valor:v, tiene:true, auto:null};
+}
+
+/* Busca una tenencia por clase y nombre sin distinguir mayusculas, para
+   que "usdt" y "USDT" sean la misma cosa y no se partan en dos. */
+function buscarPosicion(est, clase, nombre, hoy, auto){
+  var d = derivar(est, hoy, auto);
+  var buscado = String(nombre || '').trim().toLowerCase();
+  for (var i = 0; i < d.posiciones.length; i++){
+    var p = d.posiciones[i];
+    if (p.clase === clase && String(p.nombre).trim().toLowerCase() === buscado) return p;
+  }
+  return null;
+}
+
+/* Revisa lo que cargo la persona y arma el movimiento, o devuelve el
+   error en las palabras que se le van a mostrar.
+   "datos" trae los campos tal como los escribio: todo texto. */
+function armarMovimiento(datos, est, hoy, auto){
+  var d = datos || {};
+  var nota = typeof d.nota === 'string' ? d.nota : '';
+  var fecha = d.fecha || hoyISO();
+  var id = d.id || ('m' + Date.now());
+
+  if (d.tipo === 'ingreso' || d.tipo === 'retiro'){
+    var monto = parseNum(d.monto);
+    if (!isFinite(monto) || monto <= 0) return {ok:false, error:'Escribí cuánta plata fue.'};
+    return {ok:true, mov:{id:id, fecha:fecha, tipo:d.tipo, total:monto, nota:nota}};
+  }
+  if (d.tipo !== 'compra' && d.tipo !== 'venta') return {ok:false, error:'Elegí qué querés anotar.'};
+
+  var C = CLASES[d.clase];
+  if (!C) return {ok:false, error:'Elegí qué tipo de inversión es.'};
+
+  /* Un CEDEAR o un plazo fijo son en pesos por definicion: la moneda
+     solo se elige donde el catalogo lo permite. */
+  var moneda = (C.monedaLibre && d.moneda === 'USD') ? 'USD' : 'ARS';
+  var nombre, cantidad, precio, tna = null, vence = null;
+
+  if (d.clase === 'plazofijo'){
+    nombre = String(d.nombre || '').trim() || 'Plazo fijo';
+    cantidad = parseNum(d.monto);
+    precio = 1;
+    moneda = 'ARS';
+    if (!isFinite(cantidad) || cantidad <= 0) return {ok:false, error:'Escribí cuánta plata pusiste.'};
+    var t = parseNum(d.tna);
+    if (isFinite(t) && t > 0) tna = t;
+    if (typeof d.vence === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d.vence)) vence = d.vence;
+  } else if (d.clase === 'dolar'){
+    nombre = 'Dólares';
+    cantidad = parseNum(d.cantidad);
+    precio = parseNum(d.precio);
+    moneda = 'ARS';
+    if (!isFinite(cantidad) || cantidad <= 0) return {ok:false, error:'Escribí cuántos dólares fueron.'};
+    if (!isFinite(precio) || precio <= 0) return {ok:false, error:'Escribí a cuánto estaba el dólar.'};
+  } else {
+    nombre = String(d.nombre || '').trim();
+    if (!nombre) return {ok:false, error:'Ponele un nombre para poder identificarlo.'};
+    cantidad = parseNum(d.cantidad);
+    precio = parseNum(d.precio);
+    if (!isFinite(cantidad) || cantidad <= 0) return {ok:false, error:'Escribí cuántos ' + C.unidad + ' fueron.'};
+    if (!isFinite(precio) || precio <= 0) return {ok:false, error:'Escribí el precio de cada uno.'};
+  }
+
+  if (d.clase === 'cedear' || d.clase === 'accion') nombre = nombre.toUpperCase();
+
+  var dolarDia = null;
+  if (moneda === 'USD'){
+    dolarDia = parseNum(d.dolarDia);
+    if (!isFinite(dolarDia) || dolarDia <= 0) return {ok:false, error:'Necesito el dólar de ese día para mostrarte todo en pesos.'};
+  }
+
+  /* Si ya tiene esto cargado con otra combinacion de mayusculas,
+     se usa el nombre que ya tenia para no partir la tenencia. */
+  var yaTengo = buscarPosicion(est, d.clase, nombre, hoy, auto);
+  if (yaTengo) nombre = yaTengo.nombre;
+
+  if (d.tipo === 'venta'){
+    if (!yaTengo) return {ok:false, error:'No encuentro «' + nombre + '» entre lo que tenés cargado. Revisá el nombre.'};
+    if (cantidad > yaTengo.cant + 1e-9){
+      return {ok:false, error:'Tenés ' + nfU.format(yaTengo.cant) + ' ' + C.unidad + ' de ' + nombre + ', no podés vender ' + nfU.format(cantidad) + '.'};
+    }
+  }
+
+  var bruto = cantidad * precio;
+  var exacta = null;
+  if (C.comision && d.modoCom === 'exacto'){
+    exacta = parseNum(d.comExacta);
+    if (!isFinite(exacta) || exacta < 0) return {ok:false, error:'Escribí cuánto te cobraron, o elegí otra opción.'};
+  }
+  var costos = calcularCostos(bruto, d.clase, d.modoCom, exacta, tasasDe(est));
+
+  var mov = {
+    id:id, fecha:fecha, tipo:d.tipo, clase:d.clase, nombre:nombre,
+    cantidad:cantidad, precio:precio, moneda:moneda, costos:costos,
+    total:redondear(d.tipo === 'compra' ? bruto + costos : bruto - costos, 2),
+    nota:nota
+  };
+  if (dolarDia) mov.dolarDia = dolarDia;
+  if (tna) mov.tna = tna;
+  if (vence) mov.vence = vence;
+  return {ok:true, mov:mov};
+}
+
+/* ══════════════ Precios que llegan solos ══════════════ */
+
+/* Parser de CSV chiquito. Entiende comillas y comas adentro de ellas,
+   que es como Google exporta un numero formateado: dolar,"1.597,00" */
+function parsearCSV(texto){
+  var filas = [], fila = [], campo = '', dentro = false;
+  var t = String(texto == null ? '' : texto).replace(/^\uFEFF/, '');
+  for (var i = 0; i < t.length; i++){
+    var c = t.charAt(i);
+    if (dentro){
+      if (c === '"'){
+        if (t.charAt(i + 1) === '"'){ campo += '"'; i++; }
+        else dentro = false;
+      } else campo += c;
+    } else if (c === '"'){
+      dentro = true;
+    } else if (c === ','){
+      fila.push(campo); campo = '';
+    } else if (c === '\n'){
+      fila.push(campo); filas.push(fila); fila = []; campo = '';
+    } else if (c !== '\r'){
+      campo += c;
+    }
+  }
+  if (campo !== '' || fila.length){ fila.push(campo); filas.push(fila); }
+  return filas;
+}
+
+/* Lee la tabla de precios publicada. Dos columnas: clave y precio.
+   Ignora encabezados, filas vacias y cualquier cosa que no sea un
+   numero positivo: una planilla a medio cargar no puede romper nada. */
+function leerPrecios(csv){
+  var filas = parsearCSV(csv);
+  var r = {precios:{}, dolar:null, cuantos:0};
+  for (var i = 0; i < filas.length; i++){
+    var clave = String(filas[i][0] == null ? '' : filas[i][0]).trim();
+    if (!clave || clave.toLowerCase() === 'clave') continue;
+    var valor = parseNum(filas[i][1]);
+    if (!isFinite(valor) || valor <= 0) continue;
+    if (clave === 'dolar'){ r.dolar = valor; r.cuantos++; continue; }
+    if (clave.indexOf('|') < 0) continue;      /* clave mal formada */
+    r.precios[clave] = valor;
+    r.cuantos++;
+  }
+  return r;
+}
+
+/* Mezcla la tanda nueva de precios sobre la anterior. Con una tabla de
+   cientos de filas, Google devuelve #N/A en algunas de vez en cuando:
+   si esta tanda no trajo un papel que la anterior si tenia, se conserva
+   el de antes en vez de perderlo y dejar a la persona sin precio. */
+function mezclarPrecios(previos, nuevos){
+  var salida = {};
+  var k;
+  for (k in previos){ if (Object.prototype.hasOwnProperty.call(previos, k)) salida[k] = previos[k]; }
+  for (k in nuevos){ if (Object.prototype.hasOwnProperty.call(nuevos, k)) salida[k] = nuevos[k]; }
+  return salida;
+}
+
+/* Papeles que se pueden cargar como CEDEAR o como accion argentina y
+   las dos estan bien: Mercado Libre, Globant, Vista y compañia cotizan
+   aca y afuera. La tabla de precios los lista una sola vez; la pagina
+   busca con los dos nombres para no depender de como los haya cargado
+   cada persona. */
+var CLASES_INTERCAMBIABLES = ['cedear', 'accion'];
+
+function clavesEquivalentes(clave){
+  var corte = clave.indexOf('|');
+  if (corte < 0) return [clave];
+  var clase = clave.slice(0, corte), resto = clave.slice(corte + 1);
+  if (CLASES_INTERCAMBIABLES.indexOf(clase) < 0) return [clave];
+  var salida = [clave];
+  for (var i = 0; i < CLASES_INTERCAMBIABLES.length; i++){
+    var otra = CLASES_INTERCAMBIABLES[i] + '|' + resto;
+    if (otra !== clave) salida.push(otra);
+  }
+  return salida;
+}
+
+/* Precio de hoy de una tenencia. El automatico gana sobre el cargado a
+   mano: es mas fresco y la persona no tiene que hacer nada. */
+function precioDe(clave, est, auto){
+  var opciones = clavesEquivalentes(clave), i;
+  if (auto && auto.precios){
+    for (i = 0; i < opciones.length; i++){
+      if (auto.precios[opciones[i]] != null) return auto.precios[opciones[i]];
+    }
+  }
+  for (i = 0; i < opciones.length; i++){
+    var m = est.precios[opciones[i]];
+    if (m != null && isFinite(m)) return m;
+  }
+  return null;
+}
+
+function dolarDe(est, auto){
+  if (auto && auto.dolar) return auto.dolar;
+  return est.dolar || null;
+}
+
+/* ══════════════ Datos del mundo real ══════════════
+   Convierte lo que devuelven las fuentes publicas en algo que la pagina
+   entiende. Funciones puras: entra el texto crudo, sale una estructura
+   limpia, y si viene cualquier cosa devuelven vacio en vez de romper. */
+
+/* dolarapi.com: las siete cotizaciones del dia */
+function leerDolarApi(crudo){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return null; }
+  if (!lista || !lista.length) return null;
+  var r = {cuando:null};
+  for (var i = 0; i < lista.length; i++){
+    var x = lista[i];
+    var v = Number(x && x.venta);
+    if (!isFinite(v) || v <= 0) continue;
+    if (x.casa) r[x.casa] = v;
+    if (x.fechaActualizacion && !r.cuando) r.cuando = x.fechaActualizacion;
+  }
+  /* El contado con liqui es el que corresponde para valuar CEDEARs y
+     dolares comprados por el broker. Si no vino, cae al de bolsa. */
+  r.ccl = r.contadoconliqui || r.bolsa || r.blue || r.oficial || null;
+  return r.ccl ? r : null;
+}
+
+/* Series con forma [{fecha, valor}] o [{fecha, venta}] -> [{f, v}] */
+function leerSerie(crudo, campo){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return []; }
+  if (!lista || !lista.length) return [];
+  var out = [];
+  for (var i = 0; i < lista.length; i++){
+    var x = lista[i];
+    if (!x || typeof x.fecha !== 'string') continue;
+    var v = Number(x[campo]);
+    if (!isFinite(v) || v <= 0) continue;
+    out.push({f: x.fecha.slice(0, 10), v: v});
+  }
+  out.sort(function(a, b){ return a.f < b.f ? -1 : (a.f > b.f ? 1 : 0); });
+  return out;
+}
+
+/* El valor de una serie en una fecha. Si ese dia no hay dato —un fin de
+   semana, un feriado— toma el ultimo anterior, que es el que vale. */
+function valorEnFecha(serie, fecha){
+  if (!serie || !serie.length) return null;
+  if (fecha < serie[0].f) return serie[0].v;
+  var lo = 0, hi = serie.length - 1, mejor = null;
+  while (lo <= hi){
+    var m = (lo + hi) >> 1;
+    if (serie[m].f <= fecha){ mejor = serie[m].v; lo = m + 1; }
+    else hi = m - 1;
+  }
+  return mejor;
+}
+
+/* Cuanto subieron los precios entre dos fechas, como factor.
+   0,25 significa que las cosas salen 25% mas caras que entonces. */
+function inflacionEntre(serie, desde, hasta){
+  if (!serie || !serie.length) return null;
+  var factor = 1, hubo = false;
+  for (var i = 0; i < serie.length; i++){
+    var f = serie[i].f;
+    if (f <= desde || f > hasta) continue;
+    factor *= (1 + serie[i].v / 100);
+    hubo = true;
+  }
+  return hubo ? factor - 1 : 0;
+}
+
+/* La tasa de plazo fijo del medio entre todos los bancos. Mediana y no
+   promedio: un banco con una promocion rarisima no deberia mover la
+   referencia de todos los demas. */
+function medianaTNA(crudo){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return null; }
+  if (!lista || !lista.length) return null;
+  var tasas = [];
+  for (var i = 0; i < lista.length; i++){
+    var t = Number(lista[i] && lista[i].tnaClientes);
+    if (isFinite(t) && t > 0 && t < 3) tasas.push(t);
+  }
+  if (!tasas.length) return null;
+  tasas.sort(function(a, b){ return a - b; });
+  var m = Math.floor(tasas.length / 2);
+  return tasas.length % 2 ? tasas[m] : (tasas[m-1] + tasas[m]) / 2;
+}
+
+/* data912.com: precios en vivo de la bolsa de aca.
+   c = ultimo operado; si no hay, el promedio entre las dos puntas. */
+function leerData912(crudo, clase){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return {}; }
+  if (!lista || !lista.length) return {};
+  var out = {};
+  for (var i = 0; i < lista.length; i++){
+    var x = lista[i];
+    if (!x || typeof x.symbol !== 'string' || !x.symbol) continue;
+    var px = Number(x.c);
+    if (!isFinite(px) || px <= 0){
+      var b = Number(x.px_bid), a = Number(x.px_ask);
+      if (isFinite(b) && isFinite(a) && b > 0 && a > 0) px = (b + a) / 2;
+    }
+    if (!isFinite(px) || px <= 0) continue;
+    out[clase + '|' + x.symbol.trim().toUpperCase()] = px;
+  }
+  return out;
+}
+
+/* Lo que se llevaron las comisiones. Casi nadie lo tiene presente y
+   sumado da numeros que sorprenden. */
+function comisionesPagadas(est){
+  var total = 0, cuantas = 0, invertido = 0;
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo !== 'compra' && m.tipo !== 'venta') continue;
+    var c = Number(m.costos) || 0;
+    if (m.moneda === 'USD') c = c * (m.dolarDia || 0);
+    if (c > 0){ total += c; cuantas++; }
+    if (m.tipo === 'compra') invertido += (m.cantidad || 0) * (m.precio || 0) * (m.moneda === 'USD' ? (m.dolarDia || 0) : 1);
+  }
+  return {
+    total: total, operaciones: cuantas,
+    pctDeLoInvertido: invertido > 0 ? total / invertido * 100 : 0
+  };
+}
+
+/* Lo que cuesta tener plata quieta. La inflacion del ultimo mes
+   publicado aplicada al efectivo sin invertir: no es una proyeccion,
+   es lo que ya paso el mes pasado. */
+function costoDeEstarQuieto(efectivo, inflacion){
+  if (!efectivo || efectivo <= 0) return null;
+  if (!inflacion || !inflacion.length) return null;
+  var ultimo = inflacion[inflacion.length - 1];
+  if (!ultimo || !(ultimo.v > 0)) return null;
+  return {
+    porMes: efectivo * (ultimo.v / 100),
+    tasaMes: ultimo.v,
+    mes: ultimo.f
+  };
+}
+
+/* ══════════════ Tu resultado, de cuatro formas ══════════════
+
+   Lo que ningun broker muestra: el mismo resultado leido en pesos, en
+   dolares, contra la inflacion y contra un plazo fijo.
+
+   Cada compra se convierte con el dato de SU dia, no con el de hoy.
+   Convertir todo al dolar de hoy da cero informacion porque se cancela
+   y devuelve el mismo porcentaje que en pesos. */
+function resultadoReal(est, d, ctx){
+  ctx = ctx || {};
+  var hoy = ctx.hoy || hoyISO();
+  var r = {
+    pesos:     {invertido: d.invertido, valor: d.valorHoy, hay: d.invertido > 0},
+    dolares:   {hay: false},
+    inflacion: {hay: false},
+    plazoFijo: {hay: false},
+    faltaDato: []
+  };
+  if (!r.pesos.hay) return r;
+
+  r.pesos.ganancia = d.valorHoy - d.invertido;
+  r.pesos.pct = (d.valorHoy - d.invertido) / d.invertido * 100;
+
+  var compras = [];
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo !== 'compra') continue;
+    var bruto = (m.cantidad || 0) * (m.precio || 0) + (m.costos || 0);
+    var enPesos = (m.moneda === 'USD') ? bruto * (m.dolarDia || ctx.cclHoy || 0) : bruto;
+    if (enPesos > 0) compras.push({fecha: m.fecha, ars: enPesos});
+  }
+  if (!compras.length) return r;
+
+  /* ── En dolares ── */
+  if (ctx.cclHoy && ctx.cclSerie && ctx.cclSerie.length){
+    var costoUSD = 0, todas = true;
+    for (var j = 0; j < compras.length; j++){
+      var cclEse = valorEnFecha(ctx.cclSerie, compras[j].fecha);
+      if (!cclEse){ todas = false; break; }
+      costoUSD += compras[j].ars / cclEse;
+    }
+    if (todas && costoUSD > 0){
+      var valorUSD = d.valorHoy / ctx.cclHoy;
+      r.dolares = {
+        hay: true, invertido: costoUSD, valor: valorUSD,
+        ganancia: valorUSD - costoUSD,
+        pct: (valorUSD - costoUSD) / costoUSD * 100
+      };
+    } else r.faltaDato.push('dolares');
+  } else r.faltaDato.push('dolares');
+
+  /* ── Contra la inflacion ── */
+  if (ctx.inflacion && ctx.inflacion.length){
+    var ajustado = 0, completo = true;
+    for (var k = 0; k < compras.length; k++){
+      var subida = inflacionEntre(ctx.inflacion, compras[k].fecha, hoy);
+      if (subida == null){ completo = false; break; }
+      ajustado += compras[k].ars * (1 + subida);
+    }
+    if (completo && ajustado > 0){
+      r.inflacion = {
+        hay: true, equivalente: ajustado,
+        ganancia: d.valorHoy - ajustado,
+        pct: (d.valorHoy - ajustado) / ajustado * 100,
+        hasta: ctx.inflacion[ctx.inflacion.length - 1].f
+      };
+    } else r.faltaDato.push('inflacion');
+  } else r.faltaDato.push('inflacion');
+
+  /* ── Contra un plazo fijo ── */
+  if (ctx.tna){
+    var alternativa = 0;
+    for (var n = 0; n < compras.length; n++){
+      var dias = diasEntre(compras[n].fecha, hoy);
+      alternativa += compras[n].ars * (1 + ctx.tna * (dias / 365));
+    }
+    if (alternativa > 0){
+      r.plazoFijo = {
+        hay: true, tna: ctx.tna, equivalente: alternativa,
+        diferencia: d.valorHoy - alternativa,
+        pct: (d.valorHoy - alternativa) / alternativa * 100
+      };
+    }
+  } else r.faltaDato.push('plazoFijo');
+
+  return r;
+}
+
+/* ══════════════ ¿Y si hubieras comprado otra cosa? ══════════════
+
+   La pregunta que ningun broker contesta, porque no le conviene.
+
+   El metodo: cada compra se replica en el activo alternativo al precio
+   que ESE activo tenia ESE dia. No hay una fecha de arranque comun: los
+   pesos que pusiste en junio compiten cuatro meses, los de agosto dos.
+   Esa es la unica forma honesta de compararlo. */
+
+/* data912 devuelve velas diarias: {date, o, h, l, c, v}. Nos alcanza el
+   cierre. */
+function leerHistorico(crudo){
+  var lista;
+  try { lista = (typeof crudo === 'string') ? JSON.parse(crudo) : crudo; }
+  catch(e){ return []; }
+  if (!lista || !lista.length) return [];
+  var out = [];
+  for (var i = 0; i < lista.length; i++){
+    var x = lista[i];
+    if (!x || typeof x.date !== 'string') continue;
+    var c = Number(x.c);
+    if (!isFinite(c) || c <= 0) continue;
+    out.push({f: x.date.slice(0, 10), v: c});
+  }
+  out.sort(function(a, b){ return a.f < b.f ? -1 : (a.f > b.f ? 1 : 0); });
+  return limpiarSerie(out);
+}
+
+/* ══════════════ Limpiar una serie de precios ══════════════
+
+   Las series de la bolsa vienen crudas y traen dos problemas que, sin
+   arreglar, hacen mentir cualquier comparacion:
+
+   1. SPLITS. Cuando a un CEDEAR le cambian el ratio, el precio cae a la
+      mitad, a un tercio o a un decimo de un dia para el otro sin que el
+      papel haya perdido un peso. El SPY paso de $56.000 a $18.760 el
+      29/05/2026: un split 3 a 1. Leido crudo, parece una caida del 67%.
+
+   2. PRECIOS MAL CARGADOS. Un dia suelto con un valor absurdo que al dia
+      siguiente vuelve a la normalidad. El 03/08/2023 el SPY figura a
+      $7.560 entre dos dias de $12.800.
+
+   Se arreglan distinto: el dato malo se descarta, el split se ajusta
+   hacia atras para que toda la serie quede en la misma unidad. */
+
+/* Factores de split que se usan en la practica. Se aceptan tambien sus
+   inversos, para los splits al reves (contrasplits). */
+var FACTORES_SPLIT = [2, 2.5, 3, 4, 5, 6, 8, 10, 12, 15, 16, 20, 24, 25, 30, 40, 50, 60, 75, 100, 120, 144];
+
+/* ¿Este cambio de precio se explica por un split? Devuelve el factor o
+   null. Se exige que sea muy cercano a un factor redondo: un derrumbe
+   de verdad casi nunca cae exactamente a un tercio. */
+function factorDeSplit(antes, despues){
+  if (!(antes > 0) || !(despues > 0)) return null;
+  var r = antes / despues;
+  for (var i = 0; i < FACTORES_SPLIT.length; i++){
+    var f = FACTORES_SPLIT[i];
+    if (Math.abs(r / f - 1) < 0.04) return f;          /* precio cae: 3 a 1 */
+    if (Math.abs(r * f - 1) < 0.04) return 1 / f;      /* precio sube: 1 a 3 */
+  }
+  return null;
+}
+
+function limpiarSerie(serie){
+  if (!serie || serie.length < 3) return serie || [];
+
+  /* ── 1. Sacar los dias sueltos con precio absurdo ── */
+  var sano = [serie[0]];
+  for (var i = 1; i < serie.length - 1; i++){
+    var ant = serie[i-1].v, act = serie[i].v, sig = serie[i+1].v;
+    var saltaIda = Math.abs(act / ant - 1) > 0.25;
+    var saltaVuelta = Math.abs(act / sig - 1) > 0.25;
+    var vecinosParecidos = Math.abs(ant / sig - 1) < 0.15;
+    /* Salta y vuelve, con los vecinos de acuerdo: es un dato malo. */
+    if (saltaIda && saltaVuelta && vecinosParecidos) continue;
+    sano.push(serie[i]);
+  }
+  sano.push(serie[serie.length - 1]);
+
+  /* ── 2. Encontrar los splits, SOBRE LA SERIE CRUDA ──
+     En dos pasadas y no en una: si se ajusta mientras se recorre, cada
+     split ya corregido genera splits fantasma al comparar un precio
+     crudo contra uno ajustado. */
+  var cortes = [];
+  for (var j = 1; j < sano.length; j++){
+    if (Math.abs(sano[j].v / sano[j-1].v - 1) <= 0.30) continue;
+    var f = factorDeSplit(sano[j-1].v, sano[j].v);
+    if (f) cortes.push({i: j, fecha: sano[j].f, factor: f});
+  }
+
+  /* ── 3. Aplicar el ajuste hacia atras ──
+     Todo lo anterior a un split se lleva a la unidad nueva, para que la
+     serie entera quede comparable de punta a punta. */
+  var salida = sano.map(function(p){ return {f: p.f, v: p.v}; });
+  for (var k = cortes.length - 1; k >= 0; k--){
+    var c = cortes[k];
+    for (var m = 0; m < c.i; m++) salida[m].v = salida[m].v / c.factor;
+  }
+
+  salida.ajustes = cortes.map(function(c){ return {fecha: c.fecha, factor: c.factor}; });
+  salida.descartados = serie.length - sano.length;
+  return salida;
+}
+
+/* ¿Que tan confiable es esta serie? Sirve para decidir si mostrar la
+   comparacion o callarse. */
+function saludDeSerie(serie){
+  if (!serie || serie.length < 30) return {sirve: false, motivo: 'muy corta'};
+  var saltos = 0;
+  for (var i = 1; i < serie.length; i++){
+    if (serie[i-1].v > 0 && Math.abs(serie[i].v / serie[i-1].v - 1) > 0.30) saltos++;
+  }
+  /* Despues de limpiar no deberia quedar ninguno. Si quedan varios, la
+     serie tiene algo raro que no entendemos y es mejor no usarla. */
+  if (saltos > 2) return {sirve: false, motivo: 'tiene ' + saltos + ' saltos sin explicar'};
+  return {sirve: true, dias: serie.length, saltos: saltos};
+}
+
+/* Las compras de una tenencia, en pesos y con fecha. */
+function comprasDe(est, clave){
+  var salida = [];
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo !== 'compra') continue;
+    if (clave && claveDe(m) !== clave) continue;
+    var bruto = (m.cantidad || 0) * (m.precio || 0) + (m.costos || 0);
+    var ars = (m.moneda === 'USD') ? bruto * (m.dolarDia || 0) : bruto;
+    if (ars > 0) salida.push({fecha: m.fecha, ars: ars, cantidad: m.cantidad || 0});
+  }
+  salida.sort(function(a, b){ return a.fecha < b.fecha ? -1 : 1; });
+  return salida;
+}
+
+/* Que hubiera pasado con esa misma plata en otra cosa.
+   alt: {tipo:'serie', serie:[{f,v}]} o {tipo:'tasa', tna:0.195} */
+function simularAlternativa(compras, alt, hoy){
+  if (!compras || !compras.length || !alt) return null;
+  hoy = hoy || hoyISO();
+  var invertido = 0, valor = 0;
+
+  if (alt.tipo === 'tasa'){
+    if (!(alt.tna > 0)) return null;
+    for (var i = 0; i < compras.length; i++){
+      var dias = diasEntre(compras[i].fecha, hoy);
+      invertido += compras[i].ars;
+      valor += compras[i].ars * (1 + alt.tna * (dias / 365));
+    }
+    return {invertido: invertido, valor: valor};
+  }
+
+  if (!alt.serie || !alt.serie.length) return null;
+  var precioHoy = valorEnFecha(alt.serie, hoy);
+  if (!precioHoy) return null;
+
+  for (var j = 0; j < compras.length; j++){
+    var px = valorEnFecha(alt.serie, compras[j].fecha);
+    /* Si la serie no llega tan atras no se inventa: se descarta entera,
+       porque una comparacion a medias es peor que ninguna. */
+    if (!px) return null;
+    invertido += compras[j].ars;
+    valor += (compras[j].ars / px) * precioHoy;
+  }
+  return {invertido: invertido, valor: valor};
+}
+
+/* La tabla completa: lo que hiciste contra cada alternativa. */
+function compararAlternativas(compras, valorReal, alternativas, hoy){
+  if (!compras || !compras.length || !(valorReal > 0)) return null;
+  var filas = [];
+  for (var i = 0; i < alternativas.length; i++){
+    var a = alternativas[i];
+    var r = simularAlternativa(compras, a, hoy);
+    if (!r) continue;
+    filas.push({
+      nombre: a.nombre,
+      detalle: a.detalle || '',
+      valor: r.valor,
+      diferencia: valorReal - r.valor,
+      pct: (valorReal - r.valor) / r.valor * 100
+    });
+  }
+  if (!filas.length) return null;
+
+  var invertido = 0;
+  for (var k = 0; k < compras.length; k++) invertido += compras[k].ars;
+
+  filas.push({nombre: 'Lo que hiciste', valor: valorReal, diferencia: 0, pct: 0, esTuyo: true});
+  filas.sort(function(a, b){ return b.valor - a.valor; });
+
+  var mejor = filas[0];
+  return {
+    filas: filas,
+    invertido: invertido,
+    valorReal: valorReal,
+    /* ¿Le ganaste a todas? */
+    ganasteATodas: !!mejor.esTuyo,
+    mejorAlternativa: mejor.esTuyo ? null : mejor,
+    desde: compras[0].fecha
+  };
+}
+
+/* ══════════════ ¿Cuánto puede bajar esto? ══════════════
+
+   La peor caida real desde un maximo, en el periodo que se mire. Es el
+   numero que evita vender en panico: ver que ya estuvo 30% abajo y se
+   recupero cambia la reaccion cuando vuelve a pasar. */
+function peorCaida(serie, desde){
+  if (!serie || serie.length < 2) return null;
+  var max = null, maxF = null, peor = 0, peorF = null, peorDesde = null;
+  for (var i = 0; i < serie.length; i++){
+    var p = serie[i];
+    if (desde && p.f < desde) continue;
+    if (max == null || p.v > max){ max = p.v; maxF = p.f; }
+    if (max > 0){
+      var caida = (max - p.v) / max * 100;
+      if (caida > peor){ peor = caida; peorF = p.f; peorDesde = maxF; }
+    }
+  }
+  if (peor <= 0) return null;
+  var ultimo = serie[serie.length - 1];
+  return {
+    pct: peor,
+    fecha: peorF,
+    desdeMax: peorDesde,
+    /* ¿Se recupero? Comparar el ultimo precio con el maximo previo. */
+    recuperado: ultimo.v >= max * 0.995,
+    hoy: ultimo.v,
+    maximo: max
+  };
+}
+
+/* Cuanto se movio un papel entre dos fechas, en por ciento. */
+function variacionEntre(serie, desde, hasta){
+  if (!serie || !serie.length) return null;
+  var a = valorEnFecha(serie, desde), b = valorEnFecha(serie, hasta || hoyISO());
+  if (!a || !b) return null;
+  return (b - a) / a * 100;
+}
+
+/* ═══════════ LOGICA PURA — FIN ═══════════ */
+
+/* ══════════════ Historial diario ══════════════ */
+function anotarHist(d){
+  if (d.posiciones.length === 0) return;
+  var hoy = hoyISO();
+  var punto = {f:hoy, v:Math.round(d.valorHoy), i:Math.round(d.invertido)};
+  var ult = E.hist[E.hist.length - 1];
+  if (ult && ult.f === hoy) E.hist[E.hist.length - 1] = punto;
+  else E.hist.push(punto);
+  if (E.hist.length > 400) E.hist = E.hist.slice(-400);
+  guardar();
+}
+
+/* ══════════════ De dónde salen los datos ══════════════
+
+   Todo público, todo gratis, todo sin registrarse. La página funciona
+   igual si alguna se cae: cada pieza que falta se completa a mano y se
+   avisa, nunca se inventa.
+
+   dolarapi.com        → las siete cotizaciones del día
+   data912.com         → precios en vivo de CEDEARs y acciones argentinas
+   argentinadatos.com  → dólar de todos los días desde 2013, inflación
+                         mensual y las tasas de plazo fijo de 32 bancos
+
+   Son proyectos comunitarios, no oficiales. Andan bien y hace años,
+   pero no hay nadie obligado a mantenerlos: por eso nada depende de
+   que respondan. */
+var FUENTES = {
+  dolar:     'https://dolarapi.com/v1/dolares',
+  cedears:   'https://data912.com/live/arg_cedears',
+  acciones:  'https://data912.com/live/arg_stocks',
+  cclSerie:  'https://api.argentinadatos.com/v1/cotizaciones/dolares/contadoconliqui',
+  /* La misma serie pero de un solo dia: 93 bytes en vez de 526 KB.
+     Para una cartera normal alcanza con pedir las fechas de las
+     compras, que son un puñado. */
+  cclDia:    'https://api.argentinadatos.com/v1/cotizaciones/dolares/contadoconliqui/',
+  inflacion: 'https://api.argentinadatos.com/v1/finanzas/indices/inflacion',
+  plazoFijo: 'https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo'
+};
+
+/* Lo que sabemos del mundo, más allá de los precios de hoy. */
+var MUNDO = {cclSerie: [], inflacion: [], tna: null, cuando: null, estado: 'esperando'};
+
+/* El visor de artefactos de claude.ai bloquea cualquier pedido a otro
+   sitio. La pagina anda igual, pero conviene decir por que no llegan
+   los datos en vez de dejar un "no se pudo" sin explicacion. */
+function enVistaPrevia(){
+  try {
+    var h = location.hostname || '';
+    return h === '' || h.indexOf('claude.ai') >= 0 || location.protocol === 'data:';
+  } catch(e){ return false; }
+}
+var CLAVE_MUNDO = 'micartera_mundo';
+
+function traer(url, seg){
+  return new Promise(function(listo, falla){
+    if (typeof fetch !== 'function'){ falla(new Error('sin fetch')); return; }
+    var corte = setTimeout(function(){ falla(new Error('tardó demasiado')); }, (seg || 15) * 1000);
+    fetch(url, {cache: 'no-store'})
+      .then(function(r){
+        if (!r.ok) throw new Error('respuesta ' + r.status);
+        return r.text();
+      })
+      .then(function(t){ clearTimeout(corte); listo(t); })
+      ['catch'](function(e){ clearTimeout(corte); falla(e); });
+  });
+}
+
+/* ── Precios y dólar de hoy ── */
+function traerPrecios(){
+  AUTO.estado = 'cargando';
+
+  var guardada = leerCache();
+  if (guardada){
+    AUTO.precios = mezclarPrecios(guardada.precios, AUTO.precios);
+    if (!AUTO.dolar && guardada.dolar) AUTO.dolar = guardada.dolar;
+    if (!AUTO.cuando && guardada.cuando) AUTO.cuando = new Date(guardada.cuando);
+  }
+  render();
+
+  /* El dolar siempre: es chico y sirve aunque no haya nada cargado. */
+  var pedidos = [
+    traer(FUENTES.dolar, 12).then(function(t){
+      var d = leerDolarApi(t);
+      if (d && d.ccl){ AUTO.dolar = d.ccl; AUTO.dolarCasas = d; }
+    })['catch'](function(){})
+  ];
+
+  /* Los precios de la bolsa son 136 KB: sin nada cargado no hay que
+     valuar nada, asi que se los ahorra. Llegan cuando cargue algo. */
+  if (hayTenencias(E)){
+    pedidos.push(traer(FUENTES.cedears, 20).then(function(t){
+      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'cedear'));
+    })['catch'](function(){}));
+    pedidos.push(traer(FUENTES.acciones, 20).then(function(t){
+      AUTO.precios = mezclarPrecios(AUTO.precios, leerData912(t, 'accion'));
+    })['catch'](function(){}));
+  }
+
+  /* La planilla propia, si hay una configurada, se suma a lo anterior
+     y le gana: son precios que el dueño de la página eligió a mano. */
+  if (FUENTE_PRECIOS){
+    var url = FUENTE_PRECIOS + (FUENTE_PRECIOS.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now();
+    pedidos.push(traer(url, 20).then(function(t){
+      var p = leerPrecios(t);
+      if (p.cuantos > 0){
+        AUTO.precios = mezclarPrecios(AUTO.precios, p.precios);
+        if (p.dolar) AUTO.dolar = p.dolar;
+      }
+    })['catch'](function(){}));
+  }
+
+  Promise.all(pedidos).then(function(){
+    AUTO.cuantos = Object.keys(AUTO.precios).length;
+    if (AUTO.cuantos > 0 || AUTO.dolar){
+      AUTO.cuando = new Date();
+      AUTO.estado = 'ok';
+      guardarCache();
+    } else {
+      AUTO.estado = 'falla';
+    }
+    render();
+    /* La inflacion y las tasas solo sirven si hay algo que comparar. */
+    if (hayCompras(E)) traerMundo();
+  });
+}
+
+/* ── El contexto: dólar histórico, inflación, tasas ── */
+function traerMundo(){
+  var hoy = hoyISO();
+  var guardado = null;
+  try {
+    var crudo = localStorage.getItem(CLAVE_MUNDO);
+    if (crudo) guardado = JSON.parse(crudo);
+  } catch(e){}
+
+  if (guardado && guardado.dia === hoy && guardado.cclSerie && guardado.cclSerie.length){
+    MUNDO.cclSerie = guardado.cclSerie;
+    MUNDO.inflacion = guardado.inflacion || [];
+    MUNDO.tna = guardado.tna || null;
+    MUNDO.cuando = guardado.dia;
+    MUNDO.estado = 'ok';
+    render();
+    return;
+  }
+
+  MUNDO.estado = 'cargando';
+  render();
+
+  Promise.all([
+    traerCCL(),
+
+    traer(FUENTES.inflacion, 20).then(function(t){
+      MUNDO.inflacion = recortarSerie(leerSerie(t, 'valor'), primeraCompra(E));
+    })['catch'](function(){}),
+
+    traer(FUENTES.plazoFijo, 20).then(function(t){
+      MUNDO.tna = medianaTNA(t);
+    })['catch'](function(){})
+  ]).then(function(){
+    MUNDO.estado = (MUNDO.cclSerie.length || MUNDO.inflacion.length || MUNDO.tna) ? 'ok' : 'falla';
+    MUNDO.cuando = hoy;
+    try {
+      localStorage.setItem(CLAVE_MUNDO, JSON.stringify({
+        dia: hoy, cclSerie: MUNDO.cclSerie, inflacion: MUNDO.inflacion, tna: MUNDO.tna
+      }));
+    } catch(e){}
+    render();
+  });
+}
+
+/* El dolar de las fechas que hacen falta.
+
+   Con pocas compras conviene pedir dia por dia: cada respuesta pesa 93
+   bytes contra los 526 KB de la serie entera. Con muchas, la serie sale
+   mas barata. El corte esta en 25, que es donde se cruzan. */
+function traerCCL(){
+  var fechas = fechasDeCompra(E);
+  if (!fechas.length) return Promise.resolve();
+
+  if (fechas.length > 25){
+    return traer(FUENTES.cclSerie, 30).then(function(t){
+      MUNDO.cclSerie = recortarSerie(leerSerie(t, 'venta'), primeraCompra(E));
+    })['catch'](function(){});
+  }
+
+  var pedidos = fechas.map(function(f){ return traerCCLDeUnDia(f, 0); });
+  return Promise.all(pedidos).then(function(puntos){
+    var buenos = puntos.filter(function(x){ return x; });
+    /* Si alguna fecha no se pudo, se cae a la serie entera antes que
+       calcular con datos a medias. */
+    if (buenos.length < fechas.length){
+      return traer(FUENTES.cclSerie, 30).then(function(t){
+        MUNDO.cclSerie = recortarSerie(leerSerie(t, 'venta'), primeraCompra(E));
+      })['catch'](function(){});
+    }
+    buenos.sort(function(a, b){ return a.f < b.f ? -1 : 1; });
+    MUNDO.cclSerie = buenos;
+  });
+}
+
+/* Un feriado o un domingo no tienen cotizacion: se prueba con los dias
+   anteriores, hasta cuatro, que es mas que cualquier fin de semana largo. */
+function traerCCLDeUnDia(fecha, intento){
+  if (intento > 4) return Promise.resolve(null);
+  var d = new Date(fecha + 'T00:00:00');
+  if (intento) d.setDate(d.getDate() - intento);
+  var iso = fechaISO(d);
+  var url = FUENTES.cclDia + iso.slice(0,4) + '/' + iso.slice(5,7) + '/' + iso.slice(8,10);
+  return traer(url, 10).then(function(t){
+    var o = JSON.parse(t);
+    var v = Number(o && o.venta);
+    if (!isFinite(v) || v <= 0) throw new Error('sin valor');
+    /* Se guarda bajo la fecha pedida, no la encontrada: es el dolar
+       que le corresponde a esa compra. */
+    return {f: fecha, v: v};
+  })['catch'](function(){ return traerCCLDeUnDia(fecha, intento + 1); });
+}
+
+/* ¿Hay algo cargado que valuar? */
+function hayTenencias(est){
+  return !!(est && est.movimientos && est.movimientos.some(function(m){
+    return m.tipo === 'compra' || m.tipo === 'venta';
+  }));
+}
+function hayCompras(est){
+  return !!(est && est.movimientos && est.movimientos.some(function(m){
+    return m.tipo === 'compra';
+  }));
+}
+
+/* Las fechas distintas en las que hubo una compra. */
+function fechasDeCompra(est){
+  var vistas = {}, salida = [];
+  if (!est || !est.movimientos) return salida;
+  for (var i = 0; i < est.movimientos.length; i++){
+    var m = est.movimientos[i];
+    if (m.tipo !== 'compra') continue;
+    if (typeof m.fecha !== 'string' || vistas[m.fecha]) continue;
+    vistas[m.fecha] = 1;
+    salida.push(m.fecha);
+  }
+  return salida;
+}
+
+/* La fecha de la primera compra. Más atrás de eso no hace falta nada. */
+function primeraCompra(est){
+  var min = null;
+  if (!est || !est.movimientos) return null;
+  for (var i = 0; i < est.movimientos.length; i++){
+    var f = est.movimientos[i].fecha;
+    if (typeof f === 'string' && (!min || f < min)) min = f;
+  }
+  return min;
+}
+
+/* Guardar doce años de cotizaciones para alguien que empezó hace seis
+   meses es tirar medio mega al pedo. Se recorta al mes anterior a la
+   primera compra y listo. */
+function recortarSerie(serie, desde){
+  if (!serie || !serie.length) return [];
+  if (!desde) return serie.slice(-400);
+  var corte = desde.slice(0, 8) + '01';
+  var d = new Date(corte + 'T00:00:00');
+  d.setMonth(d.getMonth() - 1);
+  var limite = fechaISO(d);
+  var i = 0;
+  while (i < serie.length && serie[i].f < limite) i++;
+  return serie.slice(Math.max(0, i - 1));
+}
+
+/* El contexto listo para calcular el resultado de las cuatro formas. */
+function contextoMundo(){
+  return {
+    hoy: hoyISO(),
+    cclHoy: dolarDe(E, AUTO),
+    cclSerie: MUNDO.cclSerie,
+    inflacion: MUNDO.inflacion,
+    tna: MUNDO.tna
+  };
+}
+
+function fechaISO(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function horaCorta(d){
+  if (!d) return '';
+  return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+
+/* ══════════════ Vistas ══════════════ */
+function render(){
+  var d = derivar(E, null, AUTO);
+  var html = '';
+  if (vista === 'resumen') html = vistaResumen(d);
+  else if (vista === 'inversiones') html = vistaInversiones(d);
+  else if (vista === 'movimientos') html = vistaMovimientos(d);
+  else html = vistaAyuda();
+  document.getElementById('vista').innerHTML = html;
+
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++){
+    tabs[i].setAttribute('aria-selected', tabs[i].dataset.tab === vista ? 'true' : 'false');
+  }
+}
+
+function avisoGuardado(){
+  if (puedeGuardar) return '';
+  return '<div class="aviso"><span><b>No se puede guardar en este navegador.</b> Si cerrás la página vas a perder lo cargado. Suele pasar en ventanas de incógnito.</span></div>';
+}
+
+function vistaResumen(d){
+  if (d.posiciones.length === 0 && E.movimientos.length === 0) return vistaPrimeraVez();
+
+  var h = avisoGuardado();
+  var gan = d.ganancia, pos = gan >= 0;
+  var clase = pos ? 'pos' : 'neg';
+  var flecha = pos ? '▲' : '▼';
+  var signo = pos ? '+' : '−';
+  var abs = Math.abs(gan);
+
+  h += '<div class="hero">';
+  h += '<div class="rotulo">Tus inversiones valen</div>';
+  h += '<div class="hero-cifra">' + pesos(d.valorHoy) + '</div>';
+  if (d.valorUSD != null){
+    h += '<div class="hero-usd">' + dolares(d.valorUSD) + '<span> · con el dólar a ' + pesos(d.dolarHoy) + '</span></div>';
+  }
+  if (d.invertido > 0){
+    h += '<div class="hero-delta"><span class="' + clase + '">' + flecha + ' ' + signo + pesos(abs) + '</span>'
+       + '<span class="' + clase + '">' + signo + pct(Math.abs(d.varPct)) + '</span></div>';
+    h += '<div class="hero-frase">Pusiste <b>' + pesos(d.invertido) + '</b> y hoy eso vale <b>' + pesos(d.valorHoy) + '</b>. '
+       + (Math.abs(gan) < 1 ? 'Estás justo a la par.' : (pos ? 'Ganaste <b>' + pesos(abs) + '</b>.' : 'Perdés <b>' + pesos(abs) + '</b>.'))
+       + '</div>';
+    if (d.valorUSD != null){
+      h += '<details class="explic"><summary>¿Por qué me muestra también los dólares?</summary>'
+        + '<p>Porque en Argentina ganar en pesos y ganar de verdad no son lo mismo. '
+        + 'Si tus inversiones subieron 40% pero el dólar subió 55%, en pesos tenés más pero comprás menos: '
+        + 'perdiste. Mirar las dos cifras juntas es la forma más rápida de no confundirte. '
+        + 'El dólar que uso sale de comparar empresas que cotizan acá y en Estados Unidos al mismo tiempo.</p></details>';
+    }
+  }
+  h += '</div>';
+
+  if (d.faltanPrecios > 0){
+    h += '<div class="aviso"><span><b>Falta el precio de hoy de ' + d.faltanPrecios + ' ' + (d.faltanPrecios === 1 ? 'inversión' : 'inversiones') + '.</b> '
+       + 'Mientras tanto ' + (d.faltanPrecios === 1 ? 'esa cuenta' : 'esas cuentan') + ' por lo que pagaste, así que el total de arriba se queda corto.</span>'
+       + '<button data-tab="inversiones">Cargarlos</button></div>';
+  }
+
+  h += '<div class="pila">';
+
+  if (E.hist.length >= 2){
+    h += '<div class="tarjeta"><div class="rotulo">Cómo viene</div>' + grafico() + '</div>';
+  }
+
+  h += tarjetaResultado(d);
+  h += '<div class="tarjeta"><div class="rotulo">En qué está repartida</div>' + composicion(d) + '</div>';
+
+  h += '<div class="tarjeta"><div class="rotulo">La plata de la cuenta</div>'
+     + '<div class="dato" style="padding-top:10px"><span>Pusiste en total</span><span>' + pesos(d.aportado) + '</span></div>'
+     + '<div class="dato"><span>Invertido</span><span>' + pesos(d.invertido) + '</span></div>'
+     + '<div class="dato"><span>Sin invertir, en la cuenta</span><span>' + pesos(d.efectivo)
+     + (d.efectivoUSD != null ? ' <span class="chico">· ' + dolares(d.efectivoUSD) + '</span>' : '') + '</span></div>'
+     + (Math.abs(d.realizado) > 0.5 ? '<div class="dato"><span>Ganado en lo que ya vendiste</span><span class="' + (d.realizado >= 0 ? 'pos' : 'neg') + '">' + (d.realizado >= 0 ? '+' : '−') + pesos(Math.abs(d.realizado)) + '</span></div>' : '')
+     + bloqueComisiones()
+     + bloqueQuieto(d)
+     + '<details class="explic"><summary>¿Por qué me muestra plata sin invertir?</summary>'
+     + '<p>Es la plata que entró a tu cuenta de inversión y todavía no compró nada. Está ahí quieta: no rinde y la inflación se la come. Si te aparece un número grande acá, puede ser que te falte cargar alguna compra, o que tengas plata esperando.</p></details>'
+     + '</div>';
+
+  h += '</div>';
+  return h;
+}
+
+function vistaPrimeraVez(){
+  return '<div class="hero" style="text-align:center">'
+    + '<h1 style="font-family:Fraunces,Georgia,serif; font-size:26px; letter-spacing:-.02em; margin-bottom:10px">Todo lo que tenés, en un solo lugar</h1>'
+    + '<p class="chico" style="max-width:40ch; margin:0 auto 18px; line-height:1.65">Cargá lo que compraste —dólares, un plazo fijo, un CEDEAR, lo que sea— y esta página te dice cuánto tenés hoy y cuánto ganaste. Sin cuentas, sin registrarte.</p>'
+    + '<button class="btn" data-acc="abrir-alta">Cargar mi primera inversión</button>'
+    + '</div>'
+    + '<div class="pila"><div class="tarjeta">'
+    + '<div class="rotulo">Antes de arrancar</div>'
+    + '<details class="explic" open><summary>¿Dónde quedan mis datos?</summary>'
+    + '<p>En tu navegador, en esta computadora o teléfono. No se mandan a ningún servidor, nadie más los ve, y quien te pasó este link tampoco. La contra es que si borrás los datos del navegador se pierden: en la solapa «Qué es cada cosa» tenés un botón para guardar una copia.</p></details>'
+    + '<details class="explic"><summary>¿Necesito saber de finanzas?</summary>'
+    + '<p>No. Te va a ir preguntando de a una cosa por vez, en castellano, y cada número que te muestra tiene al lado una explicación de qué significa. Si algo no lo entendés, tocá el signo de pregunta.</p></details>'
+    + '</div>'
+    + tarjetaDolar()
+    + '</div>';
+}
+
+function composicion(d){
+  /* Un color por tenencia, no por tipo: si alguien tiene ocho CEDEARs
+     todos salian del mismo color y la barra no decia nada. El gris
+     queda reservado para la plata sin invertir. */
+  var PALETA = ['--c1','--c2','--c3','--c4','--c5','--c6'];
+  var items = d.posiciones.map(function(q, i){
+    return {nom:q.nombre, clase:q.clase, val:(q.tienePrecio ? q.valor : q.costo),
+            col:'var(' + PALETA[i % PALETA.length] + ')'};
+  });
+  if (d.efectivo > 1){
+    items.push({nom:'Sin invertir', clase:null, val:d.efectivo, col:'var(--c7)'});
+  }
+  var total = items.reduce(function(a,b){ return a + b.val; }, 0);
+  if (total <= 0) return '<p class="chico">Todavía no hay nada cargado.</p>';
+
+  var barras = items.map(function(it){
+    var p = it.val / total * 100;
+    return '<i style="width:' + p.toFixed(2) + '%; background:' + it.col + '" title="' + esc(it.nom) + '"></i>';
+  }).join('');
+
+  var filas = items.map(function(it){
+    var p = it.val / total * 100;
+    return '<div class="leyenda-fila">'
+      + '<span class="punto" style="background:' + it.col + '"></span>'
+      + '<span class="leyenda-nom">' + esc(it.nom)
+        + ((it.clase && CLASES[it.clase].nom !== it.nom) ? ' <span class="chico">· ' + esc(CLASES[it.clase].nom) + '</span>' : '')
+        + '</span>'
+      + '<span class="leyenda-pct">' + pct(p) + '</span>'
+      + '<span class="leyenda-val">' + pesos(it.val) + '</span>'
+      + '</div>';
+  }).join('');
+
+  var mayor = items.slice().sort(function(a,b){ return b.val - a.val; })[0];
+  var pMayor = mayor.val / total * 100;
+  var nota = pMayor > 40
+    ? '<details class="explic"><summary>Tenés bastante concentrado en una sola cosa</summary><p><b>' + esc(mayor.nom) + '</b> es el ' + pct(pMayor) + ' de todo lo que tenés. No está mal en sí mismo, pero significa que si a esa inversión le va mal, te va mal a vos. Repartir entre varias cosas distintas es la forma más barata de bajar ese riesgo.</p></details>'
+    : '';
+
+  return '<div class="compo">' + barras + '</div>' + filas + nota;
+}
+
+function grafico(){
+  var pts = E.hist.slice(-60);
+  if (pts.length < 2) return '';
+  var W = 600, H = 160, mI = 8, mD = 8, mT = 16, mB = 22;
+  var vals = pts.map(function(p){ return p.v; });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  if (max === min){ max = max * 1.02 + 1; min = min * 0.98 - 1; }
+  var x = function(i){ return mI + (i / (pts.length - 1)) * (W - mI - mD); };
+  var y = function(v){ return mT + (1 - (v - min) / (max - min)) * (H - mT - mB); };
+
+  var linea = pts.map(function(p,i){ return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p.v).toFixed(1); }).join(' ');
+  var area = linea + ' L' + x(pts.length-1).toFixed(1) + ' ' + (H - mB) + ' L' + x(0).toFixed(1) + ' ' + (H - mB) + ' Z';
+  var sube = pts[pts.length-1].v >= pts[0].v;
+  var col = sube ? 'var(--pos)' : 'var(--neg)';
+
+  return '<svg class="graf" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Evolución de lo que vale tu cartera">'
+    + '<defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0%" stop-color="' + col + '" stop-opacity="0.18"/>'
+    + '<stop offset="100%" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>'
+    + '<path d="' + area + '" fill="url(#gr)"/>'
+    + '<path d="' + linea + '" fill="none" stroke="' + col + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>'
+    + '<circle cx="' + x(pts.length-1).toFixed(1) + '" cy="' + y(pts[pts.length-1].v).toFixed(1) + '" r="4" fill="' + col + '"/>'
+    + '<text x="' + mI + '" y="' + (H - 6) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">' + fechaCorta(pts[0].f) + '</text>'
+    + '<text x="' + (W - mD) + '" y="' + (H - 6) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif" text-anchor="end">' + fechaCorta(pts[pts.length-1].f) + '</text>'
+    + '<text x="' + mI + '" y="12" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">Máximo ' + pesos(max) + '</text>'
+    + '</svg>'
+    + '<p class="chico" style="margin-top:6px">Se anota un punto cada día que abrís la página.</p>';
+}
+
+function vistaInversiones(d){
+  if (d.posiciones.length === 0){
+    return franjaPrecios()
+      + '<div class="pila"><div class="tarjeta"><div class="vacio"><h3>Todavía no cargaste nada</h3>'
+      + '<p>Tocá «Agregar» arriba y cargá tu primera compra. Puede ser cualquier cosa: dólares que tenés guardados, un plazo fijo, un CEDEAR.</p></div></div>'
+      + tarjetaDolar() + '</div>';
+  }
+
+  var h = franjaPrecios();
+  var hayUSD = d.posiciones.some(function(q){ return q.clase === 'dolar' || q.moneda === 'USD'; });
+
+  if (hayUSD){
+    h += '<div class="tarjeta" style="margin-top:16px">';
+    if (AUTO.dolar){
+      /* Ya lo muestra el panel de abajo con todas las cotizaciones. */
+      h = h.slice(0, h.length - '<div class="tarjeta" style="margin-top:16px">'.length);
+    } else {
+      h += '<div class="precio-caja" style="margin:0; padding:0; border:0">'
+        + '<label for="dolar-hoy"><b style="color:var(--ink)">¿A cuánto está el dólar hoy?</b><br>Con esto valúo todo lo que tenés en dólares.</label>'
+        + '<input id="dolar-hoy" class="precio-inp" type="text" inputmode="decimal" data-dolar="1" value="' + (E.dolar != null ? nf2.format(E.dolar) : '') + '" placeholder="1580" aria-label="Precio del dólar hoy">'
+        + '</div>';
+    }
+    if (!AUTO.dolar) h += '</div>';
+  }
+
+  h += '<div class="pila">';
+  var dl = tarjetaDolar();
+  if (dl) h += dl;
+  for (var i = 0; i < d.posiciones.length; i++) h += tarjetaTenencia(d.posiciones[i]);
+  h += '</div>';
+  return h;
+}
+
+/* De donde vienen los precios y de cuando son. Sin fuente configurada
+   no dice nada: en ese caso la carga a mano es lo normal, no una falla. */
+/* ══════════════ Tu resultado de verdad ══════════════
+
+   La tarjeta que no trae ningún broker: el mismo resultado leído en
+   pesos, en dólares, contra la inflación y contra un plazo fijo.
+   Un broker te muestra la primera fila. Las otras tres son las que
+   contestan si de verdad te fue bien. */
+
+function filaResultado(etiqueta, dato, moneda, explicacion){
+  if (!dato || !dato.hay){
+    return '<div class="res-fila res-falta"><span class="res-etq">' + etiqueta + '</span>'
+      + '<span class="res-nota">' + esc(explicacion || 'todavía no') + '</span></div>';
+  }
+  var v = (dato.ganancia != null) ? dato.ganancia : dato.diferencia;
+  var pos = v >= 0;
+  var cl = Math.abs(v) < 0.005 ? '' : (pos ? 'pos' : 'neg');
+  var flecha = Math.abs(v) < 0.005 ? '' : (pos ? '▲ ' : '▼ ');
+  var signo = pos ? '+' : '−';
+  var abs = Math.abs(v);
+  var plata = moneda === 'usd' ? dolares(abs) : pesos(abs);
+  return '<div class="res-fila">'
+    + '<span class="res-etq">' + etiqueta + '</span>'
+    + '<span class="res-val ' + cl + '">' + flecha + signo + plata + '</span>'
+    + '<span class="res-pct ' + cl + '">' + signo + pct(Math.abs(dato.pct)) + '</span>'
+    + '</div>';
+}
+
+/* Cuanto se llevaron las comisiones en total. */
+function bloqueComisiones(){
+  var c = comisionesPagadas(E);
+  if (!c.total || c.total < 1) return '';
+  return '<div class="dato" style="border-top:1px solid var(--line); margin-top:8px; padding-top:11px">'
+    + '<span>Pagaste de comisiones</span><span>' + pesos(c.total) + '</span></div>'
+    + '<details class="explic"><summary>¿Es mucho o poco?</summary>'
+    + '<p>En ' + c.operaciones + (c.operaciones === 1 ? ' operación' : ' operaciones')
+    + ' llevás pagados <b>' + pesos2(c.total) + '</b>, que es el ' + pct(c.pctDeLoInvertido) + ' de lo que invertiste. '
+    + 'No es un número para asustarse, pero sí para tener presente: cada vez que comprás y vendés, una parte queda en el camino. '
+    + 'Comprar y quedarse quieto sale más barato que entrar y salir seguido.</p></details>';
+}
+
+/* Lo que cuesta la plata quieta. */
+function bloqueQuieto(d){
+  var q = costoDeEstarQuieto(d.efectivo, MUNDO.inflacion);
+  if (!q || q.porMes < 1) return '';
+  return '<div class="dato"><span>Lo que pierde por mes lo que está quieto</span>'
+    + '<span class="neg">−' + pesos(q.porMes) + '</span></div>'
+    + '<details class="explic"><summary>¿Por qué pierde si no lo toco?</summary>'
+    + '<p>Porque los precios suben. El mes pasado subieron ' + pct(q.tasaMes) + ', así que con los '
+    + pesos(d.efectivo) + ' que tenés sin invertir hoy comprás <b>' + pesos(q.porMes) + ' menos</b> de cosas que hace un mes. '
+    + 'No es una proyección: es lo que ya pasó. Tener algo de plata a mano para una urgencia está bien; '
+    + 'tener mucha quieta mucho tiempo tiene este costo.</p></details>';
+}
+
+/* El dolar de hoy en todas sus formas. Ya viene en la misma respuesta
+   que usamos para valuar, asi que mostrarlo no cuesta nada, y es de lo
+   primero que cualquiera en Argentina quiere saber. */
+var CASAS_DOLAR = [
+  ['oficial', 'Oficial'],
+  ['blue', 'Blue'],
+  ['bolsa', 'MEP'],
+  ['contadoconliqui', 'Contado con liqui'],
+  ['tarjeta', 'Tarjeta']
+];
+
+function tarjetaDolar(){
+  var c = AUTO.dolarCasas;
+  if (!c) return '';
+  var filas = '', hubo = 0;
+  for (var i = 0; i < CASAS_DOLAR.length; i++){
+    var clave = CASAS_DOLAR[i][0], nom = CASAS_DOLAR[i][1];
+    if (!c[clave]) continue;
+    hubo++;
+    var esElQueUsa = (clave === 'contadoconliqui');
+    filas += '<div class="dato"><span>' + nom + (esElQueUsa ? ' <b style="color:var(--accent)">· el que uso</b>' : '') + '</span>'
+      + '<span>' + pesos2(c[clave]) + '</span></div>';
+  }
+  if (!hubo) return '';
+  return '<div class="tarjeta"><div class="rotulo">El dólar hoy</div>' + filas
+    + '<details class="explic"><summary>¿Por qué hay tantos dólares?</summary>'
+    + '<p><b>Oficial</b> es el del banco, con cupo y trámite. <b>Blue</b> es el informal. '
+    + '<b>MEP</b> y <b>contado con liqui</b> son los que se compran por la bolsa, que es lo que hace tu broker: '
+    + 'son legales y no tienen cupo. <b>Tarjeta</b> es el que te cobran cuando pagás en el exterior.<br><br>'
+    + 'Para valuar uso el contado con liqui, porque es al que efectivamente podés comprar y vender por el broker.</p>'
+    + '</details></div>';
+}
+
+/* ══════════════ Historicos: se piden cuando hacen falta ══════════════
+
+   Cada serie pesa entre 90 y 300 KB. No se bajan al abrir la pagina:
+   se bajan cuando alguien toca "¿y si hubieras comprado otra cosa?",
+   que es una accion deliberada. Despues quedan en memoria. */
+var HISTORICOS = {};      /* ticker -> {estado, serie} */
+var REFERENCIAS = [
+  {clave: 'SPY', nombre: 'El índice de EE.UU.', detalle: 'las 500 empresas más grandes, todas juntas'},
+  {clave: 'QQQ', nombre: 'Las tecnológicas',    detalle: 'Apple, Microsoft, Nvidia y compañía, juntas'}
+];
+/* El oro y la plata no tienen historial en la fuente: la API contesta
+   que no conoce el ticker. Si algun dia lo agrega, van aca. */
+
+function traerHistorico(ticker){
+  if (HISTORICOS[ticker]) return Promise.resolve(HISTORICOS[ticker]);
+  HISTORICOS[ticker] = {estado: 'cargando', serie: []};
+  return traer('https://data912.com/historical/cedears/' + ticker, 30)
+    .then(function(t){
+      var serie = leerHistorico(t);
+      var salud = saludDeSerie(serie);
+      HISTORICOS[ticker] = salud.sirve
+        ? {estado: 'ok', serie: serie, salud: salud}
+        : {estado: 'dudosa', serie: [], salud: salud};
+      return HISTORICOS[ticker];
+    })
+    ['catch'](function(){
+      HISTORICOS[ticker] = {estado: 'falla', serie: []};
+      return HISTORICOS[ticker];
+    });
+}
+
+/* Todo lo que hace falta para comparar una tenencia. */
+function traerParaComparar(q){
+  var pedidos = [traerHistorico(q.nombre)];
+  for (var i = 0; i < REFERENCIAS.length; i++) pedidos.push(traerHistorico(REFERENCIAS[i].clave));
+  return Promise.all(pedidos).then(function(){ render(); });
+}
+
+/* Las alternativas disponibles hoy, segun lo que se pudo traer. */
+function alternativasPara(){
+  var alts = [];
+  for (var i = 0; i < REFERENCIAS.length; i++){
+    var r = REFERENCIAS[i], h = HISTORICOS[r.clave];
+    if (h && h.estado === 'ok') alts.push({nombre: r.nombre, detalle: r.detalle, tipo: 'serie', serie: h.serie});
+  }
+  if (MUNDO.cclSerie && MUNDO.cclSerie.length){
+    alts.push({nombre: 'Comprar dólares', detalle: 'y guardarlos abajo del colchón', tipo: 'serie', serie: MUNDO.cclSerie});
+  }
+  if (MUNDO.tna){
+    alts.push({nombre: 'Un plazo fijo', detalle: 'a la tasa de hoy, ' + pct(MUNDO.tna * 100) + ' anual', tipo: 'tasa', tna: MUNDO.tna});
+  }
+  return alts;
+}
+
+/* ══════════════ El bloque de comparacion de una tenencia ══════════════ */
+var ABIERTAS = {};   /* clave -> true, para recordar cual esta desplegada */
+
+function bloqueComparar(q){
+  if (!q.tienePrecio) return '';
+  var compras = comprasDe(E, q.clave);
+  if (!compras.length) return '';
+
+  if (!ABIERTAS[q.clave]){
+    return '<div class="comparar-cerrado">'
+      + '<button class="btn-comparar" data-acc="comparar" data-clave="' + esc(q.clave) + '">'
+      + '¿Y si hubieras comprado otra cosa?</button></div>';
+  }
+
+  var propio = HISTORICOS[q.nombre];
+  var cargando = (propio && propio.estado === 'cargando')
+    || REFERENCIAS.some(function(r){ var h = HISTORICOS[r.clave]; return !h || h.estado === 'cargando'; });
+
+  if (cargando){
+    return '<div class="comparar-abierto"><p class="chico">Buscando cuánto valían las otras cosas esos días…</p></div>';
+  }
+
+  var h = '<div class="comparar-abierto">';
+  var alts = alternativasPara();
+  var comp = compararAlternativas(compras, q.valor, alts);
+
+  if (!comp){
+    h += '<p class="chico">No se pudo traer el historial para comparar. Probá más tarde.</p>';
+  } else {
+    h += tablaComparacion(comp, q);
+  }
+
+  if (propio && propio.estado === 'ok' && propio.serie.length > 30){
+    h += graficoCompraste(propio.serie, compras, q);
+    h += bloqueCaida(propio.serie, compras[0].fecha, q);
+  } else if (propio && propio.estado === 'dudosa'){
+    h += '<p class="chico" style="margin-top:10px">El historial de este papel tiene datos raros, así que no lo dibujo: prefiero no mostrarte un gráfico que miente.</p>';
+  }
+
+  h += '<button class="btn-texto" data-acc="comparar" data-clave="' + esc(q.clave) + '" style="margin-top:12px">Cerrar</button>';
+  return h + '</div>';
+}
+
+/* La tabla: barras horizontales con etiqueta directa, ordenadas.
+   Cinco filas con nombre al lado, asi que no hace falta leyenda. */
+function tablaComparacion(comp, q){
+  var maxv = comp.filas[0].valor;
+  var h = '<p class="chico" style="margin-bottom:10px">Pusiste <b>' + pesos(comp.invertido)
+    + '</b> en ' + esc(q.nombre) + ' desde el ' + fechaCorta(comp.desde)
+    + '. Si esa misma plata, esos mismos días, hubiera ido a:</p>'
+    + '<div class="comp-tabla">';
+
+  for (var i = 0; i < comp.filas.length; i++){
+    var f = comp.filas[i];
+    var ancho = maxv > 0 ? (f.valor / maxv * 100) : 0;
+    h += '<div class="comp-fila' + (f.esTuyo ? ' comp-tuyo' : '') + '">'
+      + '<div class="comp-nom">' + esc(f.nombre) + (f.esTuyo ? '' : '<span class="comp-det">' + esc(f.detalle || '') + '</span>') + '</div>'
+      + '<div class="comp-medida">'
+      + '<div class="comp-barra"><i style="width:' + ancho.toFixed(1) + '%"></i></div>'
+      + '<div class="comp-val">' + pesos(f.valor) + '</div></div>'
+      + '</div>';
+  }
+  h += '</div>';
+
+  if (comp.ganasteATodas){
+    h += '<p class="res-frase">Le ganaste a todas las alternativas. Puede ser buen ojo o puede ser suerte: lo mismo mirado dentro de un año puede dar distinto.</p>';
+  } else {
+    var m = comp.mejorAlternativa;
+    var dif = m.valor - comp.valorReal;
+    h += '<p class="res-frase"><b>' + esc(m.nombre) + '</b> te hubiera dado <b>' + pesos(dif) + ' más</b>. '
+      + 'No quiere decir que hayas elegido mal: quiere decir que en este período esa opción rindió más. '
+      + 'Mirado en otro momento puede dar vuelta.</p>';
+  }
+
+  h += '<p class="chico" style="margin-top:9px">Es mirando para atrás, y sin contar impuestos ni las comisiones que también te cobrarían por comprar esas alternativas.</p>';
+  return h;
+}
+
+/* ══════════════ El gráfico: "compraste acá" ══════════════
+
+   Una sola serie, asi que el titulo la nombra y no hace falta leyenda.
+   Los puntos de compra son la informacion: van marcados con un anillo
+   del color de la superficie para que se despeguen de la linea. */
+function graficoCompraste(serie, compras, q){
+  var desde = compras[0].fecha;
+  var pts = serie.filter(function(p){ return p.f >= desde; });
+  /* Un poco de contexto antes de la primera compra ayuda a ver si
+     compro caro o barato. */
+  var iDesde = serie.findIndex ? serie.findIndex(function(p){ return p.f >= desde; }) : 0;
+  if (iDesde > 30) pts = serie.slice(iDesde - 30);
+  if (pts.length < 5) return '';
+
+  var W = 600, H = 190, mI = 10, mD = 10, mT = 26, mB = 26;
+  var vals = pts.map(function(p){ return p.v; });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  if (max === min){ max = max * 1.02 + 1; min = min * 0.98 - 1; }
+  var x = function(i){ return mI + (i / (pts.length - 1)) * (W - mI - mD); };
+  var y = function(v){ return mT + (1 - (v - min) / (max - min)) * (H - mT - mB); };
+  var iDe = {};
+  pts.forEach(function(p, i){ iDe[p.f] = i; });
+
+  var linea = pts.map(function(p, i){ return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p.v).toFixed(1); }).join(' ');
+  var area = linea + ' L' + x(pts.length-1).toFixed(1) + ' ' + (H - mB) + ' L' + x(0).toFixed(1) + ' ' + (H - mB) + ' Z';
+  var sube = pts[pts.length-1].v >= pts[0].v;
+  var col = sube ? 'var(--pos)' : 'var(--neg)';
+
+  /* Los puntos de compra, sobre el dia real o el mas cercano */
+  var marcas = '';
+  for (var k = 0; k < compras.length; k++){
+    var f = compras[k].fecha, i = iDe[f];
+    if (i == null){
+      for (var d = 0; d < 6 && i == null; d++){
+        var prev = new Date(f + 'T00:00:00'); prev.setDate(prev.getDate() - d);
+        i = iDe[fechaISO(prev)];
+      }
+    }
+    if (i == null) continue;
+    marcas += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(pts[i].v).toFixed(1) + '" r="5.5" '
+      + 'fill="var(--accent)" stroke="var(--card)" stroke-width="2"><title>Compraste el '
+      + fechaCorta(f) + '</title></circle>';
+  }
+
+  return '<div class="graf-caja">'
+    + '<div class="graf-tit">' + esc(q.nombre) + ' desde que lo comprás</div>'
+    + '<svg class="graf" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Precio de ' + esc(q.nombre) + ' con tus compras marcadas">'
+    + '<defs><linearGradient id="g-' + esc(q.nombre) + '" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0%" stop-color="' + col + '" stop-opacity="0.16"/>'
+    + '<stop offset="100%" stop-color="' + col + '" stop-opacity="0"/></linearGradient></defs>'
+    + '<path d="' + area + '" fill="url(#g-' + esc(q.nombre) + ')"/>'
+    + '<path d="' + linea + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    + marcas
+    + '<text x="' + mI + '" y="14" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">Máximo ' + pesos(max) + '</text>'
+    + '<text x="' + (W - mD) + '" y="14" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif" text-anchor="end">Hoy ' + pesos(pts[pts.length-1].v) + '</text>'
+    + '<text x="' + mI + '" y="' + (H - 8) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif">' + fechaCorta(pts[0].f) + '</text>'
+    + '<text x="' + (W - mD) + '" y="' + (H - 8) + '" fill="var(--muted)" font-size="12" font-family="Figtree,sans-serif" text-anchor="end">Mínimo ' + pesos(min) + '</text>'
+    + '</svg>'
+    + '<p class="chico">Los puntos son tus compras. Si están cerca de la parte de arriba, compraste caro.</p>'
+    + '</div>';
+}
+
+/* ══════════════ ¿Cuánto puede bajar esto? ══════════════ */
+function bloqueCaida(serie, desde, q){
+  var c = peorCaida(serie, desde);
+  if (!c || c.pct < 3) return '';
+  return '<details class="explic" style="margin-top:12px"><summary>¿Cuánto puede bajar esto?</summary>'
+    + '<p>Desde que lo comprás, <b>' + esc(q.nombre) + '</b> llegó a estar <b>' + pct(c.pct) + ' abajo</b> '
+    + 'de su mejor momento, el ' + fechaCorta(c.fecha) + '. '
+    + (c.recuperado
+        ? 'Después se recuperó, pero mientras pasaba no había forma de saberlo.'
+        : 'Todavía no volvió a ese máximo.')
+    + '<br><br>No es una predicción de lo que va a pasar: es lo que ya pasó. '
+    + 'Sirve para saber con qué te podés encontrar y no vender apurado el día que ocurra.</p></details>';
+}
+
+function tarjetaResultado(d){
+  if (d.invertido <= 0) return '';
+  var r = resultadoReal(E, d, contextoMundo());
+  if (!r.pesos.hay) return '';
+
+  var buscando = MUNDO.estado === 'cargando';
+  var nota = buscando ? 'buscando…' : (enVistaPrevia() ? 'sólo en la página publicada' : 'no se pudo');
+
+  var h = '<div class="tarjeta">'
+    + '<div class="rotulo">Tu resultado, de cuatro formas</div>'
+    + '<p class="chico" style="margin:7px 0 12px">Un broker te muestra la primera fila. Las otras tres son las que contestan si de verdad te fue bien.</p>'
+    + '<div class="res-tabla">'
+    + filaResultado('En pesos', r.pesos, 'ars')
+    + filaResultado('En dólares', r.dolares, 'usd', nota)
+    + filaResultado('Contra la inflación', r.inflacion, 'ars', nota)
+    + filaResultado('Contra un plazo fijo', r.plazoFijo, 'ars', nota)
+    + '</div>';
+
+  /* La frase que resume, sólo cuando las dos primeras están */
+  if (r.dolares.hay){
+    var gp = r.pesos.ganancia >= 0, gd = r.dolares.ganancia >= 0;
+    var frase;
+    if (gp && !gd){
+      frase = '<b>Ojo con esto:</b> en pesos tenés más plata que al principio, pero en dólares tenés menos. '
+            + 'Quiere decir que tus inversiones subieron menos de lo que subió el dólar.';
+    } else if (!gp && gd){
+      frase = 'En pesos parece que perdiste, pero en dólares ganaste. El dólar bajó más de lo que bajaron tus inversiones.';
+    } else if (gp && gd){
+      frase = 'Ganaste en las dos monedas. Es el mejor de los casos: subiste más rápido que el dólar.';
+    } else {
+      frase = 'Por ahora perdés en las dos monedas. Puede cambiar: lo que muestra esta pantalla es hoy, no el final.';
+    }
+    h += '<p class="res-frase">' + frase + '</p>';
+  }
+
+  h += '<details class="explic"><summary>¿Qué significa cada fila?</summary><p>'
+    + '<b>En pesos</b> es lo que te muestra tu broker: cuántos pesos más tenés que cuando empezaste.<br><br>'
+    + '<b>En dólares</b> convierte cada compra con el dólar del día que la hiciste, y lo de hoy con el de hoy. '
+    + 'Es la fila más importante en Argentina: podés tener 40% más pesos y menos dólares que antes.<br><br>'
+    + '<b>Contra la inflación</b> responde si con tu plata comprás más cosas que antes o menos. '
+    + 'Ganar 50% cuando todo aumentó 60% es perder.<br><br>'
+    + '<b>Contra un plazo fijo</b> es qué hubiera pasado si esa misma plata, en las mismas fechas, hubiera estado quieta en el banco. '
+    + 'Contesta si valió la pena el riesgo.'
+    + (r.plazoFijo.hay ? ' Usa ' + pct(r.plazoFijo.tna * 100) + ' anual, la tasa del medio entre los bancos de hoy.' : '')
+    + '</p></details>';
+
+  if (r.inflacion.hay && r.inflacion.hasta){
+    h += '<p class="chico" style="margin-top:9px">La inflación está publicada hasta ' + esc(fechaCorta(r.inflacion.hasta)) + '. Los meses posteriores todavía no salieron.</p>';
+  }
+
+  h += '</div>';
+  return h;
+}
+
+function franjaPrecios(){
+  if (AUTO.estado === 'sin-fuente') return '';
+
+  if (AUTO.estado === 'cargando'){
+    return '<div class="aviso" style="background:var(--accent-soft); border-color:var(--accent-line); color:var(--ink)">'
+      + '<span>Buscando los precios de hoy…</span></div>';
+  }
+
+  if (AUTO.estado === 'falla' && enVistaPrevia()){
+    return '<div class="aviso"><span><b>Esto es una vista previa.</b> '
+      + 'Acá no se pueden traer los precios de la bolsa porque el visor bloquea los pedidos a otros sitios. '
+      + 'En la página publicada llegan solos; mientras tanto podés cargarlos a mano.</span></div>';
+  }
+
+  if (AUTO.estado === 'falla'){
+    var hayViejos = AUTO.cuando != null;
+    return '<div class="aviso"><span><b>No se pudieron traer los precios de hoy.</b> '
+      + (hayViejos
+          ? 'Estás viendo los últimos que llegaron bien, del ' + fechaCorta(fechaISO(AUTO.cuando)) + ' a las ' + horaCorta(AUTO.cuando) + '.'
+          : 'Puede ser que te hayas quedado sin internet. Mientras tanto podés cargarlos a mano acá abajo.')
+      + '</span><button data-acc="reintentar-precios">Reintentar</button></div>';
+  }
+
+  return '<div class="aviso" style="background:var(--accent-soft); border-color:var(--accent-line); color:var(--ink)">'
+    + '<span>Precios actualizados a las <b>' + horaCorta(AUTO.cuando) + '</b>. '
+    + 'Se traen solos cada vez que abrís la página.</span>'
+    + '<button data-acc="reintentar-precios">Actualizar</button></div>';
+}
+
+function tarjetaTenencia(q){
+  var C = CLASES[q.clase] || CLASES.otro;
+  var col = 'var(' + C.col + ')';
+  var gan = q.ganancia, pos = gan >= 0;
+  var cl = pos ? 'pos' : 'neg';
+
+  var h = '<div class="ten"><div class="ten-cab">'
+    + '<span class="chip-clase" style="background:' + col + '; color:var(--chip-ink)">' + C.ico + '</span>'
+    + '<div><div class="ten-tit">' + esc(q.nombre) + '</div>'
+    + '<div class="ten-sub">' + esc(C.nom) + ' · ' + nfU.format(q.cant) + ' ' + C.unidad + '</div></div>'
+    + '<div class="ten-der">';
+
+  if (q.tienePrecio){
+    h += '<div class="ten-val">' + pesos(q.valor) + '</div>'
+      + '<div class="ten-gan ' + cl + '">' + (pos ? '▲ +' : '▼ −') + pesos(Math.abs(gan)) + ' · ' + (pos ? '+' : '−') + pct(Math.abs(q.varPct)) + '</div>';
+  } else {
+    h += '<div class="ten-val">' + pesos(q.costo) + '</div><div class="ten-gan chico">Falta el precio</div>';
+  }
+  h += '</div></div>';
+
+  h += '<div class="ten-cuerpo">'
+    + '<div class="dato"><span>' + (q.clase === 'plazofijo' ? 'Lo que pusiste' : 'Lo que pagaste en total') + '</span><span>' + pesos(q.costo) + '</span></div>';
+
+  if (q.valorUSD != null && q.clase !== 'dolar'){
+    h += '<div class="dato"><span>Hoy vale, en dólares</span><span>' + dolares(q.valorUSD) + '</span></div>';
+  }
+
+  if (q.clase !== 'plazofijo'){
+    h += '<div class="dato"><span>Te salió cada ' + esc(C.sing) + '</span><span>' + pesos2(q.ppc) + '</span></div>';
+  }
+
+  if (q.clase === 'plazofijo'){
+    h += '<div class="dato"><span>Tasa anual</span><span>' + (q.tna ? pct(q.tna) : 'sin cargar') + '</span></div>';
+    if (q.vence) h += '<div class="dato"><span>Vence</span><span>' + fechaCorta(q.vence) + '</span></div>';
+    h += '<p class="chico" style="margin-top:9px">' + esc(q.auto || '') + '</p>';
+  } else if (q.clase === 'dolar'){
+    h += '<div class="dato"><span>Dólar hoy</span><span>' + (E.dolar ? pesos2(E.dolar) : 'cargalo arriba') + '</span></div>';
+  } else if (precioDe(q.clave, {precios:{}}, AUTO) != null){
+    h += '<div class="dato" style="border-top:1px solid var(--line); margin-top:11px; padding-top:11px">'
+      + '<span>Precio de hoy</span><span>' + pesos2(precioDe(q.clave, {precios:{}}, AUTO)) + '</span></div>'
+      + '<p class="chico" style="margin-top:6px">Llega solo, no hace falta que lo cargues.</p>';
+  } else {
+    var px = E.precios[q.clave];
+    h += '<div class="precio-caja">'
+      + '<label for="px-' + esc(q.clave) + '">¿A cuánto está hoy cada uno?<br><span style="font-size:12px">Lo ves en la app de tu banco o broker.</span></label>'
+      + '<input id="px-' + esc(q.clave) + '" class="precio-inp" type="text" inputmode="decimal" data-precio="' + esc(q.clave) + '" value="' + (px != null ? nf2.format(px) : '') + '" placeholder="' + nf0.format(Math.round(q.ppc)) + '" aria-label="Precio de hoy de ' + esc(q.nombre) + '">'
+      + '</div>';
+  }
+
+  h += bloqueComparar(q);
+  h += '</div></div>';
+  return h;
+}
+
+function vistaMovimientos(d){
+  if (E.movimientos.length === 0){
+    return '<div class="tarjeta" style="margin-top:16px"><div class="vacio"><h3>Sin movimientos</h3>'
+      + '<p>Acá va quedando la lista de todo lo que hiciste: cada compra, cada venta y cada vez que pusiste o sacaste plata.</p></div></div>';
+  }
+
+  var movs = E.movimientos.slice().sort(function(a,b){ return String(b.fecha).localeCompare(String(a.fecha)); });
+  var h = '<div class="pila"><div class="tarjeta">';
+
+  for (var i = 0; i < movs.length; i++){
+    var m = movs[i];
+    var ico, col, tit, sub, val, vcl;
+
+    if (m.tipo === 'ingreso' || m.tipo === 'retiro'){
+      var entra = m.tipo === 'ingreso';
+      ico = entra ? '↓' : '↑'; col = 'var(--c7)';
+      tit = entra ? 'Pusiste plata en la cuenta' : 'Sacaste plata de la cuenta';
+      sub = fechaCorta(m.fecha) + (m.nota ? ' · ' + m.nota : '');
+      val = (entra ? '+' : '−') + pesos(m.total || 0);
+      vcl = '';
+    } else {
+      var C = CLASES[m.clase] || CLASES.otro;
+      var compra = m.tipo === 'compra';
+      ico = compra ? '+' : '−'; col = 'var(' + C.col + ')';
+
+      if (m.clase === 'plazofijo'){
+        /* "150.000 × $1,00" no le dice nada a nadie: lo que importa
+           es la plata que puso y a que tasa. */
+        tit = (compra ? 'Pusiste en ' : 'Sacaste de ') + esc(m.nombre);
+        sub = fechaCorta(m.fecha) + (m.tna ? ' · ' + pct(m.tna) + ' anual' : '')
+            + (m.vence ? ' · vence ' + fechaCorta(m.vence) : '');
+      } else if (m.clase === 'dolar'){
+        tit = (compra ? 'Compraste dólares' : 'Vendiste dólares');
+        sub = fechaCorta(m.fecha) + ' · ' + nfU.format(m.cantidad) + ' a $' + nf2.format(m.precio);
+      } else {
+        tit = (compra ? 'Compraste ' : 'Vendiste ') + esc(m.nombre);
+        sub = fechaCorta(m.fecha) + ' · ' + nfU.format(m.cantidad) + ' × ' + (m.moneda === 'USD' ? 'US$' : '$') + nf2.format(m.precio);
+      }
+      val = (compra ? '−' : '+') + pesos(aPesos(m.total || 0, m, E));
+      vcl = '';
+    }
+
+    h += '<div class="mov">'
+      + '<span class="mov-ico" style="background:' + col + '; color:var(--chip-ink)">' + ico + '</span>'
+      + '<div><div class="mov-tit">' + tit + '</div><div class="mov-sub">' + esc(sub) + '</div></div>'
+      + '<span class="mov-val ' + vcl + '">' + val + '</span>'
+      + '<button class="mov-x" data-acc="borrar" data-id="' + esc(m.id) + '" aria-label="Borrar este movimiento" title="Borrar">×</button>'
+      + '</div>';
+  }
+
+  h += '</div></div>';
+  return h;
+}
+
+function vistaAyuda(){
+  var h = '<div class="pila">';
+
+  h += '<div class="tarjeta"><div class="rotulo">Guardá una copia</div>'
+    + '<p class="chico" style="margin:8px 0 12px; line-height:1.6">Todo lo que cargás vive únicamente en este navegador. Si borrás los datos del sitio, cambiás de teléfono o usás otra computadora, no está. Guardate una copia cada tanto.</p>'
+    + '<div class="acciones">'
+    + '<button class="btn-fino" data-acc="exportar">Guardar una copia</button>'
+    + '<button class="btn-fino" data-acc="importar">Restaurar una copia</button>'
+    + '</div>'
+    + '<div id="aviso-copia" class="chico" style="margin-top:10px"></div>'
+    + '</div>';
+
+  h += '<div class="tarjeta"><div class="rotulo">Qué significa cada palabra</div><dl class="glosario" style="margin:12px 0 0">';
+  var g = [
+    ['Cartera', 'El conjunto de todo lo que tenés invertido. Si tenés dólares, un plazo fijo y dos CEDEARs, esos cuatro juntos son tu cartera.'],
+    ['CEDEAR', CLASES.cedear.explica + ' Comprás en pesos y no necesitás una cuenta en el exterior.'],
+    ['Plazo fijo', CLASES.plazofijo.explica + ' Sabés desde el día uno cuánto vas a cobrar.'],
+    ['Fondo común (FCI)', CLASES.fondo.explica],
+    ['Comisión', 'Lo que te cobra el broker por hacer la operación. Se suma a lo que pagás cuando comprás, y se resta de lo que cobrás cuando vendés. Suele ser un porcentaje chico, pero existe.'],
+    ['Precio promedio', 'Si compraste lo mismo varias veces a precios distintos, es el promedio de lo que te salió cada unidad, comisiones incluidas. Es el número contra el que se compara el precio de hoy para saber si ganás o perdés.'],
+    ['Ganancia no realizada', 'La ganancia que tenés en papel, porque todavía no vendiste. Puede subir o bajar mañana. Sólo se vuelve plata de verdad cuando vendés.'],
+    ['Diversificar', 'Repartir la plata entre cosas distintas para que un golpe a una sola no te arruine todo. Es lo más cerca que hay de un almuerzo gratis en finanzas.'],
+    ['Dólar MEP / CCL', 'Formas legales de comprar dólares a través de la bolsa. Suelen tener un precio distinto al dólar del banco. Si comprás dólares por tu broker, es probable que sea por acá.']
+  ];
+  for (var i = 0; i < g.length; i++){
+    h += '<dt>' + esc(g[i][0]) + '</dt><dd>' + esc(g[i][1]) + '</dd>';
+  }
+  h += '</dl></div>';
+
+  var t = tasasDe(E);
+  h += '<div class="tarjeta"><div class="rotulo">Las comisiones de tu broker</div>'
+    + '<p class="chico" style="margin:9px 0 14px; line-height:1.65">Cada broker cobra distinto. Cargá acá lo que te cobra el tuyo y la página va a calcular tus compras con esos números. '
+    + 'Los encontrás en tu app o en la web de tu broker, buscando «comisiones» o «aranceles».</p>'
+    + '<div class="fila2">'
+    + '<div class="campo"><label for="tasa-com">Comisión</label>'
+    + '<input id="tasa-com" type="text" inputmode="decimal" data-tasa="comision" value="' + nf3.format(t.comision) + '" aria-label="Comisión en por ciento">'
+    + '<span class="pista">En por ciento. Por ejemplo: 0,45</span></div>'
+    + '<div class="campo"><label for="tasa-gas">Gastos de mercado</label>'
+    + '<input id="tasa-gas" type="text" inputmode="decimal" data-tasa="gastos" value="' + nf3.format(t.gastos) + '" aria-label="Gastos de mercado en por ciento">'
+    + '<span class="pista">En por ciento. Por ejemplo: 0,155</span></div>'
+    + '</div>'
+    + '<div class="dato" style="border-top:1px solid var(--line); padding-top:11px; margin-top:4px">'
+    + '<span>Sobre una compra de ' + pesos(100000) + ' te cobraría</span><span>' + pesos2(calcularCostos(100000, 'cedear', 'calcular', null, t)) + '</span></div>'
+    + (t.propias
+        ? '<p class="chico" style="margin-top:10px">Estás usando tus propios números.</p>'
+        : '<p class="chico" style="margin-top:10px"><b>Todavía no cargaste los tuyos.</b> Mientras tanto usa 0,45% y 0,155%, que son los de una cuenta común operando por la web. El primero sale de una grilla de comisiones real; el segundo está deducido de operaciones reales y puede no coincidir con tu broker.</p>')
+    + '<div class="acciones"><button class="btn-fino" data-acc="tasas-reset">Volver a los valores de fábrica</button></div>'
+    + '</div>';
+
+  h += '<div class="tarjeta"><div class="rotulo">Empezar de nuevo</div>'
+    + '<p class="chico" style="margin:8px 0 12px">Borra todo lo cargado en este navegador. No se puede deshacer.</p>'
+    + '<button class="btn-fino btn-peligro" data-acc="borrar-todo">Borrar todos mis datos</button></div>';
+
+  h += '</div>';
+  return h;
+}
+
+/* ══════════════ Diálogos propios ══════════════
+   El visor de páginas publicadas bloquea confirm(), prompt() y alert():
+   quedan mudos y el botón no hace nada. Por eso van hechos a mano. */
+var dialogo = null;
+var acciones = {};
+
+function preguntar(cfg){
+  dialogo = cfg;
+  pintarModal();
+}
+
+function pintarDialogo(){
+  var d = dialogo;
+  var h = '<div class="velo" data-acc="velo"><div class="hoja" role="dialog" aria-modal="true" aria-label="' + esc(d.titulo) + '">'
+    + '<div class="hoja-cab"><span class="hoja-tit">' + esc(d.titulo) + '</span>'
+    + '<button class="cerrar" data-acc="cerrar-dialogo" aria-label="Cerrar">×</button></div>'
+    + '<p class="chico" style="line-height:1.65; margin-bottom:16px">' + esc(d.texto) + '</p>';
+
+  if (d.tipo === 'texto'){
+    h += '<div class="campo"><label for="f-pegar">' + esc(d.etiqueta || '') + '</label>'
+      + '<textarea id="f-pegar" rows="6" style="font-size:13px; font-family:ui-monospace,monospace"></textarea></div>'
+      + '<p id="error-dialogo" class="error" hidden></p>';
+  }
+
+  if (d.tipo === 'mostrar'){
+    h += '<div class="campo"><textarea id="f-copia" rows="8" readonly '
+      + 'style="font-size:12px; font-family:ui-monospace,monospace">' + esc(d.contenido || '') + '</textarea></div>';
+  }
+
+  h += '<div class="acciones" style="margin-top:4px">'
+    + '<button class="btn' + (d.peligro ? ' btn-peligro' : '') + '" data-acc="dialogo-ok"'
+    + (d.peligro ? ' style="background:var(--neg); color:var(--peligro-ink)"' : '') + '>' + esc(d.ok || 'Confirmar') + '</button>'
+    + (d.tipo === 'mostrar' ? '' : '<button class="btn-fino" data-acc="cerrar-dialogo">Cancelar</button>')
+    + '</div></div></div>';
+
+  document.getElementById('modal').innerHTML = h;
+
+  /* Deja el texto ya seleccionado: en el telefono ahorra el peor paso. */
+  if (d.tipo === 'mostrar'){
+    var caja = document.getElementById('f-copia');
+    if (caja){ caja.focus(); caja.select(); }
+  }
+}
+
+/* ══════════════ Alta guiada ══════════════ */
+function abrirAlta(){
+  dialogo = null;
+  borrador = {paso:1, tipo:null, clase:null, moneda:'ARS', modoCom:'calcular', fecha:hoyISO(), error:null};
+  pintarModal();
+}
+
+function cerrarAlta(){
+  borrador = null;
+  dialogo = null;
+  document.getElementById('modal').innerHTML = '';
+}
+
+function pintarModal(){
+  if (!borrador){
+    if (dialogo) pintarDialogo();
+    else document.getElementById('modal').innerHTML = '';
+    return;
+  }
+  var b = borrador;
+  var totalPasos = (b.tipo === 'ingreso' || b.tipo === 'retiro') ? 2 : 4;
+  var barras = '';
+  for (var i = 1; i <= totalPasos; i++) barras += '<i class="' + (i <= b.paso ? 'on' : '') + '"></i>';
+
+  var cuerpo = '';
+  if (b.paso === 1) cuerpo = pasoTipo();
+  else if (b.tipo === 'ingreso' || b.tipo === 'retiro') cuerpo = pasoEfectivo();
+  else if (b.paso === 2) cuerpo = pasoClase();
+  else if (b.paso === 3) cuerpo = pasoDatos();
+  else cuerpo = pasoConfirmar();
+
+  document.getElementById('modal').innerHTML =
+    '<div class="velo" data-acc="velo"><div class="hoja" role="dialog" aria-modal="true" aria-label="Agregar un movimiento">'
+    + '<div class="hoja-cab">'
+    + (b.paso > 1 ? '<button class="cerrar" data-w="atras" aria-label="Volver">‹</button>' : '')
+    + '<span class="hoja-tit">' + tituloPaso() + '</span>'
+    + '<button class="cerrar" data-w="cerrar" aria-label="Cerrar">×</button></div>'
+    + '<div class="pasos">' + barras + '</div>'
+    + (b.error ? '<p class="error">' + esc(b.error) + '</p>' : '')
+    + cuerpo + '</div></div>';
+}
+
+function tituloPaso(){
+  var b = borrador;
+  if (b.paso === 1) return '¿Qué querés anotar?';
+  if (b.tipo === 'ingreso') return 'Plata que entró';
+  if (b.tipo === 'retiro') return 'Plata que sacaste';
+  if (b.paso === 2) return '¿Qué ' + (b.tipo === 'compra' ? 'compraste' : 'vendiste') + '?';
+  if (b.paso === 3) return 'Los datos de la operación';
+  return 'Revisá que esté bien';
+}
+
+function opcion(attrs, ico, col, tit, desc, activo){
+  return '<button class="opcion" ' + attrs + (activo ? ' aria-pressed="true"' : '') + '>'
+    + '<span class="opcion-ico" style="background:' + col + '; color:var(--chip-ink)">' + ico + '</span>'
+    + '<span><span class="opcion-tit">' + tit + '</span><span class="opcion-desc">' + desc + '</span></span></button>';
+}
+
+function pasoTipo(){
+  return '<div class="opciones">'
+    + opcion('data-w="tipo" data-val="compra"',  '+',  'var(--c1)', 'Compré algo',              'Un CEDEAR, dólares, un plazo fijo, cripto, lo que sea.')
+    + opcion('data-w="tipo" data-val="venta"',   '−',  'var(--c6)', 'Vendí algo',               'Te desprendiste de algo que ya tenías cargado.')
+    + opcion('data-w="tipo" data-val="ingreso"', '↓',  'var(--c5)', 'Puse plata en la cuenta',  'Transferiste plata a tu cuenta de inversión, pero todavía no compraste nada.')
+    + opcion('data-w="tipo" data-val="retiro"',  '↑',  'var(--c7)', 'Saqué plata de la cuenta', 'Te llevaste plata de la cuenta de inversión al banco.')
+    + '</div>';
+}
+
+function pasoClase(){
+  var h = '<div class="opciones">';
+  for (var i = 0; i < ORDEN_CLASES.length; i++){
+    var k = ORDEN_CLASES[i], C = CLASES[k];
+    h += opcion('data-w="clase" data-val="' + k + '"', C.ico, 'var(' + C.col + ')', esc(C.nom), esc(C.explica), borrador.clase === k);
+  }
+  return h + '</div>';
+}
+
+function pasoDatos(){
+  var b = borrador, C = CLASES[b.clase];
+  var h = '';
+
+  if (b.clase === 'plazofijo'){
+    h += campo('nombre', '¿En qué banco o billetera?', 'text', b.nombre || '', 'Por ejemplo: Banco Nación, Mercado Pago.');
+    h += campo('monto', '¿Cuánta plata pusiste?', 'decimal', b.monto || '', 'En pesos.');
+    h += '<div class="fila2">' + campo('tna', 'Tasa anual (TNA)', 'decimal', b.tna || '', 'El número que te mostró el banco, sin el signo %. Si no lo sabés, dejalo vacío.')
+       + campo('vence', '¿Cuándo vence?', 'date', b.vence || '', 'Opcional.') + '</div>';
+  } else if (b.clase === 'dolar'){
+    h += campo('cantidad', '¿Cuántos dólares ' + (b.tipo === 'compra' ? 'compraste' : 'vendiste') + '?', 'decimal', b.cantidad || '', '');
+    h += campo('precio', '¿A cuánto estaba el dólar?', 'decimal', b.precio || '', 'El precio en pesos de cada dólar, ese día.');
+  } else {
+    /* Con lista de papeles disponibles se busca; si no, se escribe. */
+    var conBuscador = (b.clase === 'cedear' || b.clase === 'accion') && !b.aMano && papelesDe(b.clase).length > 20;
+    if (conBuscador){
+      h += buscadorPapel(b);
+    } else {
+      h += campo('nombre', '¿Cómo se llama?', 'text', b.nombre || '',
+          b.clase === 'cedear' ? 'El símbolo que ves en tu broker: KO, NU, AAPL, MELI.' :
+          b.clase === 'cripto' ? 'Por ejemplo: BTC, ETH, USDT.' :
+          b.clase === 'fondo'  ? 'El nombre del fondo, como lo ves en tu app.' : 'Como quieras llamarlo.');
+    }
+
+    /* La cantidad y el precio van siempre, se haya buscado o escrito. */
+    h += '<div class="fila2">'
+       + campo('cantidad', '¿Cuántos ' + C.unidad + '?', 'decimal', b.cantidad || '', '')
+       + campo('precio', '¿A qué precio cada uno?', 'decimal', b.precio || '', '') + '</div>';
+
+    /* Si el papel ya se eligio y sabemos su precio de hoy, se ofrece:
+       la mayoria compra al precio del dia y asi se ahorra buscarlo. */
+    if (conBuscador && b.nombre && !b.precio){
+      var px = precioDe(b.clase + '|' + b.nombre, E, AUTO);
+      if (px) h += '<p class="chico" style="margin:-6px 0 12px">Hoy ' + esc(b.nombre)
+        + ' está a <b>' + pesos2(px) + '</b>. Si compraste hoy, es ese número.</p>';
+    }
+
+    if (C.monedaLibre){
+      h += '<div class="campo"><label for="f-moneda">¿En qué moneda lo pagaste?</label>'
+         + '<select id="f-moneda"><option value="ARS"' + (b.moneda === 'ARS' ? ' selected' : '') + '>Pesos</option>'
+         + '<option value="USD"' + (b.moneda === 'USD' ? ' selected' : '') + '>Dólares</option></select></div>';
+      if (b.moneda === 'USD') h += campo('dolarDia', '¿A cuánto estaba el dólar ese día?', 'decimal', b.dolarDia || '', 'Para poder mostrarte todo en pesos.');
+    }
+  }
+
+  h += campo('fecha', '¿Qué día fue?', 'date', b.fecha, '');
+
+  if (C.comision){
+    var tas = tasasDe(E);
+    h += '<div class="campo" style="margin-top:18px"><label>¿Te cobraron comisión?</label>'
+       + '<div class="opciones" style="margin-top:6px">'
+       + opcion('data-w="com" data-val="calcular"', '≈', 'var(--c1)', 'Calculala vos',
+           'Usa ' + nf3.format(tas.comision) + '% + ' + nf3.format(tas.gastos) + '% sobre el monto. '
+           + (tas.propias ? 'Son las que cargaste vos.' : 'Son las de una cuenta común: si tu broker cobra otra cosa, cambialas en «Qué es cada cosa».'),
+           b.modoCom === 'calcular')
+       + opcion('data-w="com" data-val="exacto"', '$', 'var(--c2)', 'Sé el importe exacto', 'Lo tenés en el comprobante de tu broker.', b.modoCom === 'exacto')
+       + opcion('data-w="com" data-val="cero"', '0', 'var(--c7)', 'No me cobraron', 'Algunos brokers no cobran comisión.', b.modoCom === 'cero')
+       + '</div></div>';
+    if (b.modoCom === 'exacto') h += campo('comExacta', '¿Cuánto te cobraron en total?', 'decimal', b.comExacta || '', 'Comisión más gastos, todo junto.');
+  }
+
+  h += campo('nota', 'Una nota para acordarte (opcional)', 'text', b.nota || '', '');
+  h += '<button class="btn ancho-total" data-w="siguiente" style="margin-top:6px">Continuar</button>';
+  return h;
+}
+
+/* El buscador dentro del asistente. La lista sale de los papeles con
+   precio de hoy: si esta ahi, el precio va a llegar seguro. */
+function buscadorPapel(b){
+  var elegido = b.nombre ? (NOMBRES[b.nombre] || '') : '';
+  var h = '<div class="campo"><label for="f-buscar">¿Cuál compraste?</label>';
+
+  if (b.nombre){
+    h += '<div class="papel-elegido">'
+      + '<span class="papel-sim">' + esc(b.nombre) + '</span>'
+      + '<span class="papel-nom">' + esc(elegido || 'lo vas a poder seguir igual') + '</span>'
+      + '<button class="btn-texto" data-w="cambiar-papel">Cambiar</button></div>';
+  } else {
+    h += '<input id="f-buscar" type="text" autocomplete="off" placeholder="Escribí Coca-Cola, o KO"'
+      + ' value="' + esc(b.buscando || '') + '" aria-label="Buscar el papel">'
+      + '<div id="resultados-papel">' + listaPapeles(b) + '</div>'
+      + '<button class="btn-texto" data-w="papel-a-mano" style="margin-top:8px">No lo encuentro, lo escribo yo</button>';
+  }
+  return h + '</div>';
+}
+
+function listaPapeles(b){
+  var res = buscarPapeles(papelesDe(b.clase), b.buscando || '', 6);
+  if (!res.length){
+    return '<p class="chico" style="margin-top:8px">No encontré nada con eso. Probá con menos letras, o escribilo vos.</p>';
+  }
+  var h = '<div class="papel-lista">';
+  for (var i = 0; i < res.length; i++){
+    var p = res[i];
+    h += '<button class="papel-op" data-w="elegir-papel" data-sim="' + esc(p.simbolo) + '">'
+      + '<span class="papel-sim">' + esc(p.simbolo) + '</span>'
+      + '<span class="papel-nom">' + esc(p.nombre || '') + '</span>'
+      + '<span class="papel-px">' + pesos(p.precio) + '</span></button>';
+  }
+  return h + '</div>';
+}
+
+function pasoEfectivo(){
+  var b = borrador;
+  return campo('monto', '¿Cuánta plata ' + (b.tipo === 'ingreso' ? 'pusiste' : 'sacaste') + '?', 'decimal', b.monto || '', 'En pesos.')
+    + campo('fecha', '¿Qué día fue?', 'date', b.fecha, '')
+    + campo('nota', 'Una nota (opcional)', 'text', b.nota || '', 'Por ejemplo: sueldo, aguinaldo, ahorro del mes.')
+    + '<button class="btn ancho-total" data-w="guardar" style="margin-top:6px">Guardar</button>';
+}
+
+function campo(id, etiqueta, tipo, valor, pista){
+  var attrs = tipo === 'date' ? 'type="date"' : (tipo === 'decimal' ? 'type="text" inputmode="decimal"' : 'type="text"');
+  return '<div class="campo"><label for="f-' + id + '">' + etiqueta + '</label>'
+    + '<input id="f-' + id + '" ' + attrs + ' value="' + esc(valor) + '">'
+    + (pista ? '<span class="pista">' + pista + '</span>' : '') + '</div>';
+}
+
+function pasoConfirmar(){
+  var m = borrador.mov, C = CLASES[m.clase];
+  var simb = m.moneda === 'USD' ? 'US$' : '$';
+  var bruto = m.cantidad * m.precio;
+  var compra = m.tipo === 'compra';
+  var h = '<div class="resumen-op">';
+
+  if (m.clase === 'plazofijo'){
+    /* Un plazo fijo no tiene "precio de cada uno": se habla de plata
+       puesta, tasa y cuanto vas a cobrar. */
+    h += '<div class="dato"><span>' + (compra ? 'Ponés' : 'Sacás') + '</span><span>' + pesos2(bruto) + '</span></div>'
+      + '<div class="dato"><span>En</span><span>' + esc(m.nombre) + '</span></div>';
+    if (m.tna) h += '<div class="dato"><span>Tasa anual</span><span>' + pct(m.tna) + '</span></div>';
+    if (m.vence) h += '<div class="dato"><span>Vence</span><span>' + fechaCorta(m.vence) + '</span></div>';
+    if (m.tna && m.vence){
+      var dias = diasEntre(m.fecha, m.vence);
+      var alFinal = bruto * (1 + (m.tna / 100) * (dias / 365));
+      h += '<div class="dato total"><span>Al vencimiento cobrás</span><span>' + pesos2(alFinal) + '</span></div>'
+        + '<div class="dato"><span>Son ' + dias + ' días</span><span class="pos">+' + pesos2(alFinal - bruto) + '</span></div>';
+    } else {
+      h += '<div class="dato total"><span>' + (compra ? 'Te sale' : 'Cobrás') + '</span><span>' + pesos2(bruto) + '</span></div>';
+    }
+    h += '</div>';
+    if (!m.tna){
+      h += '<details class="explic"><summary>No cargaste la tasa</summary>'
+        + '<p>Se puede guardar igual: mientras tanto el plazo fijo va a figurar por lo que pusiste, sin sumar intereses. Si después encontrás la tasa, cargalo de nuevo con el dato.</p></details>';
+    }
+    h += '<button class="btn ancho-total" data-w="guardar" style="margin-top:14px">Guardar</button>';
+    return h;
+  }
+
+  if (m.clase === 'dolar'){
+    h += '<div class="dato"><span>' + (compra ? 'Comprás' : 'Vendés') + '</span><span>' + nfU.format(m.cantidad) + ' dólares</span></div>'
+      + '<div class="dato"><span>Con el dólar a</span><span>$' + nf2.format(m.precio) + '</span></div>'
+      + '<div class="dato total"><span>' + (compra ? 'Te sale' : 'Cobrás') + '</span><span>' + pesos2(m.total) + '</span></div>'
+      + '</div>'
+      + '<button class="btn ancho-total" data-w="guardar" style="margin-top:14px">Guardar</button>';
+    return h;
+  }
+
+  h += '<div class="dato"><span>' + (compra ? 'Comprás' : 'Vendés') + '</span><span>' + nfU.format(m.cantidad) + ' ' + esc(C.unidad) + ' de ' + esc(m.nombre) + '</span></div>'
+    + '<div class="dato"><span>Precio de cada uno</span><span>' + simb + nf2.format(m.precio) + '</span></div>'
+    + '<div class="dato"><span>Subtotal</span><span>' + simb + nf2.format(bruto) + '</span></div>';
+
+  if (m.costos > 0){
+    h += '<div class="dato"><span>' + (compra ? 'Comisión y gastos' : 'Comisión y gastos (se descuentan)') + '</span><span>' + (compra ? '+' : '−') + simb + nf2.format(m.costos) + '</span></div>';
+  }
+  h += '<div class="dato total"><span>' + (compra ? 'Te sale' : 'Cobrás') + '</span><span>' + simb + nf2.format(m.total) + '</span></div>';
+  if (m.moneda === 'USD' && m.dolarDia){
+    h += '<div class="dato"><span>En pesos, al dólar de ese día</span><span>' + pesos2(m.total * m.dolarDia) + '</span></div>';
+  }
+  h += '</div>';
+
+  if (borrador.modoCom === 'calcular' && C.comision){
+    h += '<details class="explic"><summary>¿De dónde salen esos costos?</summary>'
+      + '<p>Se calculan como ' + nf3.format(tasasDe(E).comision) + '% de comisión más ' + nf3.format(tasasDe(E).gastos) + '% de gastos de mercado sobre el subtotal, redondeando igual que el broker. Es una estimación: si tu comprobante dice otra cosa, volvé atrás y cargá el importe exacto.</p></details>';
+  }
+
+  h += '<button class="btn ancho-total" data-w="guardar" style="margin-top:14px">Guardar</button>';
+  return h;
+}
+
+/* Lee los inputs del paso 3 y arma el movimiento */
+function leerDatos(){
+  var b = borrador;
+  var v = function(id){ var el = document.getElementById('f-' + id); return el ? el.value : ''; };
+
+  /* Guarda lo tipeado en el borrador, asi si hay que volver a pintar la
+     pantalla no se le borra lo que ya habia escrito. */
+  leerDatosSuave();
+  b.fecha = v('fecha') || hoyISO();
+  b.nota = v('nota');
+
+  var r = armarMovimiento({
+    id: 'm' + Date.now(),
+    tipo: b.tipo, clase: b.clase, moneda: b.moneda, modoCom: b.modoCom,
+    fecha: b.fecha, nota: b.nota,
+    nombre: v('nombre'), cantidad: v('cantidad'), precio: v('precio'),
+    monto: v('monto'), tna: v('tna'), vence: v('vence'),
+    dolarDia: v('dolarDia'), comExacta: v('comExacta')
+  }, E, null, AUTO);
+
+  if (!r.ok) return r.error;
+  b.mov = r.mov;
+  return null;
+}
+
+function guardarMov(){
+  var m = borrador.mov;
+  if (!m) return;
+  E.movimientos.push(m);
+  if (m.moneda === 'USD' && m.dolarDia && !E.dolar) E.dolar = m.dolarDia;
+  guardar();
+  cerrarAlta();
+  vista = (m.tipo === 'ingreso' || m.tipo === 'retiro') ? 'movimientos' : 'inversiones';
+  render();
+}
+
+/* ══════════════ Copia de seguridad ══════════════ */
+function avisoCopia(txt){
+  var el = document.getElementById('aviso-copia');
+  if (el) el.textContent = txt;
+}
+
+function exportar(){
+  var texto = JSON.stringify(E, null, 2);
+  var nombre = 'mi-cartera-' + hoyISO() + '.json';
+  if (window.claude && window.claude.use){
+    window.claude.use('downloads').then(function(dl){
+      if (dl && dl.save){
+        dl.save({filename:nombre, data:texto}).then(function(){
+          avisoCopia('Listo, se guardó el archivo ' + nombre + '.');
+        })['catch'](function(){ copiarAlPortapapeles(texto); });
+      } else copiarAlPortapapeles(texto);
+    })['catch'](function(){ copiarAlPortapapeles(texto); });
+  } else {
+    copiarAlPortapapeles(texto);
+  }
+}
+
+function copiarAlPortapapeles(texto){
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texto).then(function(){
+      avisoCopia('Copiado al portapapeles. Pegalo en una nota o un mail y guardalo: con ese texto podés restaurar todo.');
+    })['catch'](function(){ mostrarParaCopiar(texto); });
+  } else {
+    mostrarParaCopiar(texto);
+  }
+}
+
+/* Ultimo recurso, y el unico que no depende de permisos del navegador:
+   se lo mostramos y que lo copie a mano. Nunca dejarlo sin salida. */
+function mostrarParaCopiar(texto){
+  avisoCopia('');
+  preguntar({
+    tipo:'mostrar',
+    titulo:'Tu copia de seguridad',
+    texto:'Este navegador no me deja guardarte el archivo ni copiar solo. El texto de abajo ya está seleccionado: copialo con Ctrl+C (o mantené apretado y "Copiar" en el teléfono) y guardalo en una nota o mandátelo por mail. Con eso restaurás todo.',
+    contenido:texto,
+    ok:'Listo',
+    alAceptar:function(){}
+  });
+}
+
+function importar(){
+  preguntar({
+    tipo:'texto',
+    titulo:'Restaurar una copia',
+    texto:'Pegá el texto que guardaste. Reemplaza todo lo que tengas cargado ahora en este navegador.',
+    etiqueta:'El texto de la copia',
+    ok:'Restaurar',
+    alAceptar:function(){
+      var el = document.getElementById('f-pegar');
+      var err = document.getElementById('error-dialogo');
+      var txt = el ? el.value : '';
+      var r = leerCopia(txt);
+      if (!r.ok){
+        if (err){ err.textContent = r.motivo; err.hidden = false; }
+        return false;
+      }
+      E = r.estado;
+      guardar();
+      dialogo = null;
+      document.getElementById('modal').innerHTML = '';
+      vista = 'resumen';
+      render();
+      if (r.descartados > 0){
+        avisoCopia('Se restauraron ' + E.movimientos.length + ' movimientos. '
+          + r.descartados + (r.descartados === 1 ? ' vino roto y no se pudo leer.' : ' vinieron rotos y no se pudieron leer.'));
+      }
+      return false;
+    }
+  });
+}
+
+/* ══════════════ Eventos ══════════════ */
+document.addEventListener('click', function(ev){
+  var t = ev.target.closest('[data-tab],[data-acc],[data-w]');
+  if (!t) return;
+
+  if (t.dataset.tab){ vista = t.dataset.tab; render(); window.scrollTo(0,0); return; }
+
+  var w = t.dataset.w;
+  if (w){
+    if (w === 'cerrar'){ cerrarAlta(); return; }
+    if (w === 'velo' && ev.target === t){ cerrarAlta(); return; }
+    if (w === 'atras'){
+      if (borrador.paso === 4){ borrador.paso = 3; borrador.error = null; pintarModal(); return; }
+      borrador.paso = Math.max(1, borrador.paso - 1);
+      borrador.error = null;
+      pintarModal(); return;
+    }
+    if (w === 'tipo'){
+      borrador.tipo = t.dataset.val;
+      borrador.paso = 2;
+      pintarModal(); return;
+    }
+    if (w === 'clase'){
+      borrador.clase = t.dataset.val;
+      if (borrador.clase === 'dolar') borrador.moneda = 'ARS';
+      borrador.paso = 3;
+      pintarModal(); return;
+    }
+    if (w === 'elegir-papel'){
+      leerDatosSuave();
+      borrador.nombre = t.dataset.sim;
+      borrador.buscando = '';
+      pintarModal(); return;
+    }
+    if (w === 'cambiar-papel'){
+      leerDatosSuave();
+      borrador.nombre = ''; borrador.aMano = false;
+      pintarModal(); return;
+    }
+    if (w === 'papel-a-mano'){
+      leerDatosSuave();
+      borrador.aMano = true;
+      pintarModal(); return;
+    }
+    if (w === 'com'){
+      var err0 = leerDatosSuave();
+      borrador.modoCom = t.dataset.val;
+      pintarModal(); return;
+    }
+    if (w === 'siguiente'){
+      var err = leerDatos();
+      if (err){ borrador.error = err; pintarModal(); return; }
+      borrador.error = null; borrador.paso = 4; pintarModal(); return;
+    }
+    if (w === 'guardar'){
+      if (borrador.tipo === 'ingreso' || borrador.tipo === 'retiro'){
+        var e2 = leerDatos();
+        if (e2){ borrador.error = e2; pintarModal(); return; }
+      }
+      guardarMov(); return;
+    }
+    return;
+  }
+
+  var a = t.dataset.acc;
+  if (a === 'velo'){ if (ev.target === t) cerrarAlta(); return; }
+  if (a === 'abrir-alta'){ abrirAlta(); return; }
+  if (a === 'tema'){
+    var actual = document.documentElement.getAttribute('data-theme');
+    var oscuroAhora = actual ? actual === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', oscuroAhora ? 'light' : 'dark');
+    try { localStorage.setItem('micartera_tema', oscuroAhora ? 'light' : 'dark'); } catch(e){}
+    return;
+  }
+  if (a === 'comparar'){
+    var cl = t.dataset.clave;
+    if (ABIERTAS[cl]){ delete ABIERTAS[cl]; render(); return; }
+    ABIERTAS[cl] = true;
+    render();
+    var pos = derivar(E, null, AUTO).posiciones.filter(function(x){ return x.clave === cl; })[0];
+    if (pos) traerParaComparar(pos);
+    return;
+  }
+  if (a === 'reintentar-precios'){ traerPrecios(); return; }
+  if (a === 'tasas-reset'){ E.tasas = null; guardar(); render(); return; }
+  if (a === 'exportar'){ exportar(); return; }
+  if (a === 'importar'){ importar(); return; }
+
+  if (a === 'cerrar-dialogo'){ dialogo = null; document.getElementById('modal').innerHTML = ''; return; }
+  if (a === 'dialogo-ok'){
+    var fn = dialogo && dialogo.alAceptar;
+    if (!fn) return;
+    var seguir = fn();
+    if (seguir !== false){ dialogo = null; document.getElementById('modal').innerHTML = ''; }
+    return;
+  }
+
+  if (a === 'borrar'){
+    var idBorrar = t.dataset.id;
+    preguntar({
+      titulo:'Borrar el movimiento',
+      texto:'Se va a borrar de la lista y las cuentas se recalculan sin él. No se puede deshacer.',
+      ok:'Borrar', peligro:true,
+      alAceptar:function(){
+        E.movimientos = E.movimientos.filter(function(m){ return m.id !== idBorrar; });
+        guardar(); render();
+      }
+    });
+    return;
+  }
+  if (a === 'borrar-todo'){
+    preguntar({
+      titulo:'Borrar todo',
+      texto:'Se borran todas tus inversiones, movimientos y precios de este navegador. Si no guardaste una copia antes, no hay forma de recuperarlos.',
+      ok:'Borrar todo', peligro:true,
+      alAceptar:function(){
+        try { localStorage.removeItem(CLAVE_LS); } catch(e){}
+        E = estadoVacio(); vista = 'resumen'; render();
+      }
+    });
+    return;
+  }
+});
+
+/* Guarda lo tipeado antes de repintar el modal al cambiar el modo de comisión */
+function leerDatosSuave(){
+  var b = borrador;
+  var v = function(id){ var el = document.getElementById('f-' + id); return el ? el.value : undefined; };
+  ['nombre','cantidad','precio','monto','tna','vence','fecha','nota','dolarDia','comExacta','buscar'].forEach(function(k){
+    var val = v(k);
+    if (val !== undefined) b[k] = val;
+  });
+  var s = document.getElementById('f-moneda');
+  if (s) b.moneda = s.value;
+}
+
+document.addEventListener('change', function(ev){
+  var el = ev.target;
+  if (el.dataset && el.dataset.precio){
+    var n = parseNum(el.value);
+    if (isFinite(n) && n > 0) E.precios[el.dataset.precio] = n;
+    else delete E.precios[el.dataset.precio];
+    guardar(); render(); return;
+  }
+  if (el.dataset && el.dataset.tasa){
+    var valor = parseNum(el.value);
+    if (!E.tasas) E.tasas = {comision:TASAS_POR_DEFECTO.comision, gastos:TASAS_POR_DEFECTO.gastos};
+    /* Un broker no cobra 30%: si escriben cualquier cosa, no la tomamos. */
+    if (isFinite(valor) && valor >= 0 && valor <= 10) E.tasas[el.dataset.tasa] = valor;
+    guardar(); render(); return;
+  }
+  if (el.dataset && el.dataset.dolar){
+    var d = parseNum(el.value);
+    E.dolar = (isFinite(d) && d > 0) ? d : null;
+    guardar(); render(); return;
+  }
+  if (el.id === 'f-moneda' && borrador){
+    leerDatosSuave();
+    pintarModal();
+  }
+});
+
+/* Al escribir se repinta SOLO la lista: repintar el modal entero
+   sacaria el foco del campo y el teclado del telefono se cerraria. */
+document.addEventListener('input', function(ev){
+  if (ev.target && ev.target.id === 'f-buscar' && borrador){
+    borrador.buscando = ev.target.value;
+    var caja = document.getElementById('resultados-papel');
+    if (caja) caja.innerHTML = listaPapeles(borrador);
+  }
+});
+
+document.addEventListener('keydown', function(ev){
+  if (ev.key === 'Escape' && (borrador || dialogo)) cerrarAlta();
+});
+
+/* ══════════════ Arranque ══════════════ */
+(function(){
+  try {
+    var tema = localStorage.getItem('micartera_tema');
+    if (tema) document.documentElement.setAttribute('data-theme', tema);
+  } catch(e){}
+
+  E = leerLS() || estadoVacio();
+
+  try { localStorage.setItem('micartera_test','1'); localStorage.removeItem('micartera_test'); }
+  catch(e){ puedeGuardar = false; }
+
+  render();
+  anotarHist(derivar(E, null, AUTO));
+  traerPrecios();
+})();
+</script>
